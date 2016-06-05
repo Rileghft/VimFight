@@ -1,6 +1,9 @@
 package game.managers;
 
+import java.util.ArrayList;
+
 import game.gamestates.GameState;
+import game.gamestates.PlayState;
 
 public class GameStateManager {
 
@@ -11,15 +14,16 @@ public class GameStateManager {
 	public static final int PLAY = 1;
 	
 	public GameStateManager() {
-		
+		this.setState(PLAY);
 	}
 	
 	public void setState( int state ) {
+		if(gameState != null) gameState.dispose();
 		if(state == MENU) {
 			//switch to menu state
 		}
 		if(state == PLAY) {
-			//switch to play state
+			gameState = new PlayState(this);
 		}
 	}
 	
