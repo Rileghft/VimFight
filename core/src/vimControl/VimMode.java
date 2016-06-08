@@ -18,16 +18,20 @@ public enum VimMode implements State<VimControl>{
 	NORMAL() {
 		@Override
 		public void update(VimControl vim) {
-			switch (vim.getKey()) {
+			int key = vim.getKey();
+			switch (key) {
 			case Keys.I:
 			case Keys.A:
 			case Keys.O:
 				vim.mode.changeState(INSERT);
+				vim.modeSwitch(key);
 				break;
 			case Keys.SEMICOLON:
 				vim.mode.changeState(COMMAND);
+				vim.modeSwitch(key);
 				break;
 			default:
+				vim.passThroughKey(key);
 				break;
 			}
 		}
@@ -36,11 +40,14 @@ public enum VimMode implements State<VimControl>{
 	INSERT() {
 		@Override
 		public void update(VimControl vim) {
-			switch (vim.getKey()) {
+			int key = vim.getKey();
+			switch (key) {
 			case Keys.ESCAPE:
 				vim.mode.changeState(NORMAL);
+				vim.modeSwitch(key);
 				break;
 			default:
+				vim.passThroughKey(key);
 				break;
 			}
 		}
@@ -49,13 +56,15 @@ public enum VimMode implements State<VimControl>{
 	COMMAND() {
 		@Override
 		public void update(VimControl vim) {
-			switch (vim.getKey()) {
+			int key = vim.getKey();
+			switch (key) {
 			case Keys.ENTER:
-				vim.proccessCommand();
 			case Keys.ESCAPE:
 				vim.mode.changeState(NORMAL);
+				vim.modeSwitch(key);
 				break;
 			default:
+				vim.passThroughKey(key);
 				break;
 			}
 		}

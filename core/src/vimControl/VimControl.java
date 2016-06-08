@@ -15,10 +15,18 @@ import com.badlogic.gdx.ai.fsm.StateMachine;
 public class VimControl {
 	private int input;
 	public StateMachine<VimControl, VimMode> mode;
+	private Mode modeAdapter;
+	private InsertMode insert;
+	private NormalMode normal;
+	private CommandMode command;
 
 	public VimControl() {
 		input = Keys.ESCAPE;
 		mode = new DefaultStateMachine<VimControl, VimMode>(this, VimMode.NORMAL);
+		insert = new InsertMode(this);
+		normal = new NormalMode(this);
+		command = new CommandMode(this);
+		modeAdapter = normal;
 	}
 
 	public int getKey() {
@@ -30,12 +38,31 @@ public class VimControl {
 		mode.update();
 	}
 
+	public void passThroughKey(int keycode) {
+		modeAdapter.input(keycode);
+	}
+
 	public VimMode getCurrentState() {
 		return mode.getCurrentState();
 	}
 
-	public void proccessCommand() {
-		// TODO Auto-generated method stub
-
+	public void modeSwitch(int endKey) {
+		modeAdapter.exit(endKey);
+		switch (mode.getCurrentState()) {
+		case NORMAL:
+			modeAdapter = normal;
+			System.out.println("切換模式->[Normal Mode]");
+			break;
+		case INSERT:
+			modeAdapter = insert;
+			System.out.println("切換模式->[Insert Mode]");
+			break;
+		case COMMAND:
+			modeAdapter = command;
+			System.out.println("切換模式->[Command Mode]");
+			break;
+		default:
+			break;
+		}
 	}
 }

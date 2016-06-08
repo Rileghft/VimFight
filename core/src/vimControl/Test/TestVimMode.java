@@ -54,4 +54,40 @@ public class TestVimMode {
 		vim.inputKey(Keys.ESCAPE);
 		assertEquals(VimMode.NORMAL, vim.getCurrentState());
 	}
+
+	@Test
+	public void TestInsertMode() {
+		VimControl vim = new VimControl();
+		vim.inputKey(Keys.I);
+		assertEquals(VimMode.INSERT, vim.getCurrentState());
+		vim.inputKey(Keys.I);
+		vim.inputKey(Keys.A);
+		vim.inputKey(Keys.K);
+		assertEquals(VimMode.INSERT, vim.getCurrentState());
+		vim.inputKey(Keys.O);
+		vim.inputKey(Keys.D);
+		assertEquals(VimMode.INSERT, vim.getCurrentState());
+		vim.inputKey(Keys.ESCAPE);
+		assertEquals(VimMode.NORMAL, vim.getCurrentState());
+	}
+	@Test
+	public void TestCommandMode() {
+		VimControl vim = new VimControl();
+		vim.inputKey(Keys.SEMICOLON);
+		assertEquals(VimMode.COMMAND, vim.getCurrentState());
+		vim.inputKey(Keys.I);
+		vim.inputKey(Keys.A);
+		vim.inputKey(Keys.K);
+		vim.inputKey(Keys.ESCAPE);
+		assertEquals(VimMode.NORMAL, vim.getCurrentState());
+		vim.inputKey(Keys.SEMICOLON);
+		assertEquals(VimMode.COMMAND, vim.getCurrentState());
+		vim.inputKey(Keys.O);
+		vim.inputKey(Keys.L);
+		vim.inputKey(Keys.P);
+		vim.inputKey(Keys.A);
+		assertEquals(VimMode.COMMAND, vim.getCurrentState());
+		vim.inputKey(Keys.ENTER);
+		assertEquals(VimMode.NORMAL, vim.getCurrentState());
+	}
 }
