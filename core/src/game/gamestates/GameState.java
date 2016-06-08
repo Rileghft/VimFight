@@ -8,6 +8,7 @@ public abstract class GameState {
 	
 	protected GameState( GameStateManager gsm) {
 		this.gsm = gsm;
+		init();
 	}
 	
 	public abstract void init();

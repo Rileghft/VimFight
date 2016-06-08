@@ -11,7 +11,7 @@ import game.managers.GameInputProcessor;
 import game.managers.GameStateManager;
 
 public class VimFight extends ApplicationAdapter {
-	static OrthographicCamera cam;
+	public static OrthographicCamera cam;
 	public static int WIDTH;
 	public static int HEIGHT;
 	private GameStateManager gsm;
@@ -33,7 +33,7 @@ public class VimFight extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		gsm.update(Gdx.graphics.getDeltaTime());

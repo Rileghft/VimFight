@@ -9,6 +9,8 @@ public class GameStateManager {
 
 	//current game state
 	private GameState gameState;
+	private int HEIGHT;
+	private int WIDTH;
 	
 	public static final int  MENU = 0;
 	public static final int PLAY = 1;
