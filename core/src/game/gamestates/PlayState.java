@@ -76,7 +76,7 @@ public class PlayState extends GameState {
 		sr.begin(ShapeType.Line);
 		for(int i = 0 ; i < 20 ; i++ ){
 			for( int j = 0 ; j < 8 ; j++){
-				drawRect(i, j, testMap.get(j));
+				drawRect(j, i, testMap.get(j));
 			}
 		}
 		
