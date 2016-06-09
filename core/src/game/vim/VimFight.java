@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.gamestates.MenuState;
+import game.gamestates.PlayState;
 import game.managers.GameInputProcessor;
 import game.managers.GameStateManager;
 
@@ -29,6 +31,7 @@ public class VimFight extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(gameInputProcessor);
 		
 		gsm = new GameStateManager();
+		gsm.push(new MenuState(gsm));
 	}
 
 	@Override

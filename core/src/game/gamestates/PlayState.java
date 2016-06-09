@@ -3,6 +3,7 @@ package game.gamestates;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -107,7 +108,6 @@ public class PlayState extends GameState {
 	@Override
 	public void handleInput() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
