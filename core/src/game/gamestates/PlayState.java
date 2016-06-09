@@ -3,6 +3,7 @@ package game.gamestates;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,8 +11,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import game.Map.MapSquare;
+import game.Object.Player;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
 
@@ -26,6 +30,7 @@ public class PlayState extends GameState {
 	private float mapBegUpY = 50;
 	private SpriteBatch sb;
 	private BitmapFont font;
+	private Stage stage;
 
 	//for test
 	private ArrayList<MapSquare> testMap;
@@ -38,6 +43,14 @@ public class PlayState extends GameState {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
+		ScreenViewport viewport = new ScreenViewport();
+		stage = new Stage(viewport);
+		Gdx.input.setInputProcessor(stage);
+		Player player = new Player();
+		stage.addActor(player);
+		stage.setKeyboardFocus(player);
+
+		//draw map
 		sr = new ShapeRenderer();
 		cellWidth = mapWidth / 20;
 		cellHeight = mapHeight / 20;
@@ -80,6 +93,8 @@ public class PlayState extends GameState {
 		}
 
 		sr.end();
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
 	}
 
 	private void drawRect(int x, int y, MapSquare cell){
@@ -106,8 +121,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -1,39 +1,37 @@
 package game.managers;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import game.gamestates.GameState;
 import game.gamestates.PlayState;
 
 public class GameStateManager {
 
-	//current game state
-	private GameState gameState;
-	private int HEIGHT;
-	private int WIDTH;
-	
-	public static final int  MENU = 0;
-	public static final int PLAY = 1;
+	private Stack<GameState> states;
 	
 	public GameStateManager() {
-		this.setState(PLAY);
+		states = new Stack<GameState>();
 	}
 	
-	public void setState( int state ) {
-		if(gameState != null) gameState.dispose();
-		if(state == MENU) {
-			//switch to menu state
-		}
-		if(state == PLAY) {
-			gameState = new PlayState(this);
-		}
+	public void push( GameState state ) {
+		states.push(state);
+	}
+	
+	public void pop() {
+		states.pop();
+	}
+	
+	public void setState( GameState state ) {
+		states.pop();
+		states.push(state);
 	}
 	
 	public void update(float delta) {
-		gameState.update(delta);
+		states.peek().update(delta);
 	}
 	
 	public void draw() {
-		gameState.draw();
+		states.peek().draw();
 	}
 }
