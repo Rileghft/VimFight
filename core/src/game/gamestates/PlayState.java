@@ -11,8 +11,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import game.Map.MapSquare;
+import game.Object.Player;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
 
@@ -27,10 +30,11 @@ public class PlayState extends GameState {
 	private float mapBegUpY = 50;
 	private SpriteBatch sb;
 	private BitmapFont font;
-	
+	private Stage stage;
+
 	//for test
 	private ArrayList<MapSquare> testMap;
-	
+
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
@@ -39,19 +43,27 @@ public class PlayState extends GameState {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
+		ScreenViewport viewport = new ScreenViewport();
+		stage = new Stage(viewport);
+		Gdx.input.setInputProcessor(stage);
+		Player player = new Player();
+		stage.addActor(player);
+		stage.setKeyboardFocus(player);
+
+		//draw map
 		sr = new ShapeRenderer();
 		cellWidth = mapWidth / 20;
 		cellHeight = mapHeight / 20;
-		
+
 		sb = new SpriteBatch();
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		parameter.size = 20;
+		parameter.size = 40;
 		font = gen.generateFont( parameter );
 		font.setColor(Color.BLACK);
-		
+
 		//for test
 		testMap = new ArrayList<MapSquare>();
 		testMap.add(new MapSquare("A"));
@@ -62,12 +74,12 @@ public class PlayState extends GameState {
 		testMap.add(new MapSquare("F"));
 		testMap.add(new MapSquare("G"));
 		testMap.add(new MapSquare("H"));
-		
+
 	}
 
 	@Override
 	public void update(float delta) {
-	
+
 	}
 
 	@Override
@@ -79,41 +91,42 @@ public class PlayState extends GameState {
 				drawRect(j, i, testMap.get(j));
 			}
 		}
-		
+
 		sr.end();
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
 	}
-	
+
 	private void drawRect(int x, int y, MapSquare cell){
 		//draw a rect of cell in the map componet
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
 		float posY = yConverter( mapBegUpY + y*cellHeight );
 		sr.rect(posX, posY, cellWidth, cellHeight);
-		
+
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		sb.begin();
-		
+
 		font.draw(sb, cell.getText(), posX, posY + cellHeight);
-		
+
 		sb.end();
-		
+
 		}
 	private float xConverter( float x ) {
 		return x;
 	}
-	
+
 	private float yConverter( float y ) {
 		return VimFight.HEIGHT - y;
 	}
-	
+
 	@Override
 	public void handleInput() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
