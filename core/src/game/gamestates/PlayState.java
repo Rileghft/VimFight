@@ -18,6 +18,7 @@ import game.Map.MapSquare;
 import game.Object.Player;
 import game.component.Hp;
 import game.component.Mp;
+import game.component.Status;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
 
@@ -36,6 +37,8 @@ public class PlayState extends GameState {
 	private float hpUpY = 5;
 	private float mpLeftX = 360;
 	private float mpUpY = 5;
+	private float statusLeftX = 5;
+	private float statusUpY = 650;
 	private Hp hp;
 	private Mp mp;
 	private SpriteBatch sb;
@@ -43,6 +46,7 @@ public class PlayState extends GameState {
 	private BitmapFont lineNumber;
 	private Stage stage;
 	private int lineNumBeg;
+	private Status status;
 
 	//for test
 	private ArrayList<MapSquare> testMap;
@@ -86,6 +90,9 @@ public class PlayState extends GameState {
 		hp = new Hp(1000);
 		mp = new Mp(200);
 		
+		//for draw status
+		status = new Status();
+		
 		//begin of test data
 		testMap = new ArrayList<MapSquare>();
 		testMap.add(new MapSquare("A"));
@@ -101,6 +108,17 @@ public class PlayState extends GameState {
 		
 		hp.setCurrentHp(675);
 		mp.setCurrentMp(60);
+		status.append("a");
+		status.append("b");
+		status.append("c");
+		status.append("d");
+		status.append("e");
+		status.append("f");
+		status.setCol(5);
+		status.setRow(10);
+		status.setErr("the error msg must be English and Number");
+		status.setStatusState(true);
+		status.setStatusState(Status.ERROR);
 		
 		//end of test data
 	}
@@ -129,7 +147,7 @@ public class PlayState extends GameState {
 		//draw Mp
 		mp.draw(sr, sb, mpLeftX, mpUpY);
 		//draw command line
-		
+		status.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
