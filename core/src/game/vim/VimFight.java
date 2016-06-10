@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import game.gamestates.MenuState;
-import game.gamestates.PlayState;
-import game.managers.GameInputProcessor;
 import game.managers.GameStateManager;
 
 public class VimFight extends ApplicationAdapter {

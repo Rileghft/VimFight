@@ -1,10 +1,8 @@
 package game.managers;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import game.gamestates.GameState;
-import game.gamestates.PlayState;
 
 public class GameStateManager {
 
