@@ -30,9 +30,18 @@ public class PlayState extends GameState {
 	private float mapBegUpY = 70;
 	private float lineNumberLeftX = 1;
 	private float lineNumberUpY = 70;
+	private float hpLeftX = 50;
+	private float hpUpY = 5;
+	private float mpLeftX = 360;
+	private float mpUpY = 5;
+	private int currentHp;
+	private int maxHp;
+	private int currentMp;
+	private int maxMp;
 	private SpriteBatch sb;
 	private BitmapFont font;
 	private BitmapFont lineNumber;
+	private BitmapFont hpAndMpFont;
 	private Stage stage;
 	private int lineNumBeg;
 
@@ -54,7 +63,7 @@ public class PlayState extends GameState {
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
 
-		//draw map
+		//for draw map
 		sr = new ShapeRenderer();
 		cellWidth = mapWidth / 20;
 		cellHeight = mapHeight / 20;
@@ -68,11 +77,20 @@ public class PlayState extends GameState {
 		font = gen.generateFont( FontParameter );
 		font.setColor(Color.BLACK);
 		
+		
+		//for draw line number
 		FreeTypeFontParameter LineNumberParameter = new FreeTypeFontParameter();
 		LineNumberParameter.size = 35;
 		lineNumber = gen.generateFont( LineNumberParameter );
 		lineNumber.setColor(Color.BROWN);
-		//for test
+		
+		//for draw hp and mp
+		FreeTypeFontParameter hpAndMpParameter = new FreeTypeFontParameter();
+		hpAndMpParameter.size = 22;
+		hpAndMpFont = gen.generateFont( hpAndMpParameter );
+		hpAndMpFont.setColor(Color.WHITE);
+		
+		//begin of test data
 		testMap = new ArrayList<MapSquare>();
 		testMap.add(new MapSquare("A"));
 		testMap.add(new MapSquare("B"));
@@ -84,6 +102,15 @@ public class PlayState extends GameState {
 		testMap.add(new MapSquare("H"));
 		
 		setLineNumBeg(1);
+		
+		setMaxHp(1000);
+		setMaxMp(100);
+		initHp();
+		initMp();
+		setMp(35);
+		setHp(486);
+		
+		//end of test data
 	}
 
 	@Override
@@ -93,10 +120,7 @@ public class PlayState extends GameState {
 
 	@Override
 	public void draw() {
-		sr.setColor(0,0,0,0);
-		sr.begin(ShapeType.Line);
 		sb.setProjectionMatrix(VimFight.cam.combined);
-		sb.begin();
 		
 		//draw map
 		for(int i = 0 ; i < 20 ; i++ ){
@@ -109,14 +133,11 @@ public class PlayState extends GameState {
 		drawLineNumber();
 		
 		//draw Hp
-		
+		drawHp();
 		//draw Mp
-		
+		drawMp();
 		//draw command line
 		
-		
-		sb.end();
-		sr.end();
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
@@ -125,11 +146,15 @@ public class PlayState extends GameState {
 		//draw a rectangle of cell in the map component
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
 		float posY = yConverter( mapBegUpY + y*cellHeight );
+		sr.begin(ShapeType.Line);
+		sr.setColor(0,0,0,0);
 		
 		sr.rect(posX, posY, cellWidth, cellHeight);
-		
+		sr.end();
 		//因為bitmapFont.draw要輸入的position 是左下角的
+		sb.begin();
 		font.draw(sb, cell.getText(), posX, posY + cellHeight);	
+		sb.end();
 		}
 	
 	private float xConverter( float x ) {
@@ -153,14 +178,75 @@ public class PlayState extends GameState {
 	public void setLineNumBeg( int num ) {
 		this.lineNumBeg = num;
 	}
+	
 	private void drawLineNumber() {
 		
-		for(int i = 0 ; i < 20 ; i++) {
-			
+		for(int i = 0 ; i < 20 ; i++) {		
 			//因為bitmapFont.draw要輸入的position 是左下角的 所以把posY上移
 			//font.draw(sb, text, posX, posY, width, align, wrap) 其中的width是用來做align用的空間
+			sb.begin();
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
+			sb.end();
 		}
 			
+	}
+	
+	public void setMaxHp( int max ) {
+		this.maxHp = max;
+	}
+	
+	public void setHp( int currentHp ) {
+		this.currentHp = currentHp;
+	}
+	
+	public void initHp(){
+		this.currentHp = this.maxHp;
+	}
+	
+	public void initMp() {
+		this.currentMp = this.maxMp;
+	}
+	
+	public void setMaxMp( int max ) {
+		this.maxMp = max;
+	}
+	
+	public void setMp( int currentMp ) {
+		this.currentMp = currentMp;
+	}
+
+	private void drawHp() {
+		//shapeRenderer 使用的是左下角的座標
+		sr.begin(ShapeType.Filled);
+		sr.setColor(Color.RED);
+		
+		sr.rect(xConverter(hpLeftX+55), yConverter(hpUpY+25), 250*(this.currentHp/(float)this.maxHp), 25);
+		sr.end();
+		sr.begin(ShapeType.Line);
+		sr.setColor(Color.BLACK);
+		sr.rect(xConverter(hpLeftX+55), yConverter(hpUpY+25), 250, 25);
+		sr.end();
+		
+		sb.begin();
+		font.draw(sb, "HP", xConverter(hpLeftX), yConverter(hpUpY));
+		hpAndMpFont.draw(sb, "["+this.currentHp+"/"+this.maxHp+"]", xConverter(hpLeftX+60), yConverter(hpUpY+6), 246, Align.left, false);
+		sb.end();
+	}
+	
+	private void drawMp() {
+		sr.begin(ShapeType.Filled);
+		sr.setColor(Color.BLUE);
+		
+		sr.rect(xConverter(mpLeftX+55), yConverter(mpUpY+25), 250*(this.currentMp/(float)this.maxMp), 25);
+		sr.end();
+		sr.begin(ShapeType.Line);
+		sr.setColor(Color.BLACK);
+		sr.rect(xConverter(mpLeftX+55), yConverter(mpUpY+25), 250, 25);
+		sr.end();
+		
+		sb.begin();
+		font.draw(sb, "MP", xConverter(mpLeftX), yConverter(mpUpY));
+		hpAndMpFont.draw(sb, "["+this.currentMp+"/"+this.maxMp+"]", xConverter(mpLeftX+60), yConverter(mpUpY+6), 246, Align.left, false);
+		sb.end();
 	}
 }
