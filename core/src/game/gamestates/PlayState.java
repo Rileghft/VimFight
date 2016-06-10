@@ -41,7 +41,6 @@ public class PlayState extends GameState {
 	private SpriteBatch sb;
 	private BitmapFont font;
 	private BitmapFont lineNumber;
-	private BitmapFont hpAndMpFont;
 	private Stage stage;
 	private int lineNumBeg;
 
