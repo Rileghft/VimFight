@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import game.Map.MapSquare;
 import game.Object.Player;
+import game.component.Hp;
+import game.component.Mp;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
 
@@ -34,10 +36,8 @@ public class PlayState extends GameState {
 	private float hpUpY = 5;
 	private float mpLeftX = 360;
 	private float mpUpY = 5;
-	private int currentHp;
-	private int maxHp;
-	private int currentMp;
-	private int maxMp;
+	private Hp hp;
+	private Mp mp;
 	private SpriteBatch sb;
 	private BitmapFont font;
 	private BitmapFont lineNumber;
@@ -77,7 +77,6 @@ public class PlayState extends GameState {
 		font = gen.generateFont( FontParameter );
 		font.setColor(Color.BLACK);
 		
-		
 		//for draw line number
 		FreeTypeFontParameter LineNumberParameter = new FreeTypeFontParameter();
 		LineNumberParameter.size = 35;
@@ -85,10 +84,8 @@ public class PlayState extends GameState {
 		lineNumber.setColor(Color.BROWN);
 		
 		//for draw hp and mp
-		FreeTypeFontParameter hpAndMpParameter = new FreeTypeFontParameter();
-		hpAndMpParameter.size = 22;
-		hpAndMpFont = gen.generateFont( hpAndMpParameter );
-		hpAndMpFont.setColor(Color.WHITE);
+		hp = new Hp(1000);
+		mp = new Mp(200);
 		
 		//begin of test data
 		testMap = new ArrayList<MapSquare>();
@@ -103,12 +100,8 @@ public class PlayState extends GameState {
 		
 		setLineNumBeg(1);
 		
-		setMaxHp(1000);
-		setMaxMp(100);
-		initHp();
-		initMp();
-		setMp(35);
-		setHp(486);
+		hp.setCurrentHp(675);
+		mp.setCurrentMp(60);
 		
 		//end of test data
 	}
@@ -133,9 +126,9 @@ public class PlayState extends GameState {
 		drawLineNumber();
 		
 		//draw Hp
-		drawHp();
+		hp.draw(sr, sb, hpLeftX, hpUpY);
 		//draw Mp
-		drawMp();
+		mp.draw(sr, sb, mpLeftX, mpUpY);
 		//draw command line
 		
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -191,62 +184,4 @@ public class PlayState extends GameState {
 			
 	}
 	
-	public void setMaxHp( int max ) {
-		this.maxHp = max;
-	}
-	
-	public void setHp( int currentHp ) {
-		this.currentHp = currentHp;
-	}
-	
-	public void initHp(){
-		this.currentHp = this.maxHp;
-	}
-	
-	public void initMp() {
-		this.currentMp = this.maxMp;
-	}
-	
-	public void setMaxMp( int max ) {
-		this.maxMp = max;
-	}
-	
-	public void setMp( int currentMp ) {
-		this.currentMp = currentMp;
-	}
-
-	private void drawHp() {
-		//shapeRenderer 使用的是左下角的座標
-		sr.begin(ShapeType.Filled);
-		sr.setColor(Color.RED);
-		
-		sr.rect(xConverter(hpLeftX+55), yConverter(hpUpY+25), 250*(this.currentHp/(float)this.maxHp), 25);
-		sr.end();
-		sr.begin(ShapeType.Line);
-		sr.setColor(Color.BLACK);
-		sr.rect(xConverter(hpLeftX+55), yConverter(hpUpY+25), 250, 25);
-		sr.end();
-		
-		sb.begin();
-		font.draw(sb, "HP", xConverter(hpLeftX), yConverter(hpUpY));
-		hpAndMpFont.draw(sb, "["+this.currentHp+"/"+this.maxHp+"]", xConverter(hpLeftX+60), yConverter(hpUpY+6), 246, Align.left, false);
-		sb.end();
-	}
-	
-	private void drawMp() {
-		sr.begin(ShapeType.Filled);
-		sr.setColor(Color.BLUE);
-		
-		sr.rect(xConverter(mpLeftX+55), yConverter(mpUpY+25), 250*(this.currentMp/(float)this.maxMp), 25);
-		sr.end();
-		sr.begin(ShapeType.Line);
-		sr.setColor(Color.BLACK);
-		sr.rect(xConverter(mpLeftX+55), yConverter(mpUpY+25), 250, 25);
-		sr.end();
-		
-		sb.begin();
-		font.draw(sb, "MP", xConverter(mpLeftX), yConverter(mpUpY));
-		hpAndMpFont.draw(sb, "["+this.currentMp+"/"+this.maxMp+"]", xConverter(mpLeftX+60), yConverter(mpUpY+6), 246, Align.left, false);
-		sb.end();
-	}
 }
