@@ -1,8 +1,9 @@
-package game.gamestates;
+ï»¿package game.gamestates;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -79,33 +80,28 @@ public class PlayState extends GameState {
 		FontParameter.size = 40;
 		font = gen.generateFont( FontParameter );
 		font.setColor(Color.BLACK);
-		
+
 		//for draw line number
 		FreeTypeFontParameter LineNumberParameter = new FreeTypeFontParameter();
 		LineNumberParameter.size = 35;
 		lineNumber = gen.generateFont( LineNumberParameter );
 		lineNumber.setColor(Color.BROWN);
-		
+
 		//for draw hp and mp
 		hp = new Hp(1000);
 		mp = new Mp(200);
-		
+
 		//for draw status
 		status = new Status();
-		
+
 		//begin of test data
 		testMap = new ArrayList<MapSquare>();
-		testMap.add(new MapSquare("A"));
-		testMap.add(new MapSquare("B"));
-		testMap.add(new MapSquare("C"));
-		testMap.add(new MapSquare("D"));
-		testMap.add(new MapSquare("E"));
-		testMap.add(new MapSquare("F"));
-		testMap.add(new MapSquare("G"));
-		testMap.add(new MapSquare("H"));
-		
+		for(Character c = 'A'; c < 'U'; c++) {
+			testMap.add(new MapSquare(c.toString()));
+		}
+
 		setLineNumBeg(1);
-		
+
 		hp.setCurrentHp(675);
 		mp.setCurrentMp(60);
 		status.append("a");
@@ -119,29 +115,29 @@ public class PlayState extends GameState {
 		status.setErr("the error msg must be English and Number");
 		status.setStatusState(true);
 		status.setStatusState(Status.ERROR);
-		
+
 		//end of test data
 	}
 
 	@Override
 	public void update(float delta) {
-
+		handleInput();
 	}
 
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-		
+
 		//draw map
 		for(int i = 0 ; i < 20 ; i++ ){
-			for( int j = 0 ; j < 8 ; j++){
+			for( int j = 0 ; j < 20 ; j++){
 				drawRect(j, i, testMap.get(j));
 			}
 		}
 
 		//draw lineNumber
 		drawLineNumber();
-		
+
 		//draw Hp
 		hp.draw(sr, sb, hpLeftX, hpUpY);
 		//draw Mp
@@ -158,15 +154,15 @@ public class PlayState extends GameState {
 		float posY = yConverter( mapBegUpY + y*cellHeight );
 		sr.begin(ShapeType.Line);
 		sr.setColor(0,0,0,0);
-		
+
 		sr.rect(posX, posY, cellWidth, cellHeight);
 		sr.end();
-		//¦]¬°bitmapFont.draw­n¿é¤Jªºposition ¬O¥ª¤U¨¤ªº
+		//å› ç‚ºbitmapFont.drawè¦è¼¸å…¥çš„position æ˜¯å·¦ä¸‹è§’çš„
 		sb.begin();
-		font.draw(sb, cell.getText(), posX, posY + cellHeight);	
+		font.draw(sb, cell.getText(), posX, posY + cellHeight);
 		sb.end();
 		}
-	
+
 	private float xConverter( float x ) {
 		return x;
 	}
@@ -177,6 +173,10 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			System.out.println("esc");
+			gsm.pop();
+		}
 	}
 
 	@Override
@@ -188,17 +188,17 @@ public class PlayState extends GameState {
 	public void setLineNumBeg( int num ) {
 		this.lineNumBeg = num;
 	}
-	
+
 	private void drawLineNumber() {
-		
-		for(int i = 0 ; i < 20 ; i++) {		
-			//¦]¬°bitmapFont.draw­n¿é¤Jªºposition ¬O¥ª¤U¨¤ªº ©Ò¥H§âposY¤W²¾
-			//font.draw(sb, text, posX, posY, width, align, wrap) ¨ä¤¤ªºwidth¬O¥Î¨Ó°µalign¥ÎªºªÅ¶¡
+
+		for(int i = 0 ; i < 20 ; i++) {
+			//å› ç‚ºbitmapFont.drawè¦è¼¸å…¥çš„position æ˜¯å·¦ä¸‹è§’çš„ æ‰€ä»¥æŠŠposYä¸Šç§»
+			//font.draw(sb, text, posX, posY, width, align, wrap) å…¶ä¸­çš„widthæ˜¯ç”¨ä¾†åšalignç”¨çš„ç©ºé–“
 			sb.begin();
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
 		}
-			
+
 	}
-	
+
 }
