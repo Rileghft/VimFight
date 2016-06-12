@@ -5,6 +5,7 @@ package vimControl;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input.Keys;
 
 /**
@@ -20,18 +21,18 @@ public enum VimMode implements State<VimControl>{
 		public void update(VimControl vim) {
 			int key = vim.getKey();
 			switch (key) {
-			case Keys.I:
-			case Keys.A:
-			case Keys.O:
+			case GameKeys.i:
+			case GameKeys.a:
+			case GameKeys.o:
 				vim.mode.changeState(INSERT);
 				vim.modeSwitch(key);
 				break;
-			case Keys.SEMICOLON:
+			case GameKeys.SEMICOLON:
 				vim.mode.changeState(COMMAND);
 				vim.modeSwitch(key);
 				break;
 			default:
-				vim.passThroughKey(key);
+				vim.passThroughKey((char)key);
 				break;
 			}
 		}
@@ -47,7 +48,7 @@ public enum VimMode implements State<VimControl>{
 				vim.modeSwitch(key);
 				break;
 			default:
-				vim.passThroughKey(key);
+				vim.passThroughKey((char)key);
 				break;
 			}
 		}
@@ -64,7 +65,7 @@ public enum VimMode implements State<VimControl>{
 				vim.modeSwitch(key);
 				break;
 			default:
-				vim.passThroughKey(key);
+				vim.passThroughKey((char)key);
 				break;
 			}
 		}

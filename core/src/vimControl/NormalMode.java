@@ -22,8 +22,8 @@ public class NormalMode implements Mode{
 	}
 
 	@Override
-	public void input(int keycode) {
-		inputKeycode = keycode;
+	public void input(char inputChar) {
+		inputKeycode = inputChar;
 		normal.update();
 	}
 

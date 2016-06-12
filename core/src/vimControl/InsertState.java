@@ -17,7 +17,7 @@ public enum InsertState implements State<InsertMode>{
 		@Override
 		public void update(InsertMode insert) {
 			int keycode = insert.getKey();
-			if(keycode != Keys.ESCAPE) {
+			if(keycode != GameKeys.ESC) {
 				insert.type(Keys.toString(keycode));
 			}
 		}

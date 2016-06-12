@@ -27,8 +27,8 @@ public class CommandMode implements Mode {
 	 * @see vimControl.Mode#input(int)
 	 */
 	@Override
-	public void input(int keycode) {
-		inputKey = keycode;
+	public void input(char inputChar) {
+		inputKey = inputChar;
 		command.update();
 	}
 

@@ -17,16 +17,16 @@ public enum NormalState implements State<NormalMode>{
 		@Override
 		public void update(NormalMode normal) {
 			switch (normal.getKey()) {
-			case Keys.J:
+			case GameKeys.j:
 				normal.normal.changeState(MOVE_DOWN);
 				break;
-			case Keys.K:
+			case GameKeys.k:
 				normal.normal.changeState(MOVE_UP);
 				break;
-			case Keys.H:
+			case GameKeys.h:
 				normal.normal.changeState(MOVE_LEFT);
 				break;
-			case Keys.L:
+			case GameKeys.l:
 				normal.normal.changeState(MOVE_RIGHT);
 				break;
 			default:

@@ -21,8 +21,9 @@ public class InsertMode implements Mode{
 		modeControl = mode;
 	}
 
-	public void input(int keycode) {
-		inputKey = keycode;
+	@Override
+	public void input(char inputChar) {
+		inputKey = inputChar;
 		insert.update();
 	}
 
@@ -36,7 +37,7 @@ public class InsertMode implements Mode{
 
 	public void exit(int endKey) {
 		System.out.println("離開Insert Mode，回到Normal Mode");
-		modeControl.inputKey(inputKey);
+		modeControl.inputKey((char)inputKey);
 		inputKey = -1;
 	}
 

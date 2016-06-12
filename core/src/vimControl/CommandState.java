@@ -19,7 +19,7 @@ public enum CommandState implements State<CommandMode> {
 		public void update(CommandMode command) {
 			int key = command.getKey();
 			switch (key) {
-			case Keys.ESCAPE: case Keys.ENTER:
+			case GameKeys.ESC: case GameKeys.ENTER:
 				command.exit(key);
 				break;
 			default:

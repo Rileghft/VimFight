@@ -33,13 +33,13 @@ public class VimControl {
 		return input;
 	}
 
-	public void inputKey(int keycode) {
-		input = keycode;
+	public void inputKey(char inputChar) {
+		input = inputChar;
 		mode.update();
 	}
 
-	public void passThroughKey(int keycode) {
-		modeAdapter.input(keycode);
+	public void passThroughKey(char inputChar) {
+		modeAdapter.input(inputChar);
 	}
 
 	public VimMode getCurrentState() {

@@ -9,7 +9,7 @@ package vimControl;
  *
  */
 public interface Mode {
-	public void input(int keycode);
+	public void input(char inputChar);
 	public int getKey();
 	public void exit(int endKey);
 }
