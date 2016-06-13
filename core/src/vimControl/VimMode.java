@@ -43,7 +43,7 @@ public enum VimMode implements State<VimControl>{
 		public void update(VimControl vim) {
 			int key = vim.getKey();
 			switch (key) {
-			case Keys.ESCAPE:
+			case GameKeys.ESC:
 				vim.mode.changeState(NORMAL);
 				vim.modeSwitch(key);
 				break;
@@ -59,8 +59,8 @@ public enum VimMode implements State<VimControl>{
 		public void update(VimControl vim) {
 			int key = vim.getKey();
 			switch (key) {
-			case Keys.ENTER:
-			case Keys.ESCAPE:
+			case GameKeys.ENTER:
+			case GameKeys.ESC:
 				vim.mode.changeState(NORMAL);
 				vim.modeSwitch(key);
 				break;

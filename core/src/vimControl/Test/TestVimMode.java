@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.badlogic.gdx.Input.Keys;
 
 import vimControl.GameKeys;
 import vimControl.VimControl;
@@ -20,7 +19,7 @@ import vimControl.VimMode;
  */
 public class TestVimMode {
 
-	public VimControl vim;
+	private VimControl vim;
 	@Before
 	public void setUp() throws Exception {
 		vim = new VimControl();
