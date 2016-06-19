@@ -34,7 +34,7 @@ public class Hp {
 		FreeTypeFontParameter FontParameter = new FreeTypeFontParameter();
 		FontParameter.size = 40;
 		font = gen.generateFont( FontParameter );
-		font.setColor(Color.BLACK);
+		font.setColor(new Color(0.699f,0.434f,0.723f,1));
 	}
 	
 	public void setMax( int max ) {
@@ -55,7 +55,7 @@ public class Hp {
 	
 	public void draw(ShapeRenderer sr, SpriteBatch sb, float leftX, float upY) {
 		sr.begin(ShapeType.Filled);
-		sr.setColor(Color.RED);
+		sr.setColor(new Color(0.863f,0.336f,0.453f,1));
 		
 		sr.rect(xConverter(leftX+55), yConverter(upY+25), 250*(this.currentHp/(float)this.maxHp), 25);
 		sr.end();

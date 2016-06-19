@@ -52,7 +52,7 @@ public class Status {
 	
 	public void draw( ShapeRenderer sr, SpriteBatch sb , float leftX, float upY) {
 		sr.begin(ShapeType.Filled);
-		sr.setColor(Color.GRAY);
+		sr.setColor(new Color(0.270f,0.262f,0.297f,1));
 		
 		sr.rect(xConverter(leftX), yConverter(upY+25), 750, 25);
 		sr.end();
