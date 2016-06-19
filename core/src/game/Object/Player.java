@@ -26,7 +26,7 @@ public class Player extends Actor {
 	public Player() {
 		setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
-		setPosition(400f, 350f);
+		setPosition(55f, 630f);
 
 		addListener(new InputListener(){
 			@Override
