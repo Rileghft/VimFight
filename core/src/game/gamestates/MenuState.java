@@ -1,5 +1,7 @@
 package game.gamestates;
 
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardEndHandler;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -27,6 +29,7 @@ public class MenuState extends GameState {
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	//for test animation
+	
 	private TextureAtlas charset;
 	private static float FRAME_DURATION = .05f;
 	private Animation runningAnimation;
@@ -34,13 +37,16 @@ public class MenuState extends GameState {
 	private float elapsed_time = 0f;
 	private float origin_x, origin_y;
 	
+	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
+		//for test animation
 		animationInit();
 	}
 
 //for test animation
+	
 	private void animationInit(){
 		charset = new TextureAtlas(Gdx.files.internal("images/charset.atlas"));
 		
@@ -63,7 +69,7 @@ public class MenuState extends GameState {
 		sb.draw(currentFrame, origin_x, origin_y);
 		sb.end();
 	}
-
+	
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -100,6 +106,7 @@ public class MenuState extends GameState {
 	public void draw() {
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
+		//for test animation
 		animationRender();
 		sb.begin();
 		//draw title
