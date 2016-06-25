@@ -90,8 +90,8 @@ public class PlayState extends GameState {
 		FreeTypeFontParameter LineNumberParameter = new FreeTypeFontParameter();
 		LineNumberParameter.size = 35;
 		lineNumber = gen.generateFont( LineNumberParameter );
-		lineNumber.setColor(Color.BROWN);
-
+		lineNumber.setColor(new Color(0.582f,0.359f,0.570f,1));
+		
 		//for draw hp and mp
 		hp = new Hp(1000);
 		mp = new Mp(200);
@@ -160,6 +160,10 @@ public class PlayState extends GameState {
 		//draw a rectangle of cell in the map component
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
 		float posY = yConverter( mapBegUpY + y*cellHeight );
+		sr.begin(ShapeType.Filled);
+		sr.setColor(new Color(0.648f,0.633f,0.711f,1));
+		sr.rect(posX, posY, cellWidth, cellHeight);
+		sr.end();
 		sr.begin(ShapeType.Line);
 		sr.setColor(0,0,0,0);
 
@@ -198,15 +202,18 @@ public class PlayState extends GameState {
 	}
 
 	private void drawLineNumber() {
-
 		for(int i = 0 ; i < 20 ; i++) {
 			//因為bitmapFont.draw要輸入的position 是左下角的 所以把posY上移
 			//font.draw(sb, text, posX, posY, width, align, wrap) 其中的width是用來做align用的空間
+			sr.begin(ShapeType.Filled);
+			sr.setColor(new Color(0.379f,0.715f,0.727f,1));
+			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+15, cellHeight);
+			sr.end();
 			sb.begin();
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
-		}
-
+			}	
+	
 	}
 
 }

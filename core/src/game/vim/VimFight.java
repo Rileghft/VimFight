@@ -31,7 +31,7 @@ public class VimFight extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0.90f, 0.90f, 0.95f, 1);
+		Gdx.gl.glClearColor(0.305f, 0.379f, 0.449f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
