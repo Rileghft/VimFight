@@ -1,17 +1,19 @@
 package game.Map;
 
 public class MapSquare {
-	
-	private String text;
-	
-	public MapSquare( String text ) {
-		this.text = text;
+	private Character c;
+
+
+	public MapSquare(Character character) {
+		c = character;
 	}
-	
-	public void setText( String text ) {
-		this.text = text;
+
+	public String getChar() {
+		return c.toString();
 	}
-	public String getText() {
-		return this.text;
+
+	public void setChar(Character character) {
+		c = character;
 	}
+
 }

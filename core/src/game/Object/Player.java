@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 
+import game.Map.GameMap;
+import game.Map.Position;
+
 /**
  * @author 楊舜宇
  * @since 2016/6/9
@@ -22,11 +25,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 public class Player extends Actor {
 	Sprite sprite = new Sprite(new Texture(Gdx.files.internal("actor.png")));
 	private static float SQUARE_LENGTH = 30;
+	private Position pos;
+	private GameMap map;
 
 	public Player() {
 		setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
+		pos = new Position(0, 0);
 
 		addListener(new InputListener(){
 			@Override
@@ -34,60 +40,54 @@ public class Player extends Actor {
 				RunnableAction ra = new RunnableAction();
 				switch (keycode) {
 				case Keys.J:
-					ra.setRunnable(new Runnable() {
-						@Override
-						public void run() {
-							float xPos = Player.this.getX();
-							float yPos = Player.this.getY();
-							Player.this.setPosition(xPos, yPos - SQUARE_LENGTH);
-						}
-					});
+					map.moveDown(pos);
 					break;
 				case Keys.K:
-					ra.setRunnable(new Runnable() {
-						@Override
-						public void run() {
-							float xPos = Player.this.getX();
-							float yPos = Player.this.getY();
-							Player.this.setPosition(xPos, yPos + SQUARE_LENGTH);
-						}
-					});
+					map.moveUp(pos);
 					break;
 				case Keys.H:
-					ra.setRunnable(new Runnable() {
-						@Override
-						public void run() {
-							float xPos = Player.this.getX();
-							float yPos = Player.this.getY();
-							Player.this.setPosition(xPos - SQUARE_LENGTH, yPos);
-						}
-					});
+					map.moveLeft(pos);
 					break;
 				case Keys.L:
-					ra.setRunnable(new Runnable() {
-						@Override
-						public void run() {
-							float xPos = Player.this.getX();
-							float yPos = Player.this.getY();
-							Player.this.setPosition(xPos + SQUARE_LENGTH, yPos);
-						}
-					});
+					map.moveRight(pos);
 					break;
 
 				default:
-					ra.setRunnable(new Runnable() {
-						@Override
-						public void run() {
-						}
-					});
 					break;
 				}
+				ra.setRunnable(new Runnable() {
+					@Override
+					public void run() {
+						movePlayer();
+					}
+				});
 				Player.this.addAction(ra);
 
 				return true;
 			}
 		});
 
+	}
+
+	private void movePlayer() {
+		int screenStartRow = map.screenStartRow;
+		int screenStartCol = map.screenStartCol;
+		int row = pos.y - screenStartRow;
+		int col = pos.x - screenStartCol;
+		System.out.println(String.format("row=%d, col=%d", row, col));
+		setPosition(55f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
+	}
+
+	private boolean isEdge(float xPos, float yPos) {
+		return (xPos > 55f && xPos < 655f) || (yPos < 630f && yPos > 30f);
+	}
+
+	public void setMap(GameMap map) {
+		this.map = map;
+	}
+
+	public void convertPos(Position screenPos) {
+		setPosition(55f + screenPos.getScreenX(),630f + screenPos.getScreenY());
 	}
 
 	@Override
