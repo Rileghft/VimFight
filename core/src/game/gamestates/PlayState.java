@@ -1,9 +1,12 @@
 ﻿package game.gamestates;
 
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import game.Map.GameMap;
+import game.Map.MapRow;
 import game.Map.MapSquare;
 import game.Object.Player;
 import game.component.Hp;
@@ -49,8 +54,8 @@ public class PlayState extends GameState {
 	private int lineNumBeg;
 	private Status status;
 
-	//for test
-	private ArrayList<MapSquare> testMap;
+	private GameMap map;
+	private ArrayList<MapRow> screenMap;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -77,7 +82,7 @@ public class PlayState extends GameState {
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
 		FreeTypeFontParameter FontParameter = new FreeTypeFontParameter();
-		FontParameter.size = 40;
+		FontParameter.size = 35;
 		font = gen.generateFont( FontParameter );
 		font.setColor(Color.BLACK);
 
@@ -95,12 +100,10 @@ public class PlayState extends GameState {
 		status = new Status();
 
 		//begin of test data
-		testMap = new ArrayList<MapSquare>();
-		for(Character c = 'A'; c < 'U'; c++) {
-			testMap.add(new MapSquare(c.toString()));
-		}
-
-		setLineNumBeg(1);
+		FileHandle fhandler = Gdx.files.internal("exampleMap_1.txt");
+		BufferedReader mapReader = fhandler.reader(256);
+		map = new GameMap(mapReader);
+		player.setMap(map);
 
 		hp.setCurrentHp(675);
 		mp.setCurrentMp(60);
@@ -122,6 +125,8 @@ public class PlayState extends GameState {
 	@Override
 	public void update(float delta) {
 		handleInput();
+		setLineNumBeg(map.screenStartRow);
+		draw();
 	}
 
 	@Override
@@ -129,9 +134,12 @@ public class PlayState extends GameState {
 		sb.setProjectionMatrix(VimFight.cam.combined);
 
 		//draw map
-		for(int i = 0 ; i < 20 ; i++ ){
-			for( int j = 0 ; j < 20 ; j++){
-				drawRect(j, i, testMap.get(j));
+		screenMap = map.getMapScreenRows();
+		for(int i = 0 ; i < screenMap.size(); i++ ){
+			MapRow row = screenMap.get(i);
+			int j = 0;
+			for(MapSquare square: row) {
+				drawRect(j++, i, square);
 			}
 		}
 
@@ -159,7 +167,7 @@ public class PlayState extends GameState {
 		sr.end();
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
-		font.draw(sb, cell.getText(), posX, posY + cellHeight);
+		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
 		sb.end();
 		}
 
