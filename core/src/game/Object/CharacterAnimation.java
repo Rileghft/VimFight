@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 public class CharacterAnimation {
 	
 	private TextureAtlas charset;
-	private static float FRAME_DURATION = .05f;
+	private static float FRAME_DURATION = .25f;
 	private Animation downingAnimation;
 	private Animation upingAnimation;
 	private Animation rightingAnimation;
@@ -63,9 +63,16 @@ public class CharacterAnimation {
 		float dt = Gdx.graphics.getDeltaTime();
 		elapsed_time += dt;
 		currentFrame = getFrame(elapsed_time);
-		origin_x = (origin_x + dt*vx)> dstX ? dstX : origin_x+dt*vx;
-		origin_y = (origin_y + dt*vy)< dstY ? dstY : origin_y+dt*vy;
-		System.out.println("origin_x, origin_y = " + origin_x+", " + origin_y);
+		if(vx > 0){
+			origin_x = (origin_x + dt*vx)> dstX ? dstX : origin_x+dt*vx;
+		}else{
+			origin_x = (origin_x + dt*vx)< dstX ? dstX : origin_x+dt*vx;
+		}
+		if(vy > 0){
+			origin_y = (origin_y + dt*vy)> dstY ? dstY : origin_y+dt*vy;
+		}else{
+			origin_y = (origin_y + dt*vy)< dstY ? dstY : origin_y+dt*vy;
+		}
 		sb.begin();
 		sb.draw(currentFrame, origin_x, origin_y);
 		sb.end();
