@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Array;
 
-import game.Object.CharacterAnimation;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
 
@@ -30,16 +29,14 @@ public class MenuState extends GameState {
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	//for test animation
-	/*
+	
 	private TextureAtlas charset;
 	private static float FRAME_DURATION = .05f;
 	private Animation runningAnimation;
 	private TextureRegion currentFrame;
 	private float elapsed_time = 0f;
 	private float origin_x, origin_y;
-	*/
 	
-	private CharacterAnimation ca;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -47,25 +44,23 @@ public class MenuState extends GameState {
 		//for test animation
 		animationInit();
 	}
-		
+
 //for test animation
-/*	
+	
 	private void animationInit(){
 		charset = new TextureAtlas(Gdx.files.internal("images/charset.atlas"));
 		
 		Array<AtlasRegion> runningFrames = charset.findRegions("running");
 		
-		runningAnimation = new Animation(FRAME_DURATION, runningFrames, PlayMode.NORMAL);
+		runningAnimation = new Animation(FRAME_DURATION, runningFrames, PlayMode.LOOP);
 	
 		//calculate the x and y position to center the image	
 		origin_x = (Gdx.graphics.getWidth()/4*3 );
 		origin_y = (Gdx.graphics.getHeight()/4*3);
 	}
-	
 	private void animationRender() {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if(Gdx.input.isKeyJustPressed(Keys.DOWN))
-			elapsed_time = 0;
+		
 		elapsed_time += Gdx.graphics.getDeltaTime();
 		
 		currentFrame = runningAnimation.getKeyFrame(elapsed_time);
@@ -73,11 +68,6 @@ public class MenuState extends GameState {
 		sb.begin();
 		sb.draw(currentFrame, origin_x, origin_y);
 		sb.end();
-	}
-*/	
-	private void animationInit(){
-		ca = new CharacterAnimation("images/character_set.atlas");
-		ca.setSpriteBatch(sb);
 	}
 	
 	@Override
@@ -110,21 +100,6 @@ public class MenuState extends GameState {
 	public void update(float delta) {
 		// TODO Auto-generated method stub
 		handleInput();
-		
-		//for test animation
-		if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
-			ca.setDstPos(Gdx.graphics.getWidth()/4*3, Gdx.graphics.getHeight()/4*3 - 32);
-			ca.startDown();
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.UP)){
-			ca.startUp();
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.RIGHT)){
-			ca.startRight();
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.LEFT)){
-			ca.startLeft();
-		}
 	}
 
 	@Override
@@ -132,10 +107,8 @@ public class MenuState extends GameState {
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		//for test animation
-		//animationRender();
-		ca.draw();
+		animationRender();
 		sb.begin();
-		
 		//draw title
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 600);
 		
