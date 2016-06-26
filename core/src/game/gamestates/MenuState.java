@@ -99,6 +99,11 @@ public class MenuState extends GameState {
 			ca.setDstPos(posX, posY);
 			ca.startLeft();
 		}
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+			posY -=50;
+			ca.setDstPos(posX, posY);
+			ca.startJump();
+		}
 	}
 
 	@Override

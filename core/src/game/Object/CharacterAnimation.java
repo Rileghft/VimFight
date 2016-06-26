@@ -136,4 +136,10 @@ public class CharacterAnimation {
 			elapsed_time = 0;
 			this.currentState = State.LEFTING;
 	}
+	
+	public void startJump(){
+		this.currentState = State.STANDING;
+		origin_x = dstX;
+		origin_y = dstY;
+	}
 }
