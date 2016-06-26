@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -27,13 +28,13 @@ public class Player extends Actor {
 	private static float SQUARE_LENGTH = 30;
 	private Position pos;
 	private GameMap map;
-
+	
 	public Player() {
 		setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
 		pos = new Position(0, 0);
-
+		
 		addListener(new InputListener(){
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
