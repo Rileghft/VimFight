@@ -28,13 +28,13 @@ public class Player extends Actor {
 	private static float SQUARE_LENGTH = 30;
 	private Position pos;
 	private GameMap map;
-	
+
 	public Player() {
 		setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
 		pos = new Position(0, 0);
-		
+
 		addListener(new InputListener(){
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
@@ -52,10 +52,22 @@ public class Player extends Actor {
 				case Keys.L:
 					map.moveRight(pos);
 					break;
-
+				case Keys.W:
+					map.moveNextWord(pos);
+					break;
+				case Keys.B:
+					map.movePreWord(pos);
+					break;
+				case Keys.NUM_0:
+					map.moveLineBegin(pos);
+					break;
+				case Keys.NUM_4:
+					map.moveLineEnd(pos);
+					break;
 				default:
 					break;
 				}
+				map.updateScreenMap(pos);
 				ra.setRunnable(new Runnable() {
 					@Override
 					public void run() {
