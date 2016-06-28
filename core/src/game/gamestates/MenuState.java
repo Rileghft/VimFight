@@ -41,7 +41,7 @@ public class MenuState extends GameState {
 	}
 	//for test animation
 	private void animationInit(){
-		ca = new CharacterAnimation("images/character_set.atlas");
+		ca = new CharacterAnimation("images/player2.atlas");
 		ca.setSpriteBatch(sb);
 		posX = Gdx.graphics.getWidth()/4*3;
 		posY = Gdx.graphics.getHeight()/4*3;
@@ -80,24 +80,32 @@ public class MenuState extends GameState {
 		
 		//for test animation
 		if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
-			posY -= 32;
-			ca.setDstPos(posX, posY);
-			ca.startDown();
+			if(ca.motionComplete()){
+				posY -= 32;
+				ca.setDstPos(posX, posY);
+				ca.startDown();
+			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.UP)){
+			if(ca.motionComplete()){
 			posY += 32;
 			ca.setDstPos(posX, posY);
 			ca.startUp();
+			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.RIGHT)){
+			if(ca.motionComplete()){
 			posX += 32;
 			ca.setDstPos(posX, posY);
 			ca.startRight();
+			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.LEFT)){
+			if(ca.motionComplete()){
 			posX -= 32;
 			ca.setDstPos(posX, posY);
 			ca.startLeft();
+			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
 			posY -=50;

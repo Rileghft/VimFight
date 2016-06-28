@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 public class CharacterAnimation {
 	
 	private TextureAtlas charset;
-	private static float FRAME_DURATION = .25f;
+	private static float FRAME_DURATION = .1f;
 	private Animation downingAnimation;
 	private Animation upingAnimation;
 	private Animation rightingAnimation;
@@ -86,8 +86,8 @@ public class CharacterAnimation {
 	public void setDstPos(float x, float y){
 		dstX = x;
 		dstY = y;
-		vx = (dstX-origin_x)/(float)0.5;
-		vy = (dstY-origin_y)/(float)0.5;
+		vx = (dstX-origin_x)/(float)0.3;
+		vy = (dstY-origin_y)/(float)0.3;
 	}
 	
 	private TextureRegion getFrame(float dt){
@@ -117,6 +117,11 @@ public class CharacterAnimation {
 		return region;
 	}
 	
+	//可以拿來在外部看到底走到位置了沒    因此可以用來讓人物移動不會走斜的
+	public boolean motionComplete(){
+		return (this.origin_x == this.dstX)&&(this.origin_y == this.dstY);
+	}
+	
 	public void startDown(){
 		elapsed_time = 0;
 		this.currentState = State.DOWNING;
@@ -125,6 +130,7 @@ public class CharacterAnimation {
 	public void startUp(){
 		elapsed_time = 0;
 		this.currentState = State.UPING;
+		
 	}
 
 	public void startRight(){
@@ -133,8 +139,8 @@ public class CharacterAnimation {
 	}
 
 	public void startLeft(){
-			elapsed_time = 0;
-			this.currentState = State.LEFTING;
+		elapsed_time = 0;
+		this.currentState = State.LEFTING;
 	}
 	
 	public void startJump(){
