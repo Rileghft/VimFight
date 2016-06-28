@@ -35,6 +35,10 @@ public class MapRow implements Iterable<MapSquare>{
 		for(int i = 0; i < line.length(); ++i) {
 			lineSquares.add(new MapSquare(line.charAt(i)));
 		}
+		if(lineSquares.isEmpty()) {
+			lineSquares.add(new MapSquare(' '));
+			System.out.println(lineno);
+		}
 	}
 
 	public MapRow getScreenRow(Integer startCol) {
