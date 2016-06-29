@@ -24,16 +24,20 @@ import game.Map.Position;
  *
  */
 public class Player extends Actor {
-	Sprite sprite = new Sprite(new Texture(Gdx.files.internal("actor.png")));
+	//Sprite sprite = new Sprite(new Texture(Gdx.files.internal("actor.png")));
 	private static float SQUARE_LENGTH = 30;
 	private Position pos;
 	private GameMap map;
+	private CharacterAnimation animation;
 
 	public Player() {
-		setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+		//setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
 		pos = new Position(0, 0);
+		animation = new CharacterAnimation("images/player1.atlas");
+		animation.setSpriteBatch(new SpriteBatch());
+		animation.setOrgPos(55f, 630f);
 
 		addListener(new InputListener(){
 			@Override
@@ -42,41 +46,60 @@ public class Player extends Actor {
 				switch (keycode) {
 				case Keys.J:
 					map.moveDown(pos);
+					animation.startDown();
 					break;
 				case Keys.K:
 					map.moveUp(pos);
+					animation.startUp();
 					break;
 				case Keys.H:
 					map.moveLeft(pos);
+					animation.startLeft();
 					break;
 				case Keys.L:
 					map.moveRight(pos);
+					animation.startRight();
 					break;
 				case Keys.W:
 					map.moveNextWord(pos);
+					animation.startJump();
 					break;
 				case Keys.B:
 					map.movePreWord(pos);
+					animation.startJump();
 					break;
 				case Keys.NUM_0:
 					map.moveLineBegin(pos);
+					animation.startJump();
 					break;
 				case Keys.NUM_4:
 					map.moveLineEnd(pos);
+					animation.startJump();
 					break;
 				default:
 					break;
 				}
 				map.updateScreenMap(pos);
-				ra.setRunnable(new Runnable() {
+				/*ra.setRunnable(new Runnable() {
 					@Override
 					public void run() {
 						movePlayer();
 					}
 				});
-				Player.this.addAction(ra);
+				Player.this.addAction(ra);*/
+				int screenStartRow = map.screenStartRow;
+				int screenStartCol = map.screenStartCol;
+				int row = pos.y - screenStartRow;
+				int col = pos.x - screenStartCol;
+				animation.setDstPos(55f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
 
 				return true;
+			}
+
+			@Override
+			public boolean keyTyped(InputEvent event, char character) {
+
+				return super.keyTyped(event, character);
 			}
 		});
 
@@ -105,13 +128,14 @@ public class Player extends Actor {
 
 	@Override
 	protected void positionChanged() {
-		sprite.setPosition(getX(), getY());
+		//sprite.setPosition(getX(), getY());
 		super.positionChanged();
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		sprite.draw(batch);
+		//sprite.draw(batch);
+		animation.draw();
 	}
 
 	@Override
