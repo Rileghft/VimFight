@@ -37,7 +37,7 @@ public class MapRow implements Iterable<MapSquare>{
 		}
 		if(lineSquares.isEmpty()) {
 			lineSquares.add(new MapSquare(' '));
-			System.out.println(lineno);
+			line = " ";
 		}
 	}
 
