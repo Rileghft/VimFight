@@ -263,4 +263,11 @@ public class GameMap {
 		pos.x = (line.length() > 0)? line.length() - 1: 0;
 	}
 
+	public void moveFindChar(Position pos, Character c) {
+		String line = rows.get(pos.y).getLineString();
+		if(pos.x != line.length() - 1) {
+			pos.x = line.indexOf(c, pos.x + 1);
+		}
+	}
+
 }
