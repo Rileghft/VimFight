@@ -201,6 +201,10 @@ public class PlayState extends GameState {
 			gsm.pop();
 			stopBGM();
 		}
+		if(Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)){
+			gsm.setState(new GameOverState(gsm));
+			stopBGM();
+		}
 	}
 
 	@Override
