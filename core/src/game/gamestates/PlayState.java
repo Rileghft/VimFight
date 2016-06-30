@@ -142,6 +142,9 @@ public class PlayState extends GameState {
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
 
+		//draw score
+		score.draw(sr, sb, scoreLeftX, ScoreUpY);
+
 		//draw map
 		screenMap = map.getMapScreenRows();
 		for(int i = 0 ; i < screenMap.size(); i++ ){
@@ -159,7 +162,6 @@ public class PlayState extends GameState {
 		status.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-
 		//draw score
 		score.draw(sr, sb, scoreLeftX, ScoreUpY);
 	}
