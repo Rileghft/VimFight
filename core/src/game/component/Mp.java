@@ -45,6 +45,22 @@ public class Mp {
 		return this.maxMp;
 	}
 	
+	public void setFull(){
+		this.currentMp = maxMp;
+	}
+	
+	public void setEmpty(){
+		this.currentMp = 0;
+	}
+	
+	public void plus(int adder){
+		this.currentMp = ( (this.currentMp+adder) < this.maxMp ) ? this.currentMp + adder : this.maxMp;
+	}
+	
+	public void moins(int subber){
+		this.currentMp = ( (this.currentMp-subber) > 0 ) ? this.currentMp - subber : 0;
+	}
+	
 	public void setCurrentMp( int currentMp ) {
 		this.currentMp = currentMp;
 	}
