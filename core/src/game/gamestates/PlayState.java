@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Map.GameMap;
 import game.Map.MapRow;
 import game.Map.MapSquare;
+import game.Object.BGM;
 import game.Object.Player;
 import game.component.Hp;
 import game.component.Mp;
@@ -56,12 +58,21 @@ public class PlayState extends GameState {
 
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
+	
+	//for BGM
+	private BGM bgm;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
+		soundInit();
 	}
-
+	
+	//for Sound
+	private void soundInit(){
+		bgm = gsm.getbgm(4);
+	}
+	
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -188,6 +199,7 @@ public class PlayState extends GameState {
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			System.out.println("esc");
 			gsm.pop();
+			stopBGM();
 		}
 	}
 
@@ -214,6 +226,18 @@ public class PlayState extends GameState {
 			sb.end();
 			}	
 	
+	}
+
+	@Override
+	public void startBGM() {
+		// TODO Auto-generated method stub
+		bgm.startBGM();
+	}
+	
+	@Override
+	public void stopBGM() {
+		// TODO Auto-generated method stub
+		bgm.stopBGM();
 	}
 
 }

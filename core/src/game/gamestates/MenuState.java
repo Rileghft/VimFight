@@ -4,6 +4,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardEndHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Array;
 
+import game.Object.BGM;
 import game.Object.CharacterAnimation;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
@@ -32,12 +34,14 @@ public class MenuState extends GameState {
 	//for test animation	
 	private CharacterAnimation ca;
 	private float posX, posY;
-	
+	//add BGM
+	private BGM bgm;
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
 		//for test animation
 		animationInit();
+		soundInit();
 	}
 	//for test animation
 	private void animationInit(){
@@ -45,6 +49,11 @@ public class MenuState extends GameState {
 		ca.setSpriteBatch(sb);
 		posX = Gdx.graphics.getWidth()/4*3;
 		posY = Gdx.graphics.getHeight()/4*3;
+	}
+	
+	//sound init
+	private void soundInit(){
+		bgm = gsm.getbgm(2);
 	}
 	
 	@Override
@@ -154,9 +163,18 @@ public class MenuState extends GameState {
 		}
 	}
 	
+	public void startBGM(){
+		bgm.startBGM();
+	}
+	
+	public void stopBGM(){
+		bgm.stopBGM();
+	}
+	
 	private void select(){
 		if(currentItem == 0){
 			gsm.push(new PlayState(gsm));
+			stopBGM();
 		}
 		else if(currentItem == 1){
 			//"Highscores",
