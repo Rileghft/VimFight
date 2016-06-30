@@ -26,6 +26,7 @@ import game.Object.BGM;
 import game.Object.Player;
 import game.component.Hp;
 import game.component.Mp;
+import game.component.Score;
 import game.component.Status;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
@@ -55,7 +56,10 @@ public class PlayState extends GameState {
 	private Stage stage;
 	private int lineNumBeg;
 	private Status status;
-
+	private Score score;
+	private float scoreLeftX = 690;
+	private float ScoreUpY = 5;
+	
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
 	
@@ -129,6 +133,8 @@ public class PlayState extends GameState {
 		status.setErr("the error msg must be English and Number");
 		status.setStatusState(true);
 		status.setStatusState(Status.ERROR);
+		
+		score = new Score();
 
 		//end of test data
 	}
@@ -165,6 +171,9 @@ public class PlayState extends GameState {
 		status.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
+		
+		//draw score
+		score.draw(sr, sb, scoreLeftX, ScoreUpY);
 	}
 
 	private void drawRect(int x, int y, MapSquare cell){
@@ -196,6 +205,7 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
+		//test begin
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			System.out.println("esc");
 			gsm.pop();
@@ -205,6 +215,10 @@ public class PlayState extends GameState {
 			gsm.setState(new GameOverState(gsm));
 			stopBGM();
 		}
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			score.plus(50);
+		}
+		//test end
 	}
 
 	@Override
