@@ -50,7 +50,7 @@ public class PlayState extends GameState {
 	private BitmapFont lineNumber;
 	private Stage stage;
 	private int lineNumBeg;
-	private Status status;
+	private Status cmdBar;
 	private Score score;
 	private float scoreLeftX = 740;
 	private float ScoreUpY = 5;
@@ -76,8 +76,8 @@ public class PlayState extends GameState {
 		ScreenViewport viewport = new ScreenViewport();
 		stage = new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
-		status = new Status();
 		player = new Player();
+		cmdBar = player.cmdBar;
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
 
@@ -110,17 +110,9 @@ public class PlayState extends GameState {
 		map = new GameMap(mapReader);
 		player.setMap(map);
 
-		status.append("a");
-		status.append("b");
-		status.append("c");
-		status.append("d");
-		status.append("e");
-		status.append("f");
-		status.setCol(5);
-		status.setRow(10);
-		status.setErr("the error msg must be English and Number");
-		status.setStatusState(true);
-		status.setStatusState(Status.ERROR);
+
+		cmdBar.setErr("the error msg must be English and Number");
+		cmdBar.setStatusState(Status.ERROR);
 
 		score = new Score();
 
@@ -159,7 +151,7 @@ public class PlayState extends GameState {
 		player.hp.draw(sr, sb, hpLeftX, hpUpY);
 		player.mp.draw(sr, sb, mpLeftX, mpUpY);
 		//draw command line
-		status.draw(sr, sb, statusLeftX, statusUpY);
+		cmdBar.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		//draw score

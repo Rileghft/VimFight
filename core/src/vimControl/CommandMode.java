@@ -7,6 +7,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 
+import game.component.Status;
+
 /**
  * @author 楊舜宇
  * @since 2016/5/29
@@ -16,10 +18,9 @@ public class CommandMode implements Mode {
 	public StateMachine<CommandMode, CommandState> command;
 	public VimControl modeControl;
 	public int inputKey;
-	private StringBuilder commandBuilder;
+	public Status cmdBar;
 
 	public CommandMode(VimControl mode) {
-		commandBuilder = new StringBuilder();
 		command = new DefaultStateMachine<CommandMode, CommandState>(this, CommandState.NONE);
 		modeControl = mode;
 	}
@@ -29,6 +30,7 @@ public class CommandMode implements Mode {
 	@Override
 	public void input(char inputChar) {
 		inputKey = inputChar;
+		cmdBar.append(inputChar);
 		command.update();
 	}
 
@@ -48,20 +50,17 @@ public class CommandMode implements Mode {
 		if(endKey != Keys.ESCAPE) {
 			processCommand();
 		}
+		cmdBar.clear();
 		inputKey = -1;
-		commandBuilder = new StringBuilder();
 	}
 	public void type(String c) {
-		commandBuilder.append(c);
 	}
 
 	public void cancel() {
 	}
 
 	public void processCommand() {
-		String commandStr = commandBuilder.toString();
-		System.out.println(String.format("命令： %s",  commandStr));
-
+		System.out.println(String.format("命令： %s",  cmdBar.getCommand()));
 	}
 
 }

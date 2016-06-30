@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import game.vim.VimFight;
 
 public class Status {
-	
+
 	private BitmapFont font;
 	private StringBuilder command;
 	private int col;
@@ -22,7 +22,7 @@ public class Status {
 	private boolean isError;
 	public static boolean ERROR = true;
 	public static boolean NORMAL = false;
-	
+
 	public Status () {
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
@@ -31,32 +31,34 @@ public class Status {
 		Parameter.size = 22;
 		font = gen.generateFont( Parameter );
 		font.setColor(Color.BLACK);
-		
+
 		command = new StringBuilder();
 		col = 0;
 		row = 0;
 		isError = false;
 	}
-	
-	public void append( String c ) {
+
+	public void append(char c ) {
 		command.append(c);
+		errMsg = command.toString();
 	}
-	
+
 	public String getCommand() {
 		return command.toString();
 	}
-	
+
 	public void clear() {
-		command.delete(0, command.length()-1);
+		command = new StringBuilder();
+		errMsg = "";
 	}
-	
+
 	public void draw( ShapeRenderer sr, SpriteBatch sb , float leftX, float upY) {
 		sr.begin(ShapeType.Filled);
 		sr.setColor(new Color(0.270f,0.262f,0.297f,1));
-		
+
 		sr.rect(xConverter(leftX), yConverter(upY+25), 750, 25);
 		sr.end();
-		
+
 		sb.begin();
 		if(!isError){
 			font.setColor(Color.BLACK);
@@ -69,27 +71,27 @@ public class Status {
 		}
 		sb.end();
 	}
-	
+
 	public void setErr( String msg ){
 		this.errMsg = msg;
 	}
-	
+
 	public void setStatusState( boolean state ) {
 		isError = state;
 	}
-	
+
 	public void setCol( int col ) {
 		this.col = col;
 	}
-	
+
 	public void setRow( int row ) {
 		this.row = row;
 	}
-	
+
 	public int getCol() {
 		return this.col;
 	}
-	
+
 	public int getRow() {
 		return this.row;
 	}

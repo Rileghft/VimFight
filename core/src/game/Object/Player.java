@@ -14,7 +14,9 @@ import game.Map.GameMap;
 import game.Map.Position;
 import game.component.Hp;
 import game.component.Mp;
+import game.component.Status;
 import vimControl.GameKeys;
+import vimControl.VimControl;
 
 /**
  * @author 楊舜宇
@@ -34,24 +36,42 @@ public class Player extends Actor {
 	private int lastPosY;
 	private int movePlusMP;
 	public int []statistic = new int[10];
+	public Status cmdBar;
+	public VimControl vim;
 
 	public Player() {
 		hp = new Hp(1000);
 		mp = new Mp(1000);
 		hp.setFull();
 		mp.setEmpty();
+		cmdBar = new Status();
+		vim = new VimControl(cmdBar);
 		//setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
 		pos = new Position(0, 0);
 		animation = new CharacterAnimation("images/player1.atlas");
 		animation.setSpriteBatch(new SpriteBatch());
-		animation.setOrgPos(55f, 630f);
+		animation.setOrgPos(105f, 630f);
 
 		addListener(new InputListener(){
 			@Override
 			public boolean keyTyped(InputEvent event, char keyChar) {
 				if((int)keyChar == 0) return false;
+				vim.inputKey(keyChar);
+				switch (vim.getCurrentState()) {
+				case NORMAL:
+					proccessNormalMode(keyChar);
+					break;
+				default:
+					break;
+				}
+				return true;
+			}
+		});
+	}
+
+	private void proccessNormalMode(Character keyChar) {
 				lastPosX = pos.x;
 				lastPosY = pos.y;
 				if(isFindCharState) {
@@ -60,7 +80,6 @@ public class Player extends Actor {
 					else map.moveFindPreChar(pos, keyChar);
 					updateMap();
 					isFindCharState = false;
-					return true;
 				}
 				switch (keyChar) {
 				case GameKeys.j:
@@ -131,10 +150,6 @@ public class Player extends Actor {
 				}
 				updateMap();
 
-				return true;
-			}
-		});
-
 	}
 
 	private void updateMap() {
@@ -143,7 +158,7 @@ public class Player extends Actor {
 			int screenStartCol = map.screenStartCol;
 			int row = pos.y - screenStartRow;
 			int col = pos.x - screenStartCol;
-			animation.setDstPos(55f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
+			animation.setDstPos(105f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
 			if(pos.x != lastPosX || pos.y != lastPosY) mp.plus(movePlusMP);
 	}
 

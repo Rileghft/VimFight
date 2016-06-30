@@ -7,6 +7,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 
+import game.component.Status;
+
 /**
  * @author 楊舜宇
  * @since 2016/5/28
@@ -19,14 +21,17 @@ public class VimControl {
 	private InsertMode insert;
 	private NormalMode normal;
 	private CommandMode command;
+	private Status commandBar;
 
-	public VimControl() {
+	public VimControl(Status commandBarRef) {
 		input = Keys.ESCAPE;
 		mode = new DefaultStateMachine<VimControl, VimMode>(this, VimMode.NORMAL);
 		insert = new InsertMode(this);
 		normal = new NormalMode(this);
 		command = new CommandMode(this);
 		modeAdapter = normal;
+		commandBar = commandBarRef;
+		command.cmdBar = commandBar;
 	}
 
 	public int getKey() {
@@ -58,6 +63,7 @@ public class VimControl {
 			System.out.println("切換模式->[Insert Mode]");
 			break;
 		case COMMAND:
+			commandBar.append(':');
 			modeAdapter = command;
 			System.out.println("切換模式->[Command Mode]");
 			break;

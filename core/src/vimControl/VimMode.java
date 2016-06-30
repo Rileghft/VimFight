@@ -24,8 +24,8 @@ public enum VimMode implements State<VimControl>{
 			case GameKeys.i:
 			case GameKeys.a:
 			case GameKeys.o:
-				vim.mode.changeState(INSERT);
-				vim.modeSwitch(key);
+				//vim.mode.changeState(INSERT);
+				//vim.modeSwitch(key);
 				break;
 			case GameKeys.SEMICOLON:
 				vim.mode.changeState(COMMAND);

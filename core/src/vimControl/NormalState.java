@@ -3,7 +3,6 @@
  */
 package vimControl;
 
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 
