@@ -16,4 +16,6 @@ public abstract class GameState {
 	public abstract void draw();
 	public abstract void handleInput();
 	public abstract void dispose();
+	public abstract void startBGM();
+	public abstract void stopBGM();
 }

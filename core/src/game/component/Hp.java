@@ -45,6 +45,22 @@ public class Hp {
 		return this.maxHp;
 	}
 	
+	public void setFull(){
+		this.currentHp = maxHp;
+	}
+	
+	public void setEmpty(){
+		this.currentHp = 0;
+	}
+	
+	public void plus(int adder){
+		this.currentHp = ( (this.currentHp+adder) < this.maxHp ) ? this.currentHp + adder : this.maxHp;
+	}
+	
+	public void moins(int subber){
+		this.currentHp = ( (this.currentHp-subber) > 0 ) ? this.currentHp - subber : 0;
+	}
+	
 	public void setCurrentHp( int currentHp ) {
 		this.currentHp = currentHp;
 	}
