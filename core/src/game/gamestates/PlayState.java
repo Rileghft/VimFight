@@ -1,12 +1,10 @@
 ﻿package game.gamestates;
 
 import java.io.BufferedReader;
-import java.io.Reader;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -62,7 +60,7 @@ public class PlayState extends GameState {
 	
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
-	
+
 	//for BGM
 	private BGM bgm;
 
@@ -71,12 +69,12 @@ public class PlayState extends GameState {
 		// TODO Auto-generated constructor stub
 		soundInit();
 	}
-	
+
 	//for Sound
 	private void soundInit(){
-		bgm = gsm.getbgm(4);
+		bgm = gsm.getbgm(2);
 	}
-	
+
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -106,7 +104,7 @@ public class PlayState extends GameState {
 		LineNumberParameter.size = 35;
 		lineNumber = gen.generateFont( LineNumberParameter );
 		lineNumber.setColor(new Color(0.582f,0.359f,0.570f,1));
-		
+
 		//for draw hp and mp
 		hp = new Hp(1000);
 		mp = new Mp(200);
@@ -242,8 +240,8 @@ public class PlayState extends GameState {
 			sb.begin();
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
-			}	
-	
+			}
+
 	}
 
 	@Override
@@ -251,7 +249,7 @@ public class PlayState extends GameState {
 		// TODO Auto-generated method stub
 		bgm.startBGM();
 	}
-	
+
 	@Override
 	public void stopBGM() {
 		// TODO Auto-generated method stub

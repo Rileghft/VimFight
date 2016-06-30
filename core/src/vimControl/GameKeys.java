@@ -20,5 +20,11 @@ public class GameKeys {
 	public final static int o = 111;
 	public final static int p = 112;
 	public final static int d = 100;
+	public final static int w = 119;
+	public final static int b = 98;
+	public final static int f = 102;
+	public final static int F = 70;
+	public final static int NUM_0 = 48;
+	public final static int DOLLAR = 36;
 	public final static int SEMICOLON = 58;
 }

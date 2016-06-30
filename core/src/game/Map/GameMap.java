@@ -133,7 +133,6 @@ public class GameMap {
 	}
 
 	public void moveDown(Position pos) {
-		int x = pos.x;
 		int y = pos.y;
 		if(y + 1 < rows.size()) {
 			if(y + 1 >= screenStartRow + 20) {
@@ -265,8 +264,23 @@ public class GameMap {
 
 	public void moveFindChar(Position pos, Character c) {
 		String line = rows.get(pos.y).getLineString();
+		int nextX = -1;
 		if(pos.x != line.length() - 1) {
-			pos.x = line.indexOf(c, pos.x + 1);
+			nextX = line.indexOf(c, pos.x + 1);
+		}
+		if(nextX >= 0) {
+			pos.x = nextX;
+		}
+	}
+
+	public void moveFindPreChar(Position pos, Character c) {
+		String line = rows.get(pos.y).getLineString();
+		int nextX = -1;
+		if(pos.x != 0) {
+			nextX = line.lastIndexOf(c, pos.x - 1);
+		}
+		if(nextX >= 0) {
+			pos.x = nextX;
 		}
 	}
 
