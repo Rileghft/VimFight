@@ -34,7 +34,7 @@ public class PlayState extends GameState {
 	private static int mapHeight = 600;
 	private float cellWidth;
 	private float cellHeight;
-	private float mapBegLeftX = 55;
+	private float mapBegLeftX = 105;
 	private float mapBegUpY = 70;
 	private float lineNumberLeftX = 1;
 	private float lineNumberUpY = 70;
@@ -42,7 +42,7 @@ public class PlayState extends GameState {
 	private float hpUpY = 5;
 	private float mpLeftX = 360;
 	private float mpUpY = 5;
-	private float statusLeftX = 5;
+	private float statusLeftX = 55;
 	private float statusUpY = 650;
 	Player player;
 	private SpriteBatch sb;
@@ -52,7 +52,7 @@ public class PlayState extends GameState {
 	private int lineNumBeg;
 	private Status status;
 	private Score score;
-	private float scoreLeftX = 690;
+	private float scoreLeftX = 740;
 	private float ScoreUpY = 5;
 
 	private GameMap map;
@@ -223,10 +223,10 @@ public class PlayState extends GameState {
 			//font.draw(sb, text, posX, posY, width, align, wrap) 其中的width是用來做align用的空間
 			sr.begin(ShapeType.Filled);
 			sr.setColor(new Color(0.379f,0.715f,0.727f,1));
-			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+15, cellHeight);
+			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+65, cellHeight);
 			sr.end();
 			sb.begin();
-			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
+			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX +50), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
 			}
 
