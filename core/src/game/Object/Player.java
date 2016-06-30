@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 import game.Map.GameMap;
 import game.Map.Position;
+import game.component.Hp;
+import game.component.Mp;
 import vimControl.GameKeys;
 
 /**
@@ -26,6 +28,8 @@ public class Player extends Actor {
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
 	private int findCharDirection = 1;
+	private Hp hp;
+	private Mp mp;
 
 	public Player() {
 		//setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
