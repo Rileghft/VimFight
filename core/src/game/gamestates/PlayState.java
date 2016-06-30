@@ -46,8 +46,7 @@ public class PlayState extends GameState {
 	private float mpUpY = 5;
 	private float statusLeftX = 5;
 	private float statusUpY = 650;
-	private Hp hp;
-	private Mp mp;
+	Player player;
 	private SpriteBatch sb;
 	private BitmapFont font;
 	private BitmapFont lineNumber;
@@ -66,7 +65,6 @@ public class PlayState extends GameState {
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
-		// TODO Auto-generated constructor stub
 		soundInit();
 	}
 
@@ -77,13 +75,15 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		ScreenViewport viewport = new ScreenViewport();
 		stage = new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
-		Player player = new Player();
+		status = new Status();
+		player = new Player();
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
+
+
 
 		//for draw map
 		sr = new ShapeRenderer();
@@ -105,12 +105,6 @@ public class PlayState extends GameState {
 		lineNumber = gen.generateFont( LineNumberParameter );
 		lineNumber.setColor(new Color(0.582f,0.359f,0.570f,1));
 
-		//for draw hp and mp
-		hp = new Hp(1000);
-		mp = new Mp(200);
-
-		//for draw status
-		status = new Status();
 
 		//begin of test data
 		FileHandle fhandler = Gdx.files.internal("exampleMap_1.txt");
@@ -118,8 +112,6 @@ public class PlayState extends GameState {
 		map = new GameMap(mapReader);
 		player.setMap(map);
 
-		hp.setCurrentHp(675);
-		mp.setCurrentMp(60);
 		status.append("a");
 		status.append("b");
 		status.append("c");
@@ -161,13 +153,9 @@ public class PlayState extends GameState {
 			}
 		}
 
-		//draw lineNumber
 		drawLineNumber();
-
-		//draw Hp
-		hp.draw(sr, sb, hpLeftX, hpUpY);
-		//draw Mp
-		mp.draw(sr, sb, mpLeftX, mpUpY);
+		player.hp.draw(sr, sb, hpLeftX, hpUpY);
+		player.mp.draw(sr, sb, mpLeftX, mpUpY);
 		//draw command line
 		status.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());

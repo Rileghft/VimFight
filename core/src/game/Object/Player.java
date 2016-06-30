@@ -28,10 +28,17 @@ public class Player extends Actor {
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
 	private int findCharDirection = 1;
-	private Hp hp;
-	private Mp mp;
+	public Hp hp;
+	public Mp mp;
+	private int lastPosX;
+	private int lastPosY;
+	private int movePlusMP;
 
 	public Player() {
+		hp = new Hp(1000);
+		mp = new Mp(1000);
+		hp.setFull();
+		mp.setEmpty();
 		//setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		setTouchable(Touchable.enabled);
 		setPosition(55f, 630f);
@@ -44,6 +51,8 @@ public class Player extends Actor {
 			@Override
 			public boolean keyTyped(InputEvent event, char keyChar) {
 				if((int)keyChar == 0) return false;
+				lastPosX = pos.x;
+				lastPosY = pos.y;
 				if(isFindCharState) {
 					if(findCharDirection == 1)
 						map.moveFindChar(pos, keyChar);
@@ -54,44 +63,57 @@ public class Player extends Actor {
 				}
 				switch (keyChar) {
 				case GameKeys.j:
+					movePlusMP = 1;
 					map.moveDown(pos);
 					animation.startDown();
 					break;
 				case GameKeys.k:
+					movePlusMP = 1;
 					map.moveUp(pos);
 					animation.startUp();
 					break;
 				case GameKeys.h:
+					movePlusMP = 1;
 					map.moveLeft(pos);
 					animation.startLeft();
 					break;
 				case GameKeys.l:
+					movePlusMP = 1;
 					map.moveRight(pos);
 					animation.startRight();
 					break;
 				case GameKeys.w:
+					movePlusMP = 3;
 					map.moveNextWord(pos);
 					animation.startJump();
 					break;
 				case GameKeys.b:
+					movePlusMP = 3;
 					map.movePreWord(pos);
 					animation.startJump();
 					break;
 				case GameKeys.NUM_0:
+					movePlusMP = 3;
 					map.moveLineBegin(pos);
 					animation.startJump();
 					break;
 				case GameKeys.DOLLAR:
+					movePlusMP = 3;
 					map.moveLineEnd(pos);
 					animation.startJump();
 					break;
 				case GameKeys.f:
+					movePlusMP = 10;
 					isFindCharState = true;
 					findCharDirection = 1;
 					break;
 				case GameKeys.F:
+					movePlusMP = 10;
 					isFindCharState = true;
 					findCharDirection = 0;
+					break;
+				case GameKeys.d:
+					demage(10);
 					break;
 				default:
 					break;
@@ -111,10 +133,19 @@ public class Player extends Actor {
 			int row = pos.y - screenStartRow;
 			int col = pos.x - screenStartCol;
 			animation.setDstPos(55f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
+			if(pos.x != lastPosX || pos.y != lastPosY) mp.plus(movePlusMP);
 	}
 
 	public void setMap(GameMap map) {
 		this.map = map;
+	}
+
+	public void demage(int amount) {
+		hp.minus(amount);
+	}
+
+	public boolean isDead() {
+		return (hp.getCurrentHp() <= 0);
 	}
 
 	public void convertPos(Position screenPos) {
