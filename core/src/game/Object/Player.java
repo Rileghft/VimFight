@@ -113,7 +113,7 @@ public class Player extends Actor {
 					findCharDirection = 0;
 					break;
 				case GameKeys.d:
-					demage(10);
+					demage(100);
 					break;
 				default:
 					break;
