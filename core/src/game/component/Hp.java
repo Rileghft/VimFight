@@ -57,7 +57,7 @@ public class Hp {
 		this.currentHp = ( (this.currentHp+adder) < this.maxHp ) ? this.currentHp + adder : this.maxHp;
 	}
 	
-	public void moins(int subber){
+	public void minus(int subber){
 		this.currentHp = ( (this.currentHp-subber) > 0 ) ? this.currentHp - subber : 0;
 	}
 	
