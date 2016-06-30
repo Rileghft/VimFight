@@ -33,6 +33,7 @@ public class Player extends Actor {
 	private int lastPosX;
 	private int lastPosY;
 	private int movePlusMP;
+	public int []statistic = new int[10];
 
 	public Player() {
 		hp = new Hp(1000);
@@ -63,51 +64,61 @@ public class Player extends Actor {
 				}
 				switch (keyChar) {
 				case GameKeys.j:
+					statistic[0]++;
 					movePlusMP = 1;
 					map.moveDown(pos);
 					animation.startDown();
 					break;
 				case GameKeys.k:
+					statistic[1]++;
 					movePlusMP = 1;
 					map.moveUp(pos);
 					animation.startUp();
 					break;
 				case GameKeys.h:
+					statistic[2]++;
 					movePlusMP = 1;
 					map.moveLeft(pos);
 					animation.startLeft();
 					break;
 				case GameKeys.l:
+					statistic[3]++;
 					movePlusMP = 1;
 					map.moveRight(pos);
 					animation.startRight();
 					break;
 				case GameKeys.w:
+					statistic[4]++;
 					movePlusMP = 3;
 					map.moveNextWord(pos);
 					animation.startJump();
 					break;
 				case GameKeys.b:
+					statistic[5]++;
 					movePlusMP = 3;
 					map.movePreWord(pos);
 					animation.startJump();
 					break;
 				case GameKeys.NUM_0:
+					statistic[6]++;
 					movePlusMP = 3;
 					map.moveLineBegin(pos);
 					animation.startJump();
 					break;
 				case GameKeys.DOLLAR:
+					statistic[7]++;
 					movePlusMP = 3;
 					map.moveLineEnd(pos);
 					animation.startJump();
 					break;
 				case GameKeys.f:
+					statistic[8]++;
 					movePlusMP = 10;
 					isFindCharState = true;
 					findCharDirection = 1;
 					break;
 				case GameKeys.F:
+					statistic[9]++;
 					movePlusMP = 10;
 					isFindCharState = true;
 					findCharDirection = 0;

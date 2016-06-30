@@ -12,23 +12,25 @@ import game.managers.GameStateManager;
 import game.vim.VimFight;
 
 public class GameOverState extends GameState{
-	
+
 	private final String title = "Game Over";
 	private final String hint = "Press Enter to Go Back to Menu";
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	private SpriteBatch sb;
-	
-	protected GameOverState(GameStateManager gsm) {
+
+	protected GameOverState(GameStateManager gsm, int[] statistics) {
 		super(gsm);
-		// TODO Auto-generated constructor stub
+		//statistics
+		//a0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+		// j, k, h, l, w, b, 0, $, f, F
 	}
 
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
 		sb = new SpriteBatch();
-		
+
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
@@ -36,7 +38,7 @@ public class GameOverState extends GameState{
 		titleParameter.size = 80;
 		titleFont = gen.generateFont(titleParameter);
 		titleFont.setColor(Color.BLACK);
-		
+
 		FreeTypeFontParameter itemParameter = new FreeTypeFontParameter();
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
@@ -70,19 +72,19 @@ public class GameOverState extends GameState{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void startBGM() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void stopBGM() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

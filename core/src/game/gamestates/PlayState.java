@@ -131,7 +131,7 @@ public class PlayState extends GameState {
 	public void update(float delta) {
 		handleInput();
 		if(player.isDead()) {
-			gsm.setState(new GameOverState(gsm));
+			gsm.setState(new GameOverState(gsm, player.statistic));
 			bgm.stopBGM();
 		}
 		setLineNumBeg(map.screenStartRow);
@@ -199,10 +199,6 @@ public class PlayState extends GameState {
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			System.out.println("esc");
 			gsm.pop();
-			stopBGM();
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)){
-			gsm.setState(new GameOverState(gsm));
 			stopBGM();
 		}
 		if(Gdx.input.isKeyPressed(Keys.UP)){
