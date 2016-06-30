@@ -1,8 +1,6 @@
 package game.Object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,7 +23,6 @@ public class CharacterAnimation {
 	private SpriteBatch sb;
 	public enum State {STANDING, DOWNING, UPING, RIGHTING, LEFTING};
 	private State currentState;
-	private State previousState;
 	private float dstX, dstY, vx, vy;
 
 	public CharacterAnimation(String atlas){
@@ -44,7 +41,6 @@ public class CharacterAnimation {
 		leftingAnimation = new Animation(FRAME_DURATION, leftFrames, PlayMode.NORMAL);
 
 		this.currentState = State.STANDING;
-		this.previousState = State.STANDING;
 		//calculate the x and y position to center the image
 		vx = 0;
 		vy = 0;
