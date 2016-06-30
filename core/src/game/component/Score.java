@@ -47,7 +47,7 @@ public class Score {
 		font.draw(sb, Integer.toString(score), xConverter(leftX+30), yConverter(upY+30), 10, Align.center, false);
 		int startNum = ((score/layerLimit) <= starMax ) ? score/layerLimit : starMax;
 		for(int i = 0 ; i < startNum; i++){
-			sb.draw(star, xConverter(leftX), yConverter(upY+600-i*100));
+			sb.draw(star, xConverter(leftX-20), yConverter(upY+600-i*100));
 		}
 		sb.end();
 	}
