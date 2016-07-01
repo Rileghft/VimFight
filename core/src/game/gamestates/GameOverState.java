@@ -18,12 +18,15 @@ public class GameOverState extends GameState{
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	private SpriteBatch sb;
+	private char[] recordName = {'j', 'k', 'h', 'l', 'w', 'b', '0', '$', 'f', 'F'};
+	private int[] recordNum;
 
 	protected GameOverState(GameStateManager gsm, int[] statistics) {
 		super(gsm);
 		//statistics
 		//a0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 		// j, k, h, l, w, b, 0, $, f, F
+		recordNum = statistics;
 	}
 
 	@Override
@@ -43,6 +46,7 @@ public class GameOverState extends GameState{
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
 		font.setColor(Color.BLACK);
+	
 	}
 
 	@Override
@@ -56,11 +60,21 @@ public class GameOverState extends GameState{
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		sb.begin();
-		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 600);
-		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 300);
+		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 650);
+		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 120);
+		
+		//draw record
+		drawRecord();
 		sb.end();
 	}
 
+	private void drawRecord(){
+		for(int i = 0 ; i < 5 ; i++){
+			font.draw(sb, recordName[2*i]+": "+recordNum[2*i], (VimFight.WIDTH - 50*title.length())/2, 500-50*i);
+			font.draw(sb, recordName[2*i+1]+": "+recordNum[2*i+1], (VimFight.WIDTH - 50*title.length())/2+280, 500-50*i);
+		}
+	}
+	
 	@Override
 	public void handleInput() {
 		// TODO Auto-generated method stub
