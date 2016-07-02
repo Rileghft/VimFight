@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import game.Object.Creature;
 import game.Object.Item;
+import game.Object.Item.TYPE;
 import game.Object.Player;
+import game.Object.Trap;
 
 public class MapSquare {
 	private Character c;
@@ -29,7 +31,7 @@ public class MapSquare {
 	}
 
 	public void addItem() {
-
+		item = new Trap(TYPE.BOMB);
 	}
 
 	public Item.TYPE getItemType() {

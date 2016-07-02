@@ -3,6 +3,7 @@
  */
 package game.Object;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,13 +27,15 @@ import vimControl.VimMode;
  * @since 2016/6/9
  *
  */
-public class Player extends Actor{
+public class Player extends Actor implements Creature{
 	private static float SQUARE_LENGTH = 30;
 	public Position pos;
 	private GameMap map;
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
 	private int findCharDirection = 1;
+	private float accumulateTime = 0f;
+	private boolean isImmortal;
 	public PlayState playControl;
 	public Hp hp;
 	public Mp mp;
@@ -113,44 +116,44 @@ public class Player extends Actor{
 					if(findCharDirection == 1)
 						map.moveFindChar(pos, keyChar);
 					else map.moveFindPreChar(pos, keyChar);
-					updateMap();
 					isFindCharState = false;
+					updateScreen();
 				}
 				switch (keyChar) {
 				case GameKeys.j:
 					statistic[0]++;
 					movePlusMP = 1;
-					map.moveDown(pos);
+					map.moveDown(this);
 					animation.startDown();
 					break;
 				case GameKeys.k:
 					statistic[1]++;
 					movePlusMP = 1;
-					map.moveUp(pos);
+					map.moveUp(this);
 					animation.startUp();
 					break;
 				case GameKeys.h:
 					statistic[2]++;
 					movePlusMP = 1;
-					map.moveLeft(pos);
+					map.moveLeft(this);
 					animation.startLeft();
 					break;
 				case GameKeys.l:
 					statistic[3]++;
 					movePlusMP = 1;
-					map.moveRight(pos);
+					map.moveRight(this);
 					animation.startRight();
 					break;
 				case GameKeys.w:
 					statistic[4]++;
 					movePlusMP = 3;
-					map.moveNextWord(pos);
+					map.moveNextWord(this);
 					animation.startJump();
 					break;
 				case GameKeys.b:
 					statistic[5]++;
 					movePlusMP = 3;
-					map.movePreWord(pos);
+					map.movePreWord(this);
 					animation.startJump();
 					break;
 				case GameKeys.NUM_0:
@@ -183,11 +186,11 @@ public class Player extends Actor{
 				default:
 					break;
 				}
-				updateMap();
+				updateScreen();
 
 	}
 
-	private void updateMap() {
+	public void updateScreen() {
 			map.updateScreenMap(pos);
 			int screenStartRow = map.screenStartRow;
 			int screenStartCol = map.screenStartCol;
@@ -234,6 +237,47 @@ public class Player extends Actor{
 	public void act(float delta) {
 		// TODO Auto-generated method stub
 		super.act(delta);
+	}
+
+	@Override
+	public void draw(SpriteBatch batch) {
+		//leave empty
+	}
+
+	@Override
+	public void update() {
+		accumulateTime += Gdx.graphics.getDeltaTime();
+		if(accumulateTime > 10) accumulateTime = 0f;
+		if(map.isCollision(this)) {
+			if(!isImmortal) {
+				map.collision(this);
+				isImmortal = true;
+				accumulateTime = 0f;
+			}
+		}
+		if(accumulateTime >= 2f){
+			isImmortal = false;
+		}
+	}
+
+	@Override
+	public int getRow() {
+		return pos.y;
+	}
+
+	@Override
+	public int getCol() {
+		return pos.x;
+	}
+
+	@Override
+	public void setRow(int row) {
+		pos.y = row;
+	}
+
+	@Override
+	public void setCol(int col) {
+		pos.x = col;
 	}
 
 }

@@ -32,6 +32,7 @@ public class GameMap {
 			rows.add(mainRows.get(row).getScreenRow(startCol));
 		}
 		rows.trimToSize();
+		rows.get(8).getSquare(8).addItem();
 	}
 
 	public GameMap(BufferedReader mapReader) {
@@ -77,18 +78,28 @@ public class GameMap {
 		return screenRows;
 	}
 
-	private void collision(Creature creature) {
+	public boolean collision(Creature creature) {
 		if(creature instanceof Player) {
 			Player player = (Player)creature;
 			int row_index = player.pos.y;
 			int col_index = player.pos.x;
 			MapRow row = rows.get(row_index);
 			MapSquare square = row.getSquare(col_index);
-			if(square.getItemType() == Item.TYPE.NONE) return ;
+			if(square.getItemType() == Item.TYPE.NONE) return false;
 			else {
 				square.touch(player);
 			}
 		}
+		return true;
+	}
+
+	public boolean isCollision(Player player) {
+		int row_index = player.pos.y;
+		int col_index = player.pos.x;
+		MapRow row = rows.get(row_index);
+		MapSquare square = row.getSquare(col_index);
+		if(square.getItemType() == Item.TYPE.NONE) return false;
+		else return true;
 	}
 
 	public void updateScreenMap(Position pos) {
@@ -112,62 +123,74 @@ public class GameMap {
    screenStartRow = nextScreenRow;
     }
 
-	public void moveRight(Position pos) {
-		int x = pos.x;
-		int y = pos.y;
+	public void moveRight(Creature creature) {
+		int x = creature.getCol();
+		int y = creature.getRow();
 		MapRow row = rows.get(y);
 		String line = row.getLineString();
 		if(x + 1 < line.length()) {
-			if(x + 1 >= screenStartCol + 20) {
-				screenStartCol++;
+			if(creature instanceof Player) {
+				if(x + 1 >= screenStartCol + 20) {
+					screenStartCol++;
+				}
 			}
-			pos.x++;
+			creature.setCol(x + 1);
 		}
 	}
 
-	public void moveLeft(Position pos) {
-		int x = pos.x;
+	public void moveLeft(Creature creature) {
+		int x = creature.getCol();
 		if(x - 1 >= 0) {
-			if(x - 1 < screenStartCol) {
-				screenStartCol--;
+			if(creature instanceof Player) {
+				if(x - 1 < screenStartCol) {
+					screenStartCol--;
+				}
 			}
-			pos.x--;
+			creature.setCol(x - 1);
 		}
 	}
 
-	public void moveUp(Position pos) {
-		int y = pos.y;
+	public void moveUp(Creature creature) {
+		int y = creature.getRow();
+		int x = creature.getCol();
 		if(y - 1 >= 0) {
-			if(y - 1 < screenStartRow) {
-				screenStartRow--;
+			if(creature instanceof Player) {
+				if(y - 1 < screenStartRow) {
+					screenStartRow--;
+				}
 			}
-			pos.y--;
+			creature.setRow(y - 1);
 			MapRow row = rows.get(y - 1);
-			if(pos.x >= row.getLineString().length()) {
-				pos.x = row.getLineString().length() - 1;
-				if(pos.x < 0) pos.x = 0;
+			if(x >= row.getLineString().length()) {
+				x = row.getLineString().length() - 1;
+				x = (x < 0)? 0: x;
+				creature.setCol(x);
 			}
 		}
 	}
 
-	public void moveDown(Position pos) {
-		int y = pos.y;
+
+	public void moveDown(Creature creature) {
+		int y = creature.getRow();
+		int x = creature.getCol();
 		if(y + 1 < rows.size()) {
 			if(y + 1 >= screenStartRow + 20) {
 				screenStartRow++;
 			}
-			pos.y++;
+			creature.setRow(y + 1);
 			MapRow row = rows.get(y + 1);
-			if(pos.x >= row.getLineString().length()) {
-				pos.x = row.getLineString().length() - 1;
-				if(pos.x < 0) pos.x = 0;
+			if(x >= row.getLineString().length()) {
+				x = row.getLineString().length() - 1;
+				x = (x < 0)? 0: x;
+				creature.setCol(x);
 			}
 		}
 	}
 
-	public void moveNextWord(Position pos) {
-		int x = pos.x;
-		int y = pos.y;
+
+	public void moveNextWord(Creature creature) {
+		int x = creature.getCol();
+		int y = creature.getRow();
    int startLineCol = x;
    int nextPosX = x;
    int nextPosY = y;
@@ -205,13 +228,14 @@ public class GameMap {
             	}
       startLineCol = 0;
         }
-   pos.x = nextPosX;
-   pos.y = nextPosY;
+   creature.setCol(nextPosX);
+   creature.setRow(nextPosY);
 	}
 
-	public void movePreWord(Position pos) {
-		int x = pos.x;
-		int y = pos.y;
+
+	public void movePreWord(Creature creature) {
+		int x = creature.getCol();
+		int y = creature.getRow();
    int startLineCol = x;
    int nextPosX = x;
    int nextPosY = y;
@@ -267,18 +291,21 @@ public class GameMap {
             	}
       startLineCol = (rowNum != 0)? rows.get(rowNum - 1).getLineString().length() - 1: rows.get(0).getLineString().length();
         }
-   pos.x = nextPosX;
-   pos.y = nextPosY;
+   creature.setCol(nextPosX);
+   creature.setRow(nextPosY);
     }
+
 
 	public void moveLineBegin(Position pos) {
 		pos.x = 0;
 	}
 
+
 	public void moveLineEnd(Position pos) {
 		String line = rows.get(pos.y).getLineString();
 		pos.x = (line.length() > 0)? line.length() - 1: 0;
 	}
+
 
 	public void moveFindChar(Position pos, Character c) {
 		String line = rows.get(pos.y).getLineString();
@@ -290,6 +317,7 @@ public class GameMap {
 			pos.x = nextX;
 		}
 	}
+
 
 	public void moveFindPreChar(Position pos, Character c) {
 		String line = rows.get(pos.y).getLineString();

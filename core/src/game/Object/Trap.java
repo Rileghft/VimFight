@@ -16,10 +16,11 @@ public class Trap extends Item {
 	int demage_amount;
 	boolean isActive;
 
-	public Trap(Position pos, TYPE trapType) {
+	public Trap(TYPE trapType) {
 		type = trapType;
-		this.pos = pos;
-		switch (trapType) {
+		switch (type) {
+		case NONE:
+			break;
 		case BOMB:
 			demage_amount = 300;
 			break;

@@ -12,6 +12,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public interface Creature {
 
+	public int getRow();
+	public int getCol();
+	public void setRow(int row);
+	public void setCol(int col);
 	public void demage(int demage_amount);
 	public boolean isDead();
 	public void draw(SpriteBatch batch);

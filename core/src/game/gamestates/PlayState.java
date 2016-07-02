@@ -23,6 +23,7 @@ import game.Map.MapRow;
 import game.Map.MapSquare;
 import game.Object.BGM;
 import game.Object.Player;
+import game.Object.Item;
 import game.Object.Trap;
 import game.component.Score;
 import game.component.Status;
@@ -57,7 +58,7 @@ public class PlayState extends GameState {
 	private float scoreLeftX = 740;
 	private float ScoreUpY = 5;
 	private ArrayList<Texture> traps;
-	
+
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
 
@@ -114,7 +115,7 @@ public class PlayState extends GameState {
 		map = new GameMap(mapReader);
 		player.setMap(map);
 		//end of test data
-		
+
 		//add traps textures
 		trapsInit();
 	}
@@ -125,7 +126,7 @@ public class PlayState extends GameState {
 		traps.add(new Texture(Gdx.files.internal("images/traps/Spikes_in_Sonic_the_Hedgehog_4.png")));
 		traps.add(new Texture(Gdx.files.internal("images/traps/Snap_Trap_icon.png")));
 	}
-	
+
 	@Override
 	public void update(float delta) {
 		handleInput();
@@ -156,8 +157,8 @@ public class PlayState extends GameState {
 			}
 		}
 
-		
 		drawLineNumber();
+		player.update();
 		player.hp.draw(sr, sb, hpLeftX, hpUpY);
 		player.mp.draw(sr, sb, mpLeftX, mpUpY);
 		player.score.draw(sr, sb, scoreLeftX, ScoreUpY);
@@ -191,20 +192,20 @@ public class PlayState extends GameState {
 
 	private Texture getItemTexture(MapSquare cell){
 		Texture texture = null;
-		if(cell.getType() == Item.Type.EMPTY){
-			
-		}else if(cell.getType() == Item.Type.BOME){
+		if(cell.getItemType() == Item.TYPE.NONE){
+
+		}else if(cell.getItemType() == Item.TYPE.BOMB){
 			texture = traps.get(0);
-		}else if(cell.getType() == Item.Type.SPEAR){
+		}else if(cell.getItemType() == Item.TYPE.SPEAR){
 			texture = traps.get(1);
-		}else if(cell.getType() == Item.Type.MOUSE_TRAP){
+		}else if(cell.getItemType() == Item.TYPE.MOUSE_TRAP){
 			texture = traps.get(2);
-		}else if(cell.getType() == Item.Type.FIRE){
-			
+		}else if(cell.getItemType() == Item.TYPE.FIRE){
+
 		}
 		return texture;
 	}
-	
+
 	private float xConverter( float x ) {
 		return x;
 	}
