@@ -167,7 +167,12 @@ public class PlayState extends GameState {
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-
+		
+		sb.begin();
+		//draw background
+		sb.draw(gsm.backGround,0,0);
+		sb.end();
+		
 		//draw map
 		screenMap = map.getMapScreenRows();
 		for(int i = 0 ; i < screenMap.size(); i++ ){

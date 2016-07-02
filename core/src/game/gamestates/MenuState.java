@@ -45,12 +45,11 @@ public class MenuState extends GameState {
 		FreeTypeFontParameter titleParameter = new FreeTypeFontParameter();
 		titleParameter.size = 80;
 		titleFont = gen.generateFont(titleParameter);
-		titleFont.setColor(Color.BLACK);
+		titleFont.setColor(Color.GRAY);
 
 		FreeTypeFontParameter itemParameter = new FreeTypeFontParameter();
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
-		font.setColor(Color.BLACK);
 
 		menuItems = new String[] {
 				"Play",
@@ -66,8 +65,11 @@ public class MenuState extends GameState {
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-
+		
 		sb.begin();
+		//draw background
+		sb.draw(gsm.backGround,0,0);
+		
 		//draw title
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 600);
 
@@ -79,6 +81,7 @@ public class MenuState extends GameState {
 				font.setColor(Color.BLACK);
 			font.draw(sb, menuItems[i], (VimFight.WIDTH - 20*(menuItems[i].length()))/2, 400-40*i);
 		}
+		
 		sb.end();
 	}
 

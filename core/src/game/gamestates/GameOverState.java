@@ -39,12 +39,12 @@ public class GameOverState extends GameState{
 		FreeTypeFontParameter titleParameter = new FreeTypeFontParameter();
 		titleParameter.size = 80;
 		titleFont = gen.generateFont(titleParameter);
-		titleFont.setColor(Color.BLACK);
+		titleFont.setColor(Color.WHITE);
 
 		FreeTypeFontParameter itemParameter = new FreeTypeFontParameter();
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
-		font.setColor(Color.BLACK);
+		font.setColor(Color.WHITE);
 
 	}
 
@@ -58,6 +58,12 @@ public class GameOverState extends GameState{
 	public void draw() {
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
+		
+		sb.begin();
+		//draw background
+		sb.draw(gsm.backGround,0,0);
+		sb.end();		
+		
 		sb.begin();
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 650);
 		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 120);
