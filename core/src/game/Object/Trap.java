@@ -44,5 +44,4 @@ public class Trap extends Item {
 	public int getTextureID() {
 		return textureID;
 	}
-
 }
