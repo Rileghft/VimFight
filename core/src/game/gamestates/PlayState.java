@@ -56,7 +56,7 @@ public class PlayState extends GameState {
 	private SpriteBatch sb;
 	private BitmapFont font;
 	private BitmapFont lineNumber;
-	private Stage stage;
+	public Stage stage;
 	private int lineNumBeg;
 	private Status cmdBar;
 	private Score score;
@@ -286,12 +286,12 @@ public class PlayState extends GameState {
 
 	public void help() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void pause() {
 		// TODO Auto-generated method stub
-
+		stage.unfocus(player);
+		gsm.push(new PauseState(gsm, this));
 	}
 
 }
