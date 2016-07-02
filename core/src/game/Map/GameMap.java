@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import game.Object.Creature;
+import game.Object.Item;
 import game.Object.Player;
 
 
@@ -79,6 +80,14 @@ public class GameMap {
 	private void collision(Creature creature) {
 		if(creature instanceof Player) {
 			Player player = (Player)creature;
+			int row_index = player.pos.y;
+			int col_index = player.pos.x;
+			MapRow row = rows.get(row_index);
+			MapSquare square = row.getSquare(col_index);
+			if(square.getItemType() == Item.TYPE.NONE) return ;
+			else {
+				square.touch(player);
+			}
 		}
 	}
 

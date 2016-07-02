@@ -2,23 +2,21 @@ package game.Map;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.Object.Creature;
 import game.Object.Item;
-import game.Object.Trap;
+import game.Object.Player;
 
 public class MapSquare {
 	private Character c;
 	private boolean isBlocked;
-	public ArrayList<Item> items;
+	public Item item;
 	private ArrayList<Creature> creatures;
 
 
 	public MapSquare(Character character) {
 		isBlocked = false;
 		c = character;
-		items = new ArrayList<Item>();
 		creatures = new ArrayList<Creature>();
 	}
 
@@ -32,6 +30,15 @@ public class MapSquare {
 
 	public void addItem() {
 
+	}
+
+	public Item.TYPE getItemType() {
+		if(item == null) return Item.TYPE.NONE;
+		return item.getType();
+	}
+
+	public void touch(Player player) {
+		item.touch(player);
 	}
 
 }

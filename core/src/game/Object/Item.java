@@ -3,10 +3,8 @@
  */
 package game.Object;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import game.Map.Position;
-import jdk.internal.dynalink.beans.StaticClass;
 
 /**
  * @author 楊舜宇
@@ -14,9 +12,10 @@ import jdk.internal.dynalink.beans.StaticClass;
  *
  */
 abstract public class Item {
+	public enum TYPE{NONE, BOMB, FIRE, SPEAR, MOUSE_TRAP};
+	TYPE type;
 	Position pos;
-	int textureID;
 
-	abstract public int getTextureID();
+	abstract public Item.TYPE getType();
 	abstract public void touch(Player player);
 }

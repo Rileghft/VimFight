@@ -4,6 +4,7 @@
 package game.Object;
 
 import game.Map.Position;
+import static game.Object.Item.TYPE;
 
 /**
  * @author 楊舜宇
@@ -11,13 +12,12 @@ import game.Map.Position;
  *
  */
 public class Trap extends Item {
-	public enum Type {BOMB, SPEAR, MOUSE_TRAP, FIRE};
 	Position pos;
 	int demage_amount;
 	boolean isActive;
 
-	public Trap(Position pos, Type trapType) {
-		textureID = trapType.ordinal();
+	public Trap(Position pos, TYPE trapType) {
+		type = trapType;
 		this.pos = pos;
 		switch (trapType) {
 		case BOMB:
@@ -41,8 +41,8 @@ public class Trap extends Item {
 	}
 
 	@Override
-	public int getTextureID() {
-		return textureID;
+	public TYPE getType() {
+		return type;
 	}
 
 }

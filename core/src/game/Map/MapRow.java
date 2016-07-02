@@ -46,6 +46,10 @@ public class MapRow implements Iterable<MapSquare>{
 		return subRow;
 	}
 
+	public MapSquare getSquare(int index) {
+		return lineSquares.get(index);
+	}
+
 	public void removeSquare(Integer index) {
 		lineSquares.remove(index);
 	}
