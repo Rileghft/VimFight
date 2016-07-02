@@ -30,7 +30,6 @@ import game.Map.MapSquare;
 import game.Object.BGM;
 import game.Object.Player;
 import game.Object.Item;
-import game.Object.Trap;
 import game.component.Score;
 import game.component.Status;
 import game.managers.GameStateManager;
@@ -246,9 +245,6 @@ public class PlayState extends GameState {
 			System.out.println("esc");
 			gsm.pop();
 			stopBGM();
-		}
-		if(Gdx.input.isKeyPressed(Keys.UP)){
-			score.plus(50);
 		}
 		//test end
 	}
