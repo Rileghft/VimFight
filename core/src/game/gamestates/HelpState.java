@@ -24,6 +24,7 @@ public class HelpState extends GameState {
 	private Texture currentHint;
 	private int selected ;
 	
+
 	protected HelpState(GameStateManager gsm, PlayState playState) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
@@ -34,7 +35,7 @@ public class HelpState extends GameState {
 	public void init() {
 		// TODO Auto-generated method stub
 		sb = new SpriteBatch();
-		
+
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
@@ -69,6 +70,7 @@ public class HelpState extends GameState {
 		if(selected == 1)
 			sb.draw(left, hintBegLeftX, hintBegUpY+100);
 		font.draw(sb, hint, (VimFight.WIDTH - 15*hint.length())/2-50, 200);
+		
 		sb.end();
 	}
 
