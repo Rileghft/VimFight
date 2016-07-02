@@ -12,6 +12,7 @@ public class GameStateManager {
 	private Stack<GameState> states;
 	
 	private Array<BGM> bgmGroup;
+	private boolean needClean = true;
 	
 	public GameStateManager() {
 		states = new Stack<GameState>();
@@ -21,6 +22,14 @@ public class GameStateManager {
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit Adventure by HeatleyBros.mp3"));
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit World by HeatleyBros.mp3"));
 		this.score = 0;
+	}
+	
+	public boolean isNeedClran(){
+		return needClean;
+	}
+	
+	public void setNeedClean( boolean need){
+		this.needClean = need;
 	}
 	
 	public void setScore(int score){

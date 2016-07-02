@@ -287,12 +287,14 @@ public class PlayState extends GameState {
 	public void help() {
 		// TODO Auto-generated method stub
 		stage.unfocus(player);
+		gsm.setNeedClean(false);
 		gsm.push(new HelpState(gsm, this));
 	}
 
 	public void pause() {
 		// TODO Auto-generated method stub
 		stage.unfocus(player);
+		gsm.setNeedClean(false);
 		gsm.push(new PauseState(gsm, this));
 	}
 

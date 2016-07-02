@@ -55,8 +55,8 @@ public class PauseState extends GameState {
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		sb.begin();
-		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 630);
-		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-150, 550);
+		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 500);
+		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-150, 430);
 		
 		sb.end();
 	}
@@ -66,6 +66,7 @@ public class PauseState extends GameState {
 		// TODO Auto-generated method stub
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
 			playState.stage.setKeyboardFocus(playState.player);
+			gsm.setNeedClean(true);
 			gsm.pop();
 		}
 	}
