@@ -1,5 +1,6 @@
 package game.gamestates;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -14,7 +15,7 @@ import game.vim.VimFight;
 public class GameOverState extends GameState{
 
 	private final String title = "Game Over";
-	private final String hint = "Press Enter to Go Back to Menu";
+	private final String hint = "Press SPACE to Go Back to Menu";
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	private SpriteBatch sb;
@@ -31,7 +32,6 @@ public class GameOverState extends GameState{
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		sb = new SpriteBatch();
 
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
@@ -46,7 +46,7 @@ public class GameOverState extends GameState{
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
 		font.setColor(Color.BLACK);
-	
+
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class GameOverState extends GameState{
 		sb.begin();
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 650);
 		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 120);
-		
+
 		//draw record
 		drawRecord();
 		sb.end();
@@ -74,11 +74,10 @@ public class GameOverState extends GameState{
 			font.draw(sb, recordName[2*i+1]+": "+recordNum[2*i+1], (VimFight.WIDTH - 50*title.length())/2+280, 500-50*i);
 		}
 	}
-	
+
 	@Override
 	public void handleInput() {
-		// TODO Auto-generated method stub
-		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+		if(Gdx.input.isKeyPressed(Keys.SPACE)){
 			gsm.pop();
 		}
 	}

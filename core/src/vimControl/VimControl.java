@@ -21,7 +21,6 @@ public class VimControl {
 	private InsertMode insert;
 	private NormalMode normal;
 	private CommandMode command;
-	private Status commandBar;
 
 	public VimControl(Status commandBarRef) {
 		input = Keys.ESCAPE;
@@ -30,8 +29,10 @@ public class VimControl {
 		normal = new NormalMode(this);
 		command = new CommandMode(this);
 		modeAdapter = normal;
-		commandBar = commandBarRef;
-		command.cmdBar = commandBar;
+	}
+
+	public void leaveCommand() {
+		inputKey((char)GameKeys.ESC);
 	}
 
 	public int getKey() {
@@ -63,7 +64,6 @@ public class VimControl {
 			System.out.println("切換模式->[Insert Mode]");
 			break;
 		case COMMAND:
-			commandBar.append(':');
 			modeAdapter = command;
 			System.out.println("切換模式->[Command Mode]");
 			break;

@@ -77,6 +77,7 @@ public class PlayState extends GameState {
 		stage = new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
 		player = new Player();
+		player.playControl = this;
 		cmdBar = player.cmdBar;
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
@@ -111,10 +112,7 @@ public class PlayState extends GameState {
 		player.setMap(map);
 
 
-		cmdBar.setErr("the error msg must be English and Number");
-		cmdBar.setStatusState(Status.ERROR);
 
-		score = new Score();
 
 		//end of test data
 	}
@@ -123,19 +121,20 @@ public class PlayState extends GameState {
 	public void update(float delta) {
 		handleInput();
 		if(player.isDead()) {
-			gsm.setState(new GameOverState(gsm, player.statistic));
-			bgm.stopBGM();
+			GameOver();
 		}
 		setLineNumBeg(map.screenStartRow);
 		draw();
 	}
 
+	public void GameOver() {
+			gsm.setState(new GameOverState(gsm, player.statistic));
+			bgm.stopBGM();
+	}
+
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-
-		//draw score
-		score.draw(sr, sb, scoreLeftX, ScoreUpY);
 
 		//draw map
 		screenMap = map.getMapScreenRows();
@@ -150,12 +149,11 @@ public class PlayState extends GameState {
 		drawLineNumber();
 		player.hp.draw(sr, sb, hpLeftX, hpUpY);
 		player.mp.draw(sr, sb, mpLeftX, mpUpY);
+		player.score.draw(sr, sb, scoreLeftX, ScoreUpY);
 		//draw command line
 		cmdBar.draw(sr, sb, statusLeftX, statusUpY);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		//draw score
-		score.draw(sr, sb, scoreLeftX, ScoreUpY);
 	}
 
 	private void drawRect(int x, int y, MapSquare cell){

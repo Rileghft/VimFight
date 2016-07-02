@@ -18,7 +18,6 @@ public class CommandMode implements Mode {
 	public StateMachine<CommandMode, CommandState> command;
 	public VimControl modeControl;
 	public int inputKey;
-	public Status cmdBar;
 
 	public CommandMode(VimControl mode) {
 		command = new DefaultStateMachine<CommandMode, CommandState>(this, CommandState.NONE);
@@ -30,7 +29,6 @@ public class CommandMode implements Mode {
 	@Override
 	public void input(char inputChar) {
 		inputKey = inputChar;
-		cmdBar.append(inputChar);
 		command.update();
 	}
 
@@ -50,7 +48,6 @@ public class CommandMode implements Mode {
 		if(endKey != Keys.ESCAPE) {
 			processCommand();
 		}
-		cmdBar.clear();
 		inputKey = -1;
 	}
 	public void type(String c) {
@@ -60,7 +57,6 @@ public class CommandMode implements Mode {
 	}
 
 	public void processCommand() {
-		System.out.println(String.format("命令： %s",  cmdBar.getCommand()));
 	}
 
 }

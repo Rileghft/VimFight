@@ -27,4 +27,5 @@ public class GameKeys {
 	public final static int NUM_0 = 48;
 	public final static int DOLLAR = 36;
 	public final static int SEMICOLON = 58;
+	public final static int BACKSPACE = 8;
 }

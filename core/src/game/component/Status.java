@@ -18,10 +18,8 @@ public class Status {
 	private StringBuilder command;
 	private int col;
 	private int row;
-	private String errMsg;
+	private String message;
 	private boolean isError;
-	public static boolean ERROR = true;
-	public static boolean NORMAL = false;
 
 	public Status () {
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
@@ -39,8 +37,14 @@ public class Status {
 	}
 
 	public void append(char c ) {
+		isError = false;
 		command.append(c);
-		errMsg = command.toString();
+		message = command.toString();
+	}
+
+	public void backSpace() {
+		int origin_len = command.length();
+		command.setLength(origin_len - 1);
 	}
 
 	public String getCommand() {
@@ -49,7 +53,7 @@ public class Status {
 
 	public void clear() {
 		command = new StringBuilder();
-		errMsg = "";
+		message = "";
 	}
 
 	public void draw( ShapeRenderer sr, SpriteBatch sb , float leftX, float upY) {
@@ -67,17 +71,14 @@ public class Status {
 		}
 		else{
 			font.setColor(Color.RED);
-			font.draw(sb, this.errMsg, xConverter(leftX), yConverter(upY+5));;
+			font.draw(sb, this.message, xConverter(leftX), yConverter(upY+5));;
 		}
 		sb.end();
 	}
 
-	public void setErr( String msg ){
-		this.errMsg = msg;
-	}
-
-	public void setStatusState( boolean state ) {
-		isError = state;
+	public void setErr(String msg){
+		isError = true;
+		this.message = msg;
 	}
 
 	public void setCol( int col ) {

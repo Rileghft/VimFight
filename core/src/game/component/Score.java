@@ -13,17 +13,16 @@ import com.badlogic.gdx.utils.Align;
 import game.vim.VimFight;
 
 public class Score {
-	
+
 	private int score;
 	private BitmapFont font;
 	private Texture star;
-	private int layerLimit = 100;
-	private int starMax = 5;
-	
+	private int[]starLimit = {100, 500, 1000, 1500, 3000};
+
 	public Score(){
 		star = new Texture(Gdx.files.internal("images/star.png"));
 		this.score = 0;
-		
+
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
@@ -32,26 +31,25 @@ public class Score {
 		font = gen.generateFont(itemParameter);
 		font.setColor(Color.WHITE);
 	}
-	
+
 	public void set( int score ) {
 		this.score = score;
 	}
-	
+
 	public void plus( int adder ){
 		this.score += adder;
 	}
-	
+
 	public void draw(ShapeRenderer sr, SpriteBatch sb, float leftX, float upY) {
 		sb.begin();
 		font.draw(sb, "Score", xConverter(leftX), yConverter(upY) );
 		font.draw(sb, Integer.toString(score), xConverter(leftX+30), yConverter(upY+30), 10, Align.center, false);
-		int startNum = ((score/layerLimit) <= starMax ) ? score/layerLimit : starMax;
-		for(int i = 0 ; i < startNum; i++){
+		for(int i = 0 ; starLimit[i] <= score && i < 5; i++){
 			sb.draw(star, xConverter(leftX-20), yConverter(upY+600-i*100));
 		}
 		sb.end();
 	}
-	
+
 	private float xConverter( float x ) {
 		return x;
 	}
@@ -59,5 +57,5 @@ public class Score {
 	private float yConverter( float y ) {
 		return VimFight.HEIGHT - y;
 	}
-	
+
 }

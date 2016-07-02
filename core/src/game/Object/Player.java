@@ -14,9 +14,12 @@ import game.Map.GameMap;
 import game.Map.Position;
 import game.component.Hp;
 import game.component.Mp;
+import game.component.Score;
 import game.component.Status;
+import game.gamestates.PlayState;
 import vimControl.GameKeys;
 import vimControl.VimControl;
+import vimControl.VimMode;
 
 /**
  * @author 楊舜宇
@@ -30,8 +33,10 @@ public class Player extends Actor {
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
 	private int findCharDirection = 1;
+	public PlayState playControl;
 	public Hp hp;
 	public Mp mp;
+	public Score score;
 	private int lastPosX;
 	private int lastPosY;
 	private int movePlusMP;
@@ -42,6 +47,7 @@ public class Player extends Actor {
 	public Player() {
 		hp = new Hp(1000);
 		mp = new Mp(1000);
+		score = new Score();
 		hp.setFull();
 		mp.setEmpty();
 		cmdBar = new Status();
@@ -58,10 +64,17 @@ public class Player extends Actor {
 			@Override
 			public boolean keyTyped(InputEvent event, char keyChar) {
 				if((int)keyChar == 0) return false;
+				VimMode preMode = vim.getCurrentState();
 				vim.inputKey(keyChar);
 				switch (vim.getCurrentState()) {
 				case NORMAL:
+					if(preMode == VimMode.COMMAND && keyChar == GameKeys.ENTER) {
+						proccessCommandMode(keyChar);
+					}
 					proccessNormalMode(keyChar);
+					break;
+				case COMMAND:
+					proccessCommandMode(keyChar);
 					break;
 				default:
 					break;
@@ -69,6 +82,28 @@ public class Player extends Actor {
 				return true;
 			}
 		});
+	}
+
+	private void proccessCommandMode(char keyChar) {
+		if(keyChar == GameKeys.ENTER) {
+			String cmd = cmdBar.getCommand();
+			if(cmd.equals(":q")) {
+				playControl.GameOver();
+			}
+			cmdBar.clear();
+		}
+		else if(keyChar == GameKeys.ESC) {
+			cmdBar.clear();
+		}
+		else if(keyChar == GameKeys.BACKSPACE) {
+			cmdBar.backSpace();
+			if(cmdBar.getCommand().isEmpty()) {
+				vim.leaveCommand();
+			}
+		}
+		else {
+			cmdBar.append(keyChar);
+		}
 	}
 
 	private void proccessNormalMode(Character keyChar) {
@@ -159,7 +194,12 @@ public class Player extends Actor {
 			int row = pos.y - screenStartRow;
 			int col = pos.x - screenStartCol;
 			animation.setDstPos(105f + col * SQUARE_LENGTH, 630f - row * SQUARE_LENGTH);
-			if(pos.x != lastPosX || pos.y != lastPosY) mp.plus(movePlusMP);
+			if(pos.x != lastPosX || pos.y != lastPosY) {
+				score.plus(movePlusMP);
+				mp.plus(movePlusMP);
+			}
+			cmdBar.setRow(pos.y);
+			cmdBar.setCol(pos.x);
 	}
 
 	public void setMap(GameMap map) {
