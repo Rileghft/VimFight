@@ -44,7 +44,7 @@ public class Score {
 		sb.begin();
 		font.draw(sb, "Score", xConverter(leftX), yConverter(upY) );
 		font.draw(sb, Integer.toString(score), xConverter(leftX+30), yConverter(upY+30), 10, Align.center, false);
-		for(int i = 0 ; starLimit[i] <= score && i < 5; i++){
+		for(int i = 0 ; i < 5 && starLimit[i] <= score; i++){
 			sb.draw(star, xConverter(leftX-20), yConverter(upY+600-i*100));
 		}
 		sb.end();
