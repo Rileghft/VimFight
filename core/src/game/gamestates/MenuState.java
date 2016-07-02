@@ -54,8 +54,6 @@ public class MenuState extends GameState {
 
 		menuItems = new String[] {
 				"Play",
-				"Highscores",
-				"How To Play",
 				"Quit"
 		};
 	}
@@ -116,13 +114,6 @@ public class MenuState extends GameState {
 			stopBGM();
 		}
 		else if(currentItem == 1){
-			//"Highscores",
-
-		}
-		else if(currentItem == 2){
-			//"How To Play",
-		}
-		else if(currentItem == 3){
 			Gdx.app.exit();
 		}
 	}
