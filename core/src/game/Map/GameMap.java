@@ -26,7 +26,7 @@ public class GameMap {
 	public int colno;
 	public int screenStartRow;
 	public int screenStartCol;
-	private int trapsUpLimit = 20000;
+	private int trapsUpLimit = 10000;
 
 	public GameMap(ArrayList<MapRow> mainRows, Integer startRow, Integer startCol) {
 		rows = new ArrayList<MapRow>(500);
@@ -59,14 +59,10 @@ public class GameMap {
 		screenStartCol = 0;*/
 		spreadTraps();
 	}
-	
+
 	private void spreadTraps(){
 		Random random = new Random();
-		int num = random.nextInt();
-		num = Math.abs(num);
-		num /= trapsUpLimit;
-		System.out.println("num = " + num );
-		for(int i = 0 ; i < num ; i++){
+		for(int i = 0 ; i < trapsUpLimit; i++){
 			int rowNum = random.nextInt(rows.size());
 			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
 			System.out.println("row = " + rowNum + ", col = " + colNum);
@@ -122,7 +118,7 @@ public class GameMap {
 	public void updateScreenMap(Position pos) {
   int nextScreenCol = screenStartCol;
   int nextScreenRow = screenStartRow;
-  if(pos.x > screenStartCol + 19) {
+  if(pos.x > screenStartCol + 18) {
      nextScreenCol = pos.x - 1;
   		}
    else if(pos.x < screenStartCol) {
@@ -147,7 +143,7 @@ public class GameMap {
 		String line = row.getLineString();
 		if(x + 1 < line.length()) {
 			if(creature instanceof Player) {
-				if(x + 1 >= screenStartCol + 20) {
+				if(x + 1 >= screenStartCol + 19) {
 					screenStartCol++;
 				}
 			}
@@ -159,7 +155,7 @@ public class GameMap {
 		int x = creature.getCol();
 		if(x - 1 >= 0) {
 			if(creature instanceof Player) {
-				if(x - 1 < screenStartCol) {
+				if(x - 1 <= screenStartCol) {
 					screenStartCol--;
 				}
 			}
@@ -172,7 +168,7 @@ public class GameMap {
 		int x = creature.getCol();
 		if(y - 1 >= 0) {
 			if(creature instanceof Player) {
-				if(y - 1 < screenStartRow) {
+				if(y - 1 <= screenStartRow) {
 					screenStartRow--;
 				}
 			}
@@ -191,7 +187,7 @@ public class GameMap {
 		int y = creature.getRow();
 		int x = creature.getCol();
 		if(y + 1 < rows.size()) {
-			if(y + 1 >= screenStartRow + 20) {
+			if(y + 1 >= screenStartRow + 19) {
 				screenStartRow++;
 			}
 			creature.setRow(y + 1);
