@@ -12,7 +12,7 @@ import game.Map.Position;
  *
  */
 abstract public class Item {
-	public enum TYPE{NONE, BOMB, FIRE, SPEAR, MOUSE_TRAP};
+	public enum TYPE{NONE, BOMB, FIRE, SPEAR, MOUSE_TRAP, HP, MP};
 	TYPE type;
 	Position pos;
 

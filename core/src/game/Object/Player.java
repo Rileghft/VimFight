@@ -254,11 +254,15 @@ public class Player extends Actor implements Creature{
 	public void update() {
 		accumulateTime += Gdx.graphics.getDeltaTime();
 		if(accumulateTime > 10) accumulateTime = 0f;
-		if(map.isCollision(this)) {
+		int collision_type = map.isCollision(this);
+		if(collision_type != 0) {
 			if(!isImmortal) {
 				map.collision(this);
 				isImmortal = true;
 				accumulateTime = 0f;
+			}
+			if(collision_type == 1) {
+				map.collision(this);
 			}
 		}
 		if(accumulateTime >= 2f){

@@ -12,6 +12,7 @@ import java.util.Random;
 import game.Object.Creature;
 import game.Object.Item;
 import game.Object.Player;
+import game.Object.Item.TYPE;
 
 
 /**
@@ -56,15 +57,28 @@ public class GameMap {
 		rows.trimToSize();
 		screenStartRow = 0;
 		screenStartCol = 0;
-		spreadTraps();
+		spreadTraps(10000);
+		spreadTonic(2000);
 	}
 
-	private void spreadTraps(){
+	private void spreadTraps(int amount){
 		Random random = new Random();
-		for(int i = 0 ; i < trapsUpLimit; i++){
+		for(int i = 0 ; i < amount; i++){
 			int rowNum = random.nextInt(rows.size());
 			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
 			rows.get(rowNum).getSquare(colNum).addItem();
+		}
+	}
+
+	private void spreadTonic(int amount) {
+		int addAmount = 0;
+		Random random = new Random();
+		while(addAmount != amount){
+			int rowNum = random.nextInt(rows.size());
+			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			//if(!rows.get(rowNum).getSquare(colNum).hasItem())
+				rows.get(rowNum).getSquare(colNum).addTonic();
+			++addAmount;
 		}
 	}
 
@@ -104,13 +118,15 @@ public class GameMap {
 		return true;
 	}
 
-	public boolean isCollision(Player player) {
+	public int isCollision(Player player) {
 		int row_index = player.pos.y;
 		int col_index = player.pos.x;
 		MapRow row = rows.get(row_index);
 		MapSquare square = row.getSquare(col_index);
-		if(square.getItemType() == Item.TYPE.NONE) return false;
-		else return true;
+		if(square.getItemType() == Item.TYPE.NONE) return 0;
+		else if(square.getItemType() == TYPE.HP || square.getItemType() == TYPE.MP)
+			return 1;
+		else return 2;
 	}
 
 	public void updateScreenMap(Position pos) {

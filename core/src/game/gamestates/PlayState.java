@@ -29,6 +29,7 @@ import game.Map.MapRow;
 import game.Map.MapSquare;
 import game.Object.BGM;
 import game.Object.Player;
+import game.Object.Item.TYPE;
 import game.Object.Item;
 import game.component.Score;
 import game.component.Status;
@@ -73,6 +74,8 @@ public class PlayState extends GameState {
 
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
+	private Texture hp_tonic = new Texture(Gdx.files.internal("images/potion/hp.png"));
+	private Texture mp_tonic = new Texture(Gdx.files.internal("images/potion/mp.png"));
 
 	//for BGM
 	private BGM bgm;
@@ -226,6 +229,10 @@ public class PlayState extends GameState {
 			//System.out.println("elapsed_time = "+ elapsed_time);
 			currentFrame = fireAnimation.getKeyFrame(elapsed_time);
 			sb.draw(currentFrame, posX, posY);
+		}else if(cell.getItemType() == TYPE.HP) {
+			texture = hp_tonic;
+		}else if(cell.getItemType() == TYPE.MP) {
+			texture = mp_tonic;
 		}
 		return texture;
 	}

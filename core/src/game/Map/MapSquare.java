@@ -7,6 +7,7 @@ import game.Object.Creature;
 import game.Object.Item;
 import game.Object.Item.TYPE;
 import game.Object.Player;
+import game.Object.Tonic;
 import game.Object.Trap;
 
 public class MapSquare {
@@ -48,6 +49,17 @@ public class MapSquare {
 		}
 	}
 
+	public void addTonic() {
+		Random rand = new Random();
+		int choose = rand.nextInt(3);
+		if(choose < 2) {
+			item = new Tonic(TYPE.HP);
+		}
+		else {
+			item = new Tonic(TYPE.MP);
+		}
+	}
+
 	public boolean hasItem() {
 		return (item == null);
 	}
@@ -59,6 +71,9 @@ public class MapSquare {
 
 	public void touch(Player player) {
 		item.touch(player);
+		if(item.getType() == TYPE.HP || item.getType() == TYPE.MP) {
+			item = null;
+		}
 	}
 
 }
