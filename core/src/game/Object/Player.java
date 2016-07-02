@@ -93,6 +93,12 @@ public class Player extends Actor implements Creature{
 			if(cmd.equals(":q")) {
 				playControl.GameOver();
 			}
+			else if(cmd.equals(":h")) {
+				playControl.help();
+			}
+			else if(cmd.equals(":p")) {
+				playControl.pause();
+			}
 			cmdBar.clear();
 		}
 		else if(keyChar == GameKeys.ESC) {

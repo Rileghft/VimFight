@@ -66,11 +66,11 @@ public class PlayState extends GameState {
 
 	//for fire animation
 	private TextureAtlas fireAtlas;
-	private static float FRAME_DURATION = 1f;
+	private static float FRAME_DURATION = 0.5f;
 	private Animation fireAnimation;
 	private TextureRegion currentFrame;
 	private float elapsed_time = 0f;
-	
+
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
 
@@ -92,7 +92,7 @@ public class PlayState extends GameState {
 		Array<AtlasRegion> fireFrames = fireAtlas.findRegions("burning");
 		fireAnimation = new Animation(FRAME_DURATION, fireFrames, PlayMode.LOOP);
 	}
-	
+
 	@Override
 	public void init() {
 		ScreenViewport viewport = new ScreenViewport();
@@ -135,7 +135,7 @@ public class PlayState extends GameState {
 		//end of test data
 
 		//add traps textures
-		trapsInit();	
+		trapsInit();
 	}
 
 	private void trapsInit(){
@@ -185,6 +185,7 @@ public class PlayState extends GameState {
 		player.score.draw(sr, sb, scoreLeftX, ScoreUpY);
 		//draw command line
 		cmdBar.draw(sr, sb, statusLeftX, statusUpY);
+		elapsed_time += Gdx.graphics.getDeltaTime();
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
@@ -222,7 +223,6 @@ public class PlayState extends GameState {
 		}else if(cell.getItemType() == Item.TYPE.MOUSE_TRAP){
 			texture = traps.get(2);
 		}else if(cell.getItemType() == Item.TYPE.FIRE){
-			elapsed_time += Gdx.graphics.getDeltaTime();
 			//System.out.println("elapsed_time = "+ elapsed_time);
 			currentFrame = fireAnimation.getKeyFrame(elapsed_time);
 			sb.draw(currentFrame, posX, posY);
@@ -282,6 +282,16 @@ public class PlayState extends GameState {
 	@Override
 	public void stopBGM() {
 		bgm.stopBGM();
+	}
+
+	public void help() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void pause() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
