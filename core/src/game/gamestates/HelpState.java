@@ -17,7 +17,7 @@ public class HelpState extends GameState {
 	private SpriteBatch sb;
 	private final String hint = "Press ESCAPE to Go Back to Game";
 	private BitmapFont font;
-	
+
 	protected HelpState(GameStateManager gsm, PlayState playState) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
@@ -28,7 +28,7 @@ public class HelpState extends GameState {
 	public void init() {
 		// TODO Auto-generated method stub
 		sb = new SpriteBatch();
-		
+
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
@@ -51,7 +51,6 @@ public class HelpState extends GameState {
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		sb.begin();
 		font.draw(sb, hint, (VimFight.WIDTH - 15*hint.length())/2, 100);
-		System.out.println("hint.length() = "+hint.length());
 		sb.end();
 	}
 

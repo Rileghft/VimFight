@@ -30,7 +30,7 @@ public class GameMap {
 
 	public GameMap(ArrayList<MapRow> mainRows, Integer startRow, Integer startCol) {
 		rows = new ArrayList<MapRow>(500);
-		for(int row = startRow; row < startRow + 20; ++row) {
+		for(int row = startRow; row < startRow + 20 && row < mainRows.size(); ++row) {
 			rows.add(mainRows.get(row).getScreenRow(startCol));
 		}
 		rows.trimToSize();
@@ -53,10 +53,9 @@ public class GameMap {
 			e.printStackTrace();
 			System.err.println("read text map io problem");
 		}
-		/*rows.trimToSize();
-		rows.get(8).getSquare(8).addItem();
+		rows.trimToSize();
 		screenStartRow = 0;
-		screenStartCol = 0;*/
+		screenStartCol = 0;
 		spreadTraps();
 	}
 
@@ -65,7 +64,6 @@ public class GameMap {
 		for(int i = 0 ; i < trapsUpLimit; i++){
 			int rowNum = random.nextInt(rows.size());
 			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
-			System.out.println("row = " + rowNum + ", col = " + colNum);
 			rows.get(rowNum).getSquare(colNum).addItem();
 		}
 	}
