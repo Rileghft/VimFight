@@ -8,14 +8,20 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import game.Map.GameMap;
@@ -59,6 +65,13 @@ public class PlayState extends GameState {
 	private float ScoreUpY = 5;
 	private ArrayList<Texture> traps;
 
+	//for fire animation
+	private TextureAtlas fireAtlas;
+	private static float FRAME_DURATION = 1f;
+	private Animation fireAnimation;
+	private TextureRegion currentFrame;
+	private float elapsed_time = 0f;
+	
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
 
@@ -75,6 +88,12 @@ public class PlayState extends GameState {
 		bgm = gsm.getbgm(2);
 	}
 
+	private void fireTrapAnimationInit(){
+		fireAtlas = new TextureAtlas(Gdx.files.internal("images/traps/fire.atlas"));
+		Array<AtlasRegion> fireFrames = fireAtlas.findRegions("burning");
+		fireAnimation = new Animation(FRAME_DURATION, fireFrames, PlayMode.LOOP);
+	}
+	
 	@Override
 	public void init() {
 		ScreenViewport viewport = new ScreenViewport();
@@ -117,7 +136,7 @@ public class PlayState extends GameState {
 		//end of test data
 
 		//add traps textures
-		trapsInit();
+		trapsInit();	
 	}
 
 	private void trapsInit(){
@@ -125,6 +144,8 @@ public class PlayState extends GameState {
 		traps.add(new Texture(Gdx.files.internal("images/traps/bomb.png")));
 		traps.add(new Texture(Gdx.files.internal("images/traps/spear.png")));
 		traps.add(new Texture(Gdx.files.internal("images/traps/mouse_trap.png")));
+		fireTrapAnimationInit();
+		elapsed_time = 0;
 	}
 
 	@Override
@@ -185,13 +206,13 @@ public class PlayState extends GameState {
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
 		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
-			Texture texture = getItemTexture(cell);
+			Texture texture = getItemTexture(cell, posX, posY);
 			if(texture != null)
 				sb.draw(texture, posX, posY);
 		sb.end();
 		}
 
-	private Texture getItemTexture(MapSquare cell){
+	private Texture getItemTexture(MapSquare cell, float posX, float posY){
 		Texture texture = null;
 		if(cell.getItemType() == Item.TYPE.NONE){
 
@@ -202,7 +223,10 @@ public class PlayState extends GameState {
 		}else if(cell.getItemType() == Item.TYPE.MOUSE_TRAP){
 			texture = traps.get(2);
 		}else if(cell.getItemType() == Item.TYPE.FIRE){
-
+			elapsed_time += Gdx.graphics.getDeltaTime();
+			//System.out.println("elapsed_time = "+ elapsed_time);
+			currentFrame = fireAnimation.getKeyFrame(elapsed_time);
+			sb.draw(currentFrame, posX, posY);
 		}
 		return texture;
 	}

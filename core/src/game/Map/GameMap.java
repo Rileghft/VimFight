@@ -63,6 +63,7 @@ public class GameMap {
 	private void spreadTraps(){
 		Random random = new Random();
 		int num = random.nextInt();
+		num = Math.abs(num);
 		num /= trapsUpLimit;
 		System.out.println("num = " + num );
 		for(int i = 0 ; i < num ; i++){
