@@ -183,13 +183,25 @@ public class PlayState extends GameState {
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
 		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
-		
+			Texture texture = getItemTexture(cell);
+			if(texture != null)
+				sb.draw(texture, posX, posY);
 		sb.end();
 		}
 
-	private Texture getTrapTexture(MapSquare cell, int textureID){
+	private Texture getItemTexture(MapSquare cell){
 		Texture texture = null;
-		
+		if(cell.getType() == Item.Type.EMPTY){
+			
+		}else if(cell.getType() == Item.Type.BOME){
+			texture = traps.get(0);
+		}else if(cell.getType() == Item.Type.SPEAR){
+			texture = traps.get(1);
+		}else if(cell.getType() == Item.Type.MOUSE_TRAP){
+			texture = traps.get(2);
+		}else if(cell.getType() == Item.Type.FIRE){
+			
+		}
 		return texture;
 	}
 	
