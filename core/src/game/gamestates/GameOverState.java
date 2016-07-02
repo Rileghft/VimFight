@@ -1,6 +1,5 @@
 package game.gamestates;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -62,6 +61,7 @@ public class GameOverState extends GameState{
 		sb.begin();
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 650);
 		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 120);
+		titleFont.draw(sb, "Score: "+gsm.getScore(), (VimFight.WIDTH - 50*title.length())/2-30, 220);
 
 		//draw record
 		drawRecord();

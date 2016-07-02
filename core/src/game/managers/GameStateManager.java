@@ -8,7 +8,7 @@ import game.Object.BGM;
 import game.gamestates.GameState;
 
 public class GameStateManager {
-
+	private int score = 0;
 	private Stack<GameState> states;
 	
 	private Array<BGM> bgmGroup;
@@ -20,6 +20,15 @@ public class GameStateManager {
 		bgmGroup.add(new BGM("BGM/Royalty Free Game Music - 8 Bit Hideout By HeatleyBros.mp3"));
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit Adventure by HeatleyBros.mp3"));
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit World by HeatleyBros.mp3"));
+		this.score = 0;
+	}
+	
+	public void setScore(int score){
+		this.score = score;
+	}
+	
+	public int getScore(){
+		return this.score;
 	}
 	
 	public BGM getbgm(int index) {

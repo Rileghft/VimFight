@@ -58,4 +58,7 @@ public class Score {
 		return VimFight.HEIGHT - y;
 	}
 
+	public int getScoreNum(){
+		return this.score;
+	}
 }

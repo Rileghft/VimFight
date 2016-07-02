@@ -81,7 +81,7 @@ public class PlayState extends GameState {
 		cmdBar = player.cmdBar;
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
-
+		score = player.score;
 
 
 		//for draw map
@@ -129,6 +129,7 @@ public class PlayState extends GameState {
 
 	public void GameOver() {
 			gsm.setState(new GameOverState(gsm, player.statistic));
+			gsm.setScore(score.getScoreNum());
 			bgm.stopBGM();
 	}
 
