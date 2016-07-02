@@ -66,9 +66,9 @@ public class HelpState extends GameState {
 		sb.begin();
 		sb.draw(currentHint, hintBegLeftX, hintBegUpY);
 		if(selected == 0)
-			sb.draw(right, hintBegLeftX+500, hintBegUpY+100);
+			sb.draw(right, hintBegLeftX+490, hintBegUpY+100);
 		if(selected == 1)
-			sb.draw(left, hintBegLeftX, hintBegUpY+100);
+			sb.draw(left, hintBegLeftX+10, hintBegUpY+100);
 		font.draw(sb, hint, (VimFight.WIDTH - 15*hint.length())/2-50, 200);
 		
 		sb.end();
