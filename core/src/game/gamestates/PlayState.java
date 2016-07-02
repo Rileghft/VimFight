@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -22,6 +23,7 @@ import game.Map.MapRow;
 import game.Map.MapSquare;
 import game.Object.BGM;
 import game.Object.Player;
+import game.Object.Trap;
 import game.component.Score;
 import game.component.Status;
 import game.managers.GameStateManager;
@@ -54,7 +56,8 @@ public class PlayState extends GameState {
 	private Score score;
 	private float scoreLeftX = 740;
 	private float ScoreUpY = 5;
-
+	private ArrayList<Texture> traps;
+	
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
 
@@ -81,7 +84,7 @@ public class PlayState extends GameState {
 		cmdBar = player.cmdBar;
 		stage.addActor(player);
 		stage.setKeyboardFocus(player);
-
+		score = player.score;
 
 
 		//for draw map
@@ -110,13 +113,19 @@ public class PlayState extends GameState {
 		BufferedReader mapReader = fhandler.reader(256);
 		map = new GameMap(mapReader);
 		player.setMap(map);
-
-
-
-
 		//end of test data
+		
+		//add traps textures
+		trapsInit();
 	}
 
+	private void trapsInit(){
+		traps = new ArrayList<Texture>();
+		traps.add(new Texture(Gdx.files.internal("images/traps/8-bit-Bomb.png")));
+		traps.add(new Texture(Gdx.files.internal("images/traps/Spikes_in_Sonic_the_Hedgehog_4.png")));
+		traps.add(new Texture(Gdx.files.internal("images/traps/Snap_Trap_icon.png")));
+	}
+	
 	@Override
 	public void update(float delta) {
 		handleInput();
@@ -129,6 +138,7 @@ public class PlayState extends GameState {
 
 	public void GameOver() {
 			gsm.setState(new GameOverState(gsm, player.statistic));
+			gsm.setScore(score.getScoreNum());
 			bgm.stopBGM();
 	}
 
@@ -146,6 +156,7 @@ public class PlayState extends GameState {
 			}
 		}
 
+		
 		drawLineNumber();
 		player.hp.draw(sr, sb, hpLeftX, hpUpY);
 		player.mp.draw(sr, sb, mpLeftX, mpUpY);
@@ -172,9 +183,28 @@ public class PlayState extends GameState {
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
 		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
+			Texture texture = getItemTexture(cell);
+			if(texture != null)
+				sb.draw(texture, posX, posY);
 		sb.end();
 		}
 
+	private Texture getItemTexture(MapSquare cell){
+		Texture texture = null;
+		if(cell.getType() == Item.Type.EMPTY){
+			
+		}else if(cell.getType() == Item.Type.BOME){
+			texture = traps.get(0);
+		}else if(cell.getType() == Item.Type.SPEAR){
+			texture = traps.get(1);
+		}else if(cell.getType() == Item.Type.MOUSE_TRAP){
+			texture = traps.get(2);
+		}else if(cell.getType() == Item.Type.FIRE){
+			
+		}
+		return texture;
+	}
+	
 	private float xConverter( float x ) {
 		return x;
 	}
