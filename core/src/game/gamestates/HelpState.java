@@ -36,7 +36,7 @@ public class HelpState extends GameState {
 		FreeTypeFontParameter itemParameter = new FreeTypeFontParameter();
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
-		font.setColor(Color.BLACK);
+		font.setColor(Color.YELLOW);
 	}
 
 	@Override
@@ -60,6 +60,7 @@ public class HelpState extends GameState {
 		// TODO Auto-generated method stub
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
 			playState.stage.setKeyboardFocus(playState.player);
+			gsm.setNeedClean(true);
 			gsm.pop();
 		}
 	}
