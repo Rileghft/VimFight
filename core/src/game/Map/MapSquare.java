@@ -1,7 +1,7 @@
 package game.Map;
 
 import java.util.ArrayList;
-
+import java.util.Random;
 
 import game.Object.Creature;
 import game.Object.Item;
@@ -31,7 +31,25 @@ public class MapSquare {
 	}
 
 	public void addItem() {
-		item = new Trap(TYPE.BOMB);
+		Random rand = new Random();
+		switch (rand.nextInt(4)) {
+		case 0:
+			item = new Trap(TYPE.BOMB);
+			break;
+		case 1:
+			item = new Trap(TYPE.FIRE);
+			break;
+		case 2:
+			item = new Trap(TYPE.SPEAR);
+			break;
+		case 3:
+			item = new Trap(TYPE.MOUSE_TRAP);
+			break;
+		}
+	}
+
+	public boolean hasItem() {
+		return (item == null);
 	}
 
 	public Item.TYPE getItemType() {

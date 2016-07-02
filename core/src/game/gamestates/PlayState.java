@@ -122,15 +122,16 @@ public class PlayState extends GameState {
 
 	private void trapsInit(){
 		traps = new ArrayList<Texture>();
-		traps.add(new Texture(Gdx.files.internal("images/traps/8-bit-Bomb.png")));
-		traps.add(new Texture(Gdx.files.internal("images/traps/Spikes_in_Sonic_the_Hedgehog_4.png")));
-		traps.add(new Texture(Gdx.files.internal("images/traps/Snap_Trap_icon.png")));
+		traps.add(new Texture(Gdx.files.internal("images/traps/bomb.png")));
+		traps.add(new Texture(Gdx.files.internal("images/traps/spear.png")));
+		traps.add(new Texture(Gdx.files.internal("images/traps/mouse_trap.png")));
 	}
 
 	@Override
 	public void update(float delta) {
 		handleInput();
 		if(player.isDead()) {
+			stage.unfocus(player);
 			GameOver();
 		}
 		setLineNumBeg(map.screenStartRow);

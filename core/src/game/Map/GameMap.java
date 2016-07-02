@@ -32,7 +32,6 @@ public class GameMap {
 			rows.add(mainRows.get(row).getScreenRow(startCol));
 		}
 		rows.trimToSize();
-		rows.get(8).getSquare(8).addItem();
 	}
 
 	public GameMap(BufferedReader mapReader) {
@@ -53,6 +52,7 @@ public class GameMap {
 			System.err.println("read text map io problem");
 		}
 		rows.trimToSize();
+		rows.get(8).getSquare(8).addItem();
 		screenStartRow = 0;
 		screenStartCol = 0;
 	}
