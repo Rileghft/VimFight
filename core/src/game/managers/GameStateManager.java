@@ -2,6 +2,7 @@ package game.managers;
 
 import java.util.Stack;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
 import game.Object.BGM;
@@ -13,6 +14,8 @@ public class GameStateManager {
 	
 	private Array<BGM> bgmGroup;
 	private boolean needClean = true;
+	public static Texture backGround;
+	
 	
 	public GameStateManager() {
 		states = new Stack<GameState>();
@@ -22,6 +25,10 @@ public class GameStateManager {
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit Adventure by HeatleyBros.mp3"));
 		bgmGroup.add(new BGM("BGM/Royalty Free Music - 8 Bit World by HeatleyBros.mp3"));
 		this.score = 0;
+	}
+	
+	public void setBackGround(Texture backGround){
+		this.backGround = backGround;
 	}
 	
 	public boolean isNeedClran(){
