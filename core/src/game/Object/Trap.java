@@ -15,7 +15,7 @@ import game.Map.Position;
  */
 public class Trap extends Item {
 	private static Sound explode = Gdx.audio.newSound(Gdx.files.internal("sound/explosion.mp3"));
-	private static Sound fire = Gdx.audio.newSound(Gdx.files.internal("sound/explosion.mp3"));
+	private static Sound fire = Gdx.audio.newSound(Gdx.files.internal("sound/fire.mp3"));
 	private static Sound spear = Gdx.audio.newSound(Gdx.files.internal("sound/spear.mp3"));
 	private static Sound mouse_trap = Gdx.audio.newSound(Gdx.files.internal("sound/mouse_trap.mp3"));
 	Position pos;
