@@ -26,9 +26,9 @@ import vimControl.VimMode;
  * @since 2016/6/9
  *
  */
-public class Player extends Actor {
+public class Player extends Actor{
 	private static float SQUARE_LENGTH = 30;
-	private Position pos;
+	public Position pos;
 	private GameMap map;
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
@@ -235,4 +235,5 @@ public class Player extends Actor {
 		// TODO Auto-generated method stub
 		super.act(delta);
 	}
+
 }

@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import game.Object.Creature;
+import game.Object.Player;
+
 
 /**
  * @author 楊舜宇
@@ -71,6 +74,12 @@ public class GameMap {
 		GameMap screenMap = cutScreenMap(screenStartRow, screenStartCol);
 		ArrayList<MapRow> screenRows = screenMap.getMapRows();
 		return screenRows;
+	}
+
+	private void collision(Creature creature) {
+		if(creature instanceof Player) {
+			Player player = (Player)creature;
+		}
 	}
 
 	public void updateScreenMap(Position pos) {
