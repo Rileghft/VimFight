@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import game.Object.Creature;
 import game.Object.Item;
@@ -25,6 +26,7 @@ public class GameMap {
 	public int colno;
 	public int screenStartRow;
 	public int screenStartCol;
+	private int trapsUpLimit = 20000;
 
 	public GameMap(ArrayList<MapRow> mainRows, Integer startRow, Integer startCol) {
 		rows = new ArrayList<MapRow>(500);
@@ -51,10 +53,24 @@ public class GameMap {
 			e.printStackTrace();
 			System.err.println("read text map io problem");
 		}
-		rows.trimToSize();
+		/*rows.trimToSize();
 		rows.get(8).getSquare(8).addItem();
 		screenStartRow = 0;
-		screenStartCol = 0;
+		screenStartCol = 0;*/
+		spreadTraps();
+	}
+	
+	private void spreadTraps(){
+		Random random = new Random();
+		int num = random.nextInt();
+		num /= trapsUpLimit;
+		System.out.println("num = " + num );
+		for(int i = 0 ; i < num ; i++){
+			int rowNum = random.nextInt(rows.size());
+			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			System.out.println("row = " + rowNum + ", col = " + colNum);
+			rows.get(rowNum).getSquare(colNum).addItem();
+		}
 	}
 
 	private GameMap cutScreenMap(int startRow, int startCol) {
