@@ -1,0 +1,39 @@
+Lv0.png
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+showing
+  rotate: false
+  xy: 0, 0
+  size: 300, 160
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+showing
+  rotate: false
+  xy: 0, 160
+  size: 300, 160
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+showing
+  rotate: false
+  xy: 0, 320
+  size: 300, 160
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+showing
+  rotate: false
+  xy: 0, 480
+  size: 300, 160
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+showing
+  rotate: false
+  xy: 0, 640
+  size: 300, 160
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
