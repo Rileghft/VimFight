@@ -84,12 +84,13 @@ public class PlayState extends GameState {
 	private BGM bgm;
 	
 	//for show level
-	private TextureAtlas levelAtlas;
-	private static float level_FRAME_DURATION = .5f;
-	private Animation showingAnimation;
+	private TextureAtlas level1_Atlas, level2_Atlas, level3_Atlas, level4_Atlas, level5_Atlas;
+	private static float level_FRAME_DURATION = .36f;
+	private Animation level1_Animation,level2_Animation,level3_Animation,level4_Animation,level5_Animation;
 	private TextureRegion levelCurrentFrame;
 	private float level_elapsed_time = 0;
 	private boolean enableLevel = false;
+	private int level = 1;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -109,9 +110,22 @@ public class PlayState extends GameState {
 	}
 
 	private void showLevelInit(){
-		levelAtlas = new TextureAtlas(Gdx.files.internal("images/test.atlas"));
-		Array<AtlasRegion> Frames = levelAtlas.findRegions("showing");
-		showingAnimation = new Animation(level_FRAME_DURATION, Frames, PlayMode.REVERSED);
+		level1_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv1.atlas"));
+//		level2_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv2.atlas"));
+//		level3_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv3.atlas"));
+//		level4_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv4.atlas"));
+//		level5_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv5.atlas"));
+		
+		Array<AtlasRegion> Frames1 = level1_Atlas.findRegions("showing");
+		level1_Animation = new Animation(level_FRAME_DURATION, Frames1, PlayMode.LOOP_PINGPONG);
+//		Array<AtlasRegion> Frames2 = level2_Atlas.findRegions("showing");
+//		level2_Animation = new Animation(level_FRAME_DURATION, Frames2, PlayMode.LOOP_PINGPONG);
+//		Array<AtlasRegion> Frames3 = level3_Atlas.findRegions("showing");
+//		level3_Animation = new Animation(level_FRAME_DURATION, Frames3, PlayMode.LOOP_PINGPONG);
+//		Array<AtlasRegion> Frames4 = level4_Atlas.findRegions("showing");
+//		level4_Animation = new Animation(level_FRAME_DURATION, Frames4, PlayMode.LOOP_PINGPONG);
+//		Array<AtlasRegion> Frames5 = level5_Atlas.findRegions("showing");
+//		level5_Animation = new Animation(level_FRAME_DURATION, Frames5, PlayMode.LOOP_PINGPONG);
 	}
 	
 	@Override
@@ -188,6 +202,7 @@ public class PlayState extends GameState {
 	public void changeLevel( int level ){
 		level_elapsed_time = 0;
 		enableLevel = true;
+		this.level = level;
 	}
 
 	public void GameOver() {
@@ -238,7 +253,25 @@ public class PlayState extends GameState {
 	private void drawLevel(){
 		if(enableLevel){
 			level_elapsed_time += Gdx.graphics.getDeltaTime();
-			levelCurrentFrame = showingAnimation.getKeyFrame(level_elapsed_time);
+			switch (level) {
+			case 1:
+				levelCurrentFrame = level1_Animation.getKeyFrame(level_elapsed_time);
+				break;
+			case 2:
+				levelCurrentFrame = level2_Animation.getKeyFrame(level_elapsed_time);
+				break;
+			case 3:
+				levelCurrentFrame = level3_Animation.getKeyFrame(level_elapsed_time);
+				break;
+			case 4:
+				levelCurrentFrame = level4_Animation.getKeyFrame(level_elapsed_time);
+				break;
+			case 5:
+				levelCurrentFrame = level5_Animation.getKeyFrame(level_elapsed_time);
+				break;
+			default:
+				break;
+			}
 			if(level_elapsed_time > 3)
 				enableLevel = false;
 			sb.begin();
