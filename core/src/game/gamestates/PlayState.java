@@ -82,15 +82,19 @@ public class PlayState extends GameState {
 	//for BGM
 	private boolean isFirst = true;
 	private BGM bgm;
-	
+
 	//for show level
-	private TextureAtlas level1_Atlas, level2_Atlas, level3_Atlas, level4_Atlas, level5_Atlas;
+	private TextureAtlas level0_Atlas, level1_Atlas, level2_Atlas, level3_Atlas, level4_Atlas, level5_Atlas;
 	private static float level_FRAME_DURATION = .36f;
-	private Animation level1_Animation,level2_Animation,level3_Animation,level4_Animation,level5_Animation;
+	private Animation level0_Animation, level1_Animation,level2_Animation,level3_Animation,level4_Animation,level5_Animation;
 	private TextureRegion levelCurrentFrame;
 	private float level_elapsed_time = 0;
 	private boolean enableLevel = false;
-	private int level = 1;
+	private int level = 0;
+	private boolean startAddTrap = false;
+	private float addTrapTimer = 0f;
+	private int addItemTimeInterval = 180;
+	private int trapAddNum = 0;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -110,24 +114,27 @@ public class PlayState extends GameState {
 	}
 
 	private void showLevelInit(){
-		level1_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv1.atlas"));
-//		level2_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv2.atlas"));
-//		level3_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv3.atlas"));
-//		level4_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv4.atlas"));
-//		level5_Atlas = new TextureAtlas(Gdx.files.internal("images/Lv5.atlas"));
-		
+		level0_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv0.atlas"));
+		level1_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv1.atlas"));
+		level2_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv2.atlas"));
+		level3_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv3.atlas"));
+		level4_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv4.atlas"));
+		level5_Atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/Lv5.atlas"));
+
+		Array<AtlasRegion> Frames0 = level0_Atlas.findRegions("showing");
+		level0_Animation = new Animation(level_FRAME_DURATION, Frames0, PlayMode.LOOP_PINGPONG);
 		Array<AtlasRegion> Frames1 = level1_Atlas.findRegions("showing");
 		level1_Animation = new Animation(level_FRAME_DURATION, Frames1, PlayMode.LOOP_PINGPONG);
-//		Array<AtlasRegion> Frames2 = level2_Atlas.findRegions("showing");
-//		level2_Animation = new Animation(level_FRAME_DURATION, Frames2, PlayMode.LOOP_PINGPONG);
-//		Array<AtlasRegion> Frames3 = level3_Atlas.findRegions("showing");
-//		level3_Animation = new Animation(level_FRAME_DURATION, Frames3, PlayMode.LOOP_PINGPONG);
-//		Array<AtlasRegion> Frames4 = level4_Atlas.findRegions("showing");
-//		level4_Animation = new Animation(level_FRAME_DURATION, Frames4, PlayMode.LOOP_PINGPONG);
-//		Array<AtlasRegion> Frames5 = level5_Atlas.findRegions("showing");
-//		level5_Animation = new Animation(level_FRAME_DURATION, Frames5, PlayMode.LOOP_PINGPONG);
+		Array<AtlasRegion> Frames2 = level2_Atlas.findRegions("showing");
+		level2_Animation = new Animation(level_FRAME_DURATION, Frames2, PlayMode.LOOP_PINGPONG);
+		Array<AtlasRegion> Frames3 = level3_Atlas.findRegions("showing");
+		level3_Animation = new Animation(level_FRAME_DURATION, Frames3, PlayMode.LOOP_PINGPONG);
+		Array<AtlasRegion> Frames4 = level4_Atlas.findRegions("showing");
+		level4_Animation = new Animation(level_FRAME_DURATION, Frames4, PlayMode.LOOP_PINGPONG);
+		Array<AtlasRegion> Frames5 = level5_Atlas.findRegions("showing");
+		level5_Animation = new Animation(level_FRAME_DURATION, Frames5, PlayMode.LOOP_PINGPONG);
 	}
-	
+
 	@Override
 	public void init() {
 		ScreenViewport viewport = new ScreenViewport();
@@ -166,12 +173,13 @@ public class PlayState extends GameState {
 		FileHandle fhandler = Gdx.files.internal("exampleMap_1.txt");
 		BufferedReader mapReader = fhandler.reader(256);
 		map = new GameMap(mapReader);
+		map.spreadTraps(3000);
 		player.setMap(map);
 		//end of test data
 
 		//add traps textures
 		trapsInit();
-		
+
 		showLevelInit();
 	}
 
@@ -191,6 +199,8 @@ public class PlayState extends GameState {
 			help();
 		}
 		handleInput();
+		addTrapTimer += Gdx.graphics.getDeltaTime();
+		levelControl(player.score.getScoreNum());
 		if(player.isDead()) {
 			stage.unfocus(player);
 			GameOver();
@@ -198,7 +208,7 @@ public class PlayState extends GameState {
 		setLineNumBeg(map.screenStartRow);
 		draw();
 	}
-	
+
 	public void changeLevel( int level ){
 		level_elapsed_time = 0;
 		enableLevel = true;
@@ -214,6 +224,64 @@ public class PlayState extends GameState {
 	}
 
 	public void levelControl(int score) {
+		if(score >= 3000 ) {
+			if(level != 5) {
+				changeLevel(5);
+				addItemTimeInterval = 20;
+			}
+			if(addTrapTimer >= addItemTimeInterval) {
+				map.spreadTraps(200);
+				map.spreadTonic(50);
+				addTrapTimer = 0f;
+			}
+		}
+		else if(score >= 1500) {
+			if(level != 4) {
+				changeLevel(4);
+				addItemTimeInterval = 30;
+			}
+			if(addTrapTimer >= addItemTimeInterval) {
+				map.spreadTraps(100);
+				map.spreadTonic(200);
+				addTrapTimer = 0f;
+			}
+		}
+		else if(score >= 1000) {
+			if(level != 3) {
+				changeLevel(3);
+				addItemTimeInterval = 60;
+			}
+			if(addTrapTimer >= addItemTimeInterval) {
+				map.spreadTraps(1000);
+				map.spreadTonic(300);
+				addTrapTimer = 0f;
+			}
+		}
+		else if(score >= 500) {
+			if(level != 2) {
+				changeLevel(2);
+				addItemTimeInterval = 90;
+			}
+			if(addTrapTimer >= addItemTimeInterval) {
+				map.spreadTraps(2000);
+				map.spreadTonic(500);
+				addTrapTimer = 0f;
+			}
+		}
+		else if(score >= 100) {
+			if(level != 1) {
+				startAddTrap = true;
+				changeLevel(1);
+				addItemTimeInterval = 120;
+			}
+			if(addTrapTimer >= addItemTimeInterval) {
+				map.spreadTraps(5000);
+				addTrapTimer = 0f;
+			}
+		}
+		else {
+			addTrapTimer = 0;
+		}
 
 	}
 
@@ -246,7 +314,7 @@ public class PlayState extends GameState {
 		elapsed_time += Gdx.graphics.getDeltaTime();
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		
+
 		drawLevel();
 	}
 
@@ -254,6 +322,9 @@ public class PlayState extends GameState {
 		if(enableLevel){
 			level_elapsed_time += Gdx.graphics.getDeltaTime();
 			switch (level) {
+			case 0:
+				levelCurrentFrame = level0_Animation.getKeyFrame(level_elapsed_time);
+				break;
 			case 1:
 				levelCurrentFrame = level1_Animation.getKeyFrame(level_elapsed_time);
 				break;
@@ -279,7 +350,7 @@ public class PlayState extends GameState {
 			sb.end();
 		}
 	}
-	
+
 	private void drawRect(int x, int y, MapSquare cell){
 		//draw a rectangle of cell in the map component
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
@@ -336,7 +407,7 @@ public class PlayState extends GameState {
 	public void handleInput() {
 		//for test changeLevel
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-			changeLevel(1);
+			changeLevel(0);
 		}
 	}
 

@@ -71,7 +71,7 @@ public class Player extends Actor implements Creature{
 				vim.inputKey(keyChar);
 				switch (vim.getCurrentState()) {
 				case NORMAL:
-					if(preMode == VimMode.COMMAND && keyChar == GameKeys.ENTER) {
+					if(preMode == VimMode.COMMAND && (keyChar == GameKeys.ENTER || keyChar == GameKeys.ESC)) {
 						proccessCommandMode(keyChar);
 					}
 					proccessNormalMode(keyChar);
@@ -98,6 +98,15 @@ public class Player extends Actor implements Creature{
 			}
 			else if(cmd.equals(":p")) {
 				playControl.pause();
+			}
+			else if(cmd.matches(":\\d+")) {
+				if(mp.getCurrentMp() >= 300) {
+					boolean isJump = map.moveLine(this, Integer.parseInt(cmd.substring(1)));
+					if(isJump) {
+						mp.minus(300);
+						score.plus(30);
+					}
+				}
 			}
 			cmdBar.clear();
 		}

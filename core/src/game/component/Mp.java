@@ -57,7 +57,7 @@ public class Mp {
 		this.currentMp = ( (this.currentMp+adder) < this.maxMp ) ? this.currentMp + adder : this.maxMp;
 	}
 	
-	public void moins(int subber){
+	public void minus(int subber){
 		this.currentMp = ( (this.currentMp-subber) > 0 ) ? this.currentMp - subber : 0;
 	}
 	

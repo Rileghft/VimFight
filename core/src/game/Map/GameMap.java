@@ -57,11 +57,9 @@ public class GameMap {
 		rows.trimToSize();
 		screenStartRow = 0;
 		screenStartCol = 0;
-		spreadTraps(10000);
-		spreadTonic(2000);
 	}
 
-	private void spreadTraps(int amount){
+	public void spreadTraps(int amount){
 		Random random = new Random();
 		for(int i = 0 ; i < amount; i++){
 			int rowNum = random.nextInt(rows.size());
@@ -70,7 +68,7 @@ public class GameMap {
 		}
 	}
 
-	private void spreadTonic(int amount) {
+	public void spreadTonic(int amount) {
 		int addAmount = 0;
 		Random random = new Random();
 		while(addAmount != amount){
@@ -357,4 +355,19 @@ public class GameMap {
 		}
 	}
 
+	public boolean moveLine(Creature creature, int lineno) {
+		int y = creature.getRow();
+		int x = creature.getCol();
+		if(lineno != y && lineno < rows.size()) {
+			creature.setRow(lineno);
+			MapRow row = rows.get(lineno);
+			if(x >= row.getLineString().length()) {
+				x = row.getLineString().length() - 1;
+				x = (x < 0)? 0: x;
+				creature.setCol(x);
+			}
+			return true;
+		}
+		return false;
+	}
 }
