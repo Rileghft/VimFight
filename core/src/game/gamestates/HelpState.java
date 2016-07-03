@@ -23,7 +23,7 @@ public class HelpState extends GameState {
 	private float hintBegUpY = 170;
 	private Texture currentHint;
 	private int selected ;
-	
+
 
 	protected HelpState(GameStateManager gsm, PlayState playState) {
 		super(gsm);
@@ -44,7 +44,7 @@ public class HelpState extends GameState {
 		itemParameter.size = 30;
 		font = gen.generateFont(itemParameter);
 		font.setColor(Color.YELLOW);
-		
+
 		hint1 = new Texture(Gdx.files.internal("images/HowToPlayP1.png"));
 		hint2 = new Texture(Gdx.files.internal("images/HowToPlayP2.png"));
 		left = new Texture(Gdx.files.internal("images/left.png"));
@@ -70,7 +70,7 @@ public class HelpState extends GameState {
 		if(selected == 1)
 			sb.draw(left, hintBegLeftX+10, hintBegUpY+100);
 		font.draw(sb, hint, (VimFight.WIDTH - 15*hint.length())/2-50, 200);
-		
+
 		sb.end();
 	}
 
@@ -81,6 +81,7 @@ public class HelpState extends GameState {
 			playState.stage.setKeyboardFocus(playState.player);
 			gsm.setNeedClean(true);
 			gsm.pop();
+			playState.startTime = System.currentTimeMillis();
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.H)){
 			if( selected > 0 ){
@@ -94,7 +95,7 @@ public class HelpState extends GameState {
 				selectHint();
 			}
 		}
-		
+
 	}
 
 	private void selectHint(){
@@ -109,7 +110,7 @@ public class HelpState extends GameState {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
