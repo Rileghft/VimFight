@@ -16,13 +16,14 @@ public class HelpState extends GameState {
 
 	private PlayState playState;
 	private SpriteBatch sb;
-	private final String hint = "Press ESCAPE to Go Back to Game";
+	private final String hint = "Press ESCAPE to Skip";
 	private BitmapFont font;
-	private Texture hint1, hint2, left, right;
+	private Texture hint1, hint2, left, right, introduction;
 	private float hintBegLeftX = 105;
 	private float hintBegUpY = 170;
 	private Texture currentHint;
 	private int selected ;
+	private boolean right_enable, left_enable;
 	
 
 	protected HelpState(GameStateManager gsm, PlayState playState) {
@@ -45,12 +46,16 @@ public class HelpState extends GameState {
 		font = gen.generateFont(itemParameter);
 		font.setColor(Color.YELLOW);
 		
+		
 		hint1 = new Texture(Gdx.files.internal("images/HowToPlayP1.png"));
 		hint2 = new Texture(Gdx.files.internal("images/HowToPlayP2.png"));
 		left = new Texture(Gdx.files.internal("images/left.png"));
 		right = new Texture(Gdx.files.internal("images/right.png"));
-		currentHint = hint1;
+		introduction = new Texture(Gdx.files.internal("images/Introduction.png"));
+		currentHint = introduction;
 		selected = 0;
+		left_enable = false;
+		right_enable = true;
 	}
 
 	@Override
@@ -65,9 +70,9 @@ public class HelpState extends GameState {
 		sb.setProjectionMatrix(VimFight.cam.combined);
 		sb.begin();
 		sb.draw(currentHint, hintBegLeftX, hintBegUpY);
-		if(selected == 0)
+		if(right_enable)
 			sb.draw(right, hintBegLeftX+490, hintBegUpY+100);
-		if(selected == 1)
+		if(left_enable)
 			sb.draw(left, hintBegLeftX+10, hintBegUpY+100);
 		font.draw(sb, hint, (VimFight.WIDTH - 15*hint.length())/2-50, 200);
 		
@@ -89,7 +94,7 @@ public class HelpState extends GameState {
 			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.L)){
-			if( selected < 1 ){
+			if( selected < 2 ){
 				selected++;
 				selectHint();
 			}
@@ -100,10 +105,19 @@ public class HelpState extends GameState {
 	private void selectHint(){
 		switch (selected) {
 		case 0:
-			currentHint = hint1;
+			currentHint = introduction;
+			left_enable = false;
+			right_enable = true;
 			break;
 		case 1:
+			currentHint = hint1;
+			left_enable = true;
+			right_enable = true;
+			break;
+		case 2:
 			currentHint = hint2;
+			left_enable = true;
+			right_enable = false;
 			break;
 		default:
 			break;
