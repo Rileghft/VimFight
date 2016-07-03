@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -78,6 +77,7 @@ public class PlayState extends GameState {
 	private Texture mp_tonic = new Texture(Gdx.files.internal("images/potion/mp.png"));
 
 	//for BGM
+	private boolean isFirst = true;
 	private BGM bgm;
 
 	public PlayState(GameStateManager gsm) {
@@ -152,6 +152,10 @@ public class PlayState extends GameState {
 
 	@Override
 	public void update(float delta) {
+		if(isFirst) {
+			isFirst = false;
+			help();
+		}
 		handleInput();
 		if(player.isDead()) {
 			stage.unfocus(player);
@@ -170,12 +174,12 @@ public class PlayState extends GameState {
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-		
+
 		sb.begin();
 		//draw background
 		sb.draw(gsm.backGround,0,0);
 		sb.end();
-		
+
 		//draw map
 		screenMap = map.getMapScreenRows();
 		for(int i = 0 ; i < screenMap.size(); i++ ){
@@ -252,13 +256,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
-		//test begin
-		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			System.out.println("esc");
-			gsm.pop();
-			stopBGM();
-		}
-		//test end
 	}
 
 	@Override

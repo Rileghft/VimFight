@@ -20,6 +20,7 @@ public class MenuState extends GameState {
 	private SpriteBatch sb;
 	private BitmapFont titleFont;
 	private BitmapFont font;
+	private BitmapFont hint;
 	//for test animation
 	//add BGM
 	private BGM bgm;
@@ -48,8 +49,12 @@ public class MenuState extends GameState {
 		titleFont.setColor(Color.GRAY);
 
 		FreeTypeFontParameter itemParameter = new FreeTypeFontParameter();
-		itemParameter.size = 30;
+		itemParameter.size = 70;
 		font = gen.generateFont(itemParameter);
+
+		FreeTypeFontParameter hintParameter = new FreeTypeFontParameter();
+		itemParameter.size = 40;
+		hint = gen.generateFont(hintParameter);
 
 		menuItems = new String[] {
 				"Play",
@@ -65,35 +70,43 @@ public class MenuState extends GameState {
 	@Override
 	public void draw() {
 		sb.setProjectionMatrix(VimFight.cam.combined);
-		
+
 		sb.begin();
 		//draw background
 		sb.draw(gsm.backGround,0,0);
-		
+
 		//draw title
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 600);
 
 		//draw menu
 		for(int i =- 0 ; i < menuItems.length; i++) {
 			if(currentItem == i)
-				font.setColor(Color.RED);
+				font.setColor(Color.YELLOW);
 			else
-				font.setColor(Color.BLACK);
-			font.draw(sb, menuItems[i], (VimFight.WIDTH - 20*(menuItems[i].length()))/2, 400-40*i);
+				font.setColor(Color.FOREST);
+			font.draw(sb, menuItems[i], (VimFight.WIDTH - 40*(menuItems[i].length()))/2, 400-130*i);
 		}
-		
+
+		//draw hint
+		String hint_text = "PRESS J TO MOVE DOWN, K TO MOVE UP, ENTER TO SELECT";
+		hint.setColor(Color.GRAY);
+		hint.draw(sb, hint_text, 180, 150);
+		hint.setColor(Color.WHITE);
+		hint.draw(sb, "Copyright © 2016 YZU UNIX. All rights reserved", 200, 40);
+
+
 		sb.end();
 	}
 
 	@Override
 	public void handleInput() {
 		// TODO Auto-generated method stub
-		if(Gdx.input.isKeyJustPressed(Keys.UP)){
+		if(Gdx.input.isKeyJustPressed(Keys.K)){
 			if(currentItem > 0){
 				currentItem--;
 			}
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
+		if(Gdx.input.isKeyJustPressed(Keys.J)){
 			if(currentItem < menuItems.length -1){
 				currentItem++;
 			}

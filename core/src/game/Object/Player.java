@@ -186,11 +186,6 @@ public class Player extends Actor implements Creature{
 					isFindCharState = true;
 					findCharDirection = 0;
 					break;
-				case GameKeys.d:
-					demage(100);
-					break;
-				default:
-					break;
 				}
 				updateScreen();
 
