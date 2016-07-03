@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -79,6 +80,14 @@ public class PlayState extends GameState {
 	//for BGM
 	private boolean isFirst = true;
 	private BGM bgm;
+	
+	//for show level
+	private TextureAtlas levelAtlas;
+	private static float level_FRAME_DURATION = .5f;
+	private Animation showingAnimation;
+	private TextureRegion levelCurrentFrame;
+	private float level_elapsed_time = 0;
+	private boolean enableLevel = false;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -96,6 +105,12 @@ public class PlayState extends GameState {
 		fireAnimation = new Animation(FRAME_DURATION, fireFrames, PlayMode.LOOP);
 	}
 
+	private void showLevelInit(){
+		levelAtlas = new TextureAtlas(Gdx.files.internal("images/test.atlas"));
+		Array<AtlasRegion> Frames = levelAtlas.findRegions("showing");
+		showingAnimation = new Animation(level_FRAME_DURATION, Frames, PlayMode.REVERSED);
+	}
+	
 	@Override
 	public void init() {
 		ScreenViewport viewport = new ScreenViewport();
@@ -139,6 +154,8 @@ public class PlayState extends GameState {
 
 		//add traps textures
 		trapsInit();
+		
+		showLevelInit();
 	}
 
 	private void trapsInit(){
@@ -163,6 +180,11 @@ public class PlayState extends GameState {
 		}
 		setLineNumBeg(map.screenStartRow);
 		draw();
+	}
+	
+	public void changeLevel( int level ){
+		level_elapsed_time = 0;
+		enableLevel = true;
 	}
 
 	public void GameOver() {
@@ -200,8 +222,22 @@ public class PlayState extends GameState {
 		elapsed_time += Gdx.graphics.getDeltaTime();
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
+		
+		drawLevel();
 	}
 
+	private void drawLevel(){
+		if(enableLevel){
+			level_elapsed_time += Gdx.graphics.getDeltaTime();
+			levelCurrentFrame = showingAnimation.getKeyFrame(level_elapsed_time);
+			if(level_elapsed_time > 3)
+				enableLevel = false;
+			sb.begin();
+			sb.draw(levelCurrentFrame, 300, 350);
+			sb.end();
+		}
+	}
+	
 	private void drawRect(int x, int y, MapSquare cell){
 		//draw a rectangle of cell in the map component
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
@@ -256,6 +292,10 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
+		//for test changeLevel
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+			changeLevel(1);
+		}
 	}
 
 	@Override

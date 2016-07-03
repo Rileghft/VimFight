@@ -1,0 +1,32 @@
+test.png
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+showing
+  rotate: false
+  xy: 0, 0
+  size: 128, 128
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+showing
+  rotate: false
+  xy: 0, 128
+  size: 128, 128
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+showing
+  rotate: false
+  xy: 0, 256
+  size: 128, 128
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+showing
+  rotate: false
+  xy: 0, 384
+  size: 128, 128
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
