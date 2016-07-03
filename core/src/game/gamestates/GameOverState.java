@@ -13,20 +13,22 @@ import game.vim.VimFight;
 
 public class GameOverState extends GameState{
 
-	private final String title = "Game Over";
+	private final String title = "Survive Time %d Seconds";
 	private final String hint = "Press SPACE to Go Back to Menu";
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	private SpriteBatch sb;
 	private char[] recordName = {'j', 'k', 'h', 'l', 'w', 'b', '0', '$', 'f', 'F'};
 	private int[] recordNum;
+	private long surviveTime_sec;
 
-	protected GameOverState(GameStateManager gsm, int[] statistics) {
+	protected GameOverState(GameStateManager gsm, int[] statistics, long surviveTime) {
 		super(gsm);
 		//statistics
 		//a0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 		// j, k, h, l, w, b, 0, $, f, F
 		recordNum = statistics;
+		surviveTime_sec = surviveTime;
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class GameOverState extends GameState{
 				Gdx.files.internal("font/SourceCodePro-Regular.ttf")
 				);
 		FreeTypeFontParameter titleParameter = new FreeTypeFontParameter();
-		titleParameter.size = 80;
+		titleParameter.size = 50;
 		titleFont = gen.generateFont(titleParameter);
 		titleFont.setColor(Color.WHITE);
 
@@ -58,16 +60,16 @@ public class GameOverState extends GameState{
 	public void draw() {
 		// TODO Auto-generated method stub
 		sb.setProjectionMatrix(VimFight.cam.combined);
-		
+
 		sb.begin();
 		//draw background
 		sb.draw(gsm.backGround,0,0);
-		sb.end();		
-		
+		sb.end();
+
 		sb.begin();
-		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 650);
-		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-50, 120);
-		titleFont.draw(sb, "Score: "+gsm.getScore(), (VimFight.WIDTH - 50*title.length())/2-30, 220);
+		titleFont.draw(sb, String.format(title, surviveTime_sec), (VimFight.WIDTH - 50* 13)/2, 600);
+		font.draw(sb, hint, (VimFight.WIDTH - 50* 9)/2-50, 120);
+		titleFont.draw(sb, "Score: "+gsm.getScore(), (VimFight.WIDTH - 50* 5)/2-30, 220);
 
 		//draw record
 		drawRecord();
@@ -76,8 +78,8 @@ public class GameOverState extends GameState{
 
 	private void drawRecord(){
 		for(int i = 0 ; i < 5 ; i++){
-			font.draw(sb, recordName[2*i]+": "+recordNum[2*i], (VimFight.WIDTH - 50*title.length())/2, 500-50*i);
-			font.draw(sb, recordName[2*i+1]+": "+recordNum[2*i+1], (VimFight.WIDTH - 50*title.length())/2+280, 500-50*i);
+			font.draw(sb, recordName[2*i]+": "+recordNum[2*i], (VimFight.WIDTH - 50* 8)/2, 500-50*i);
+			font.draw(sb, recordName[2*i+1]+": "+recordNum[2*i+1], (VimFight.WIDTH - 50* 8)/2+280, 500-50*i);
 		}
 	}
 

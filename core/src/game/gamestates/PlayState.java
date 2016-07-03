@@ -71,6 +71,8 @@ public class PlayState extends GameState {
 	private Animation fireAnimation;
 	private TextureRegion currentFrame;
 	private float elapsed_time = 0f;
+	public long surviveTime = 0;
+	public long startTime = 0;
 
 	private GameMap map;
 	private ArrayList<MapRow> screenMap;
@@ -92,6 +94,7 @@ public class PlayState extends GameState {
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
 		soundInit();
+		startTime = System.currentTimeMillis();
 	}
 
 	//for Sound
@@ -188,9 +191,15 @@ public class PlayState extends GameState {
 	}
 
 	public void GameOver() {
-			gsm.setState(new GameOverState(gsm, player.statistic));
+			surviveTime += System.currentTimeMillis() - startTime;
+			System.out.println("Survive Time: " + surviveTime / 1000);
+			gsm.setState(new GameOverState(gsm, player.statistic, surviveTime / 1000));
 			gsm.setScore(score.getScoreNum());
 			bgm.stopBGM();
+	}
+
+	public void levelControl(int score) {
+
 	}
 
 	@Override
@@ -338,6 +347,7 @@ public class PlayState extends GameState {
 		stage.unfocus(player);
 		gsm.setNeedClean(false);
 		gsm.push(new HelpState(gsm, this));
+		surviveTime += System.currentTimeMillis() - startTime;
 	}
 
 	public void pause() {
@@ -345,6 +355,7 @@ public class PlayState extends GameState {
 		stage.unfocus(player);
 		gsm.setNeedClean(false);
 		gsm.push(new PauseState(gsm, this));
+		surviveTime += System.currentTimeMillis() - startTime;
 	}
 
 }

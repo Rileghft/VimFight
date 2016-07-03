@@ -12,14 +12,14 @@ import game.managers.GameStateManager;
 import game.vim.VimFight;
 
 public class PauseState extends GameState {
-	
+
 	private PlayState playState;
 	private final String title = "Pause";
 	private final String hint = "Press ESCAPE to Go Back to Game";
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	private SpriteBatch sb;
-	
+
 	protected PauseState(GameStateManager gsm, PlayState playState) {
 		super(gsm);
 		// TODO Auto-generated constructor stub
@@ -57,7 +57,7 @@ public class PauseState extends GameState {
 		sb.begin();
 		titleFont.draw(sb, title, (VimFight.WIDTH - 50*title.length())/2, 500);
 		font.draw(sb, hint, (VimFight.WIDTH - 50*title.length())/2-150, 430);
-		
+
 		sb.end();
 	}
 
@@ -68,6 +68,7 @@ public class PauseState extends GameState {
 			playState.stage.setKeyboardFocus(playState.player);
 			gsm.setNeedClean(true);
 			gsm.pop();
+			playState.startTime = System.currentTimeMillis();
 		}
 	}
 
