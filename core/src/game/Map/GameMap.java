@@ -12,6 +12,7 @@ import java.util.Random;
 import game.Object.Creature;
 import game.Object.Item;
 import game.Object.Player;
+import game.Object.Trap;
 import game.Object.Item.TYPE;
 
 
@@ -369,5 +370,14 @@ public class GameMap {
 			return true;
 		}
 		return false;
+	}
+
+	public void deleteLineTrap(Player player) {
+		MapRow row = rows.get(player.pos.y);
+		for(MapSquare square: row) {
+			if(square.item instanceof Trap) {
+				square.item = null;
+			}
+		}
 	}
 }

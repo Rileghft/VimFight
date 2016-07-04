@@ -33,6 +33,7 @@ public class Player extends Actor implements Creature{
 	private GameMap map;
 	private CharacterAnimation animation;
 	private boolean isFindCharState = false;
+	private boolean isDeleteState = false;
 	private int findCharDirection = 1;
 	private float accumulateTime = 0f;
 	private boolean isImmortal;
@@ -134,6 +135,14 @@ public class Player extends Actor implements Creature{
 					isFindCharState = false;
 					updateScreen();
 				}
+				if(isDeleteState) {
+					if(mp.getCurrentMp() >= 200) {
+						mp.minus(200);
+						map.deleteLineTrap(this);
+						isDeleteState = false;
+						return ;
+					}
+				}
 				switch (keyChar) {
 				case GameKeys.j:
 					statistic[0]++;
@@ -194,6 +203,9 @@ public class Player extends Actor implements Creature{
 					movePlusMP = 10;
 					isFindCharState = true;
 					findCharDirection = 0;
+					break;
+				case GameKeys.d:
+					isDeleteState = true;
 					break;
 				}
 				updateScreen();
