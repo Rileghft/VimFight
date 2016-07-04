@@ -13,7 +13,7 @@ import game.managers.GameStateManager;
 import game.vim.VimFight;
 
 public class HelpState extends GameState {
-
+	private static int callTimes = 0;
 	private PlayState playState;
 	private SpriteBatch sb;
 	private final String hint = "Press ESCAPE to Skip";
@@ -29,6 +29,7 @@ public class HelpState extends GameState {
 		super(gsm);
 		// TODO Auto-generated constructor stub
 		this.playState = playState;
+		callTimes++;
 	}
 
 	@Override
@@ -85,6 +86,7 @@ public class HelpState extends GameState {
 			gsm.setNeedClean(true);
 			gsm.pop();
 			playState.startTime = System.currentTimeMillis();
+			playState.changeLevel(0);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.H)){
 			if( selected > 0 ){
