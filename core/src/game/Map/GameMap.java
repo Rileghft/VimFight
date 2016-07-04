@@ -60,23 +60,43 @@ public class GameMap {
 		screenStartCol = 0;
 	}
 
-	public void spreadTraps(int amount){
+	public void spreadTraps(int amount, boolean isGlobal){
 		Random random = new Random();
+		int rowNum, colNum;
 		for(int i = 0 ; i < amount; i++){
-			int rowNum = random.nextInt(rows.size());
-			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			if(isGlobal) {
+				rowNum = random.nextInt(rows.size());
+				colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			}
+			else {
+				rowNum = random.nextInt(20) + screenStartRow;
+				if(rowNum >= rows.size()) rowNum = random.nextInt(rows.size());
+				int lineLength = rows.get(rowNum).getLineString().length();
+				colNum = random.nextInt(20) + screenStartCol;
+				if(colNum >= lineLength) colNum = random.nextInt(lineLength);
+			}
 			rows.get(rowNum).getSquare(colNum).addItem();
 		}
 	}
 
-	public void spreadTonic(int amount) {
+	public void spreadTonic(int amount, boolean isGlobal) {
 		int addAmount = 0;
+		int rowNum, colNum;
 		Random random = new Random();
 		while(addAmount != amount){
-			int rowNum = random.nextInt(rows.size());
-			int colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			if(isGlobal) {
+				rowNum = random.nextInt(rows.size());
+				colNum = random.nextInt(rows.get(rowNum).getLineString().length());
+			}
+			else {
+				rowNum = random.nextInt(20) + screenStartRow;
+				if(rowNum >= rows.size()) rowNum = random.nextInt(rows.size());
+				int lineLength = rows.get(rowNum).getLineString().length();
+				colNum = random.nextInt(20) + screenStartCol;
+				if(colNum >= lineLength) colNum = random.nextInt(lineLength);
+			}
 			//if(!rows.get(rowNum).getSquare(colNum).hasItem())
-				rows.get(rowNum).getSquare(colNum).addTonic();
+			rows.get(rowNum).getSquare(colNum).addTonic();
 			++addAmount;
 		}
 	}

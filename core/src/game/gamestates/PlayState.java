@@ -173,7 +173,7 @@ public class PlayState extends GameState {
 		FileHandle fhandler = Gdx.files.internal("exampleMap_1.txt");
 		BufferedReader mapReader = fhandler.reader(256);
 		map = new GameMap(mapReader);
-		map.spreadTraps(3000);
+		//map.spreadTraps(3000);
 		player.setMap(map);
 		//end of test data
 
@@ -227,44 +227,49 @@ public class PlayState extends GameState {
 		if(score >= 3000 ) {
 			if(level != 5) {
 				changeLevel(5);
-				addItemTimeInterval = 20;
+				addItemTimeInterval = 10;
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(200);
-				map.spreadTonic(50);
+				map.spreadTraps(20, false);
+				map.spreadTonic(5, false);
 				addTrapTimer = 0f;
 			}
 		}
 		else if(score >= 1500) {
 			if(level != 4) {
 				changeLevel(4);
-				addItemTimeInterval = 30;
+				addItemTimeInterval = 5;
+				map.spreadTraps(3000, true);
+				map.spreadTonic(400, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(100);
-				map.spreadTonic(200);
+				map.spreadTraps(5, false);
+				map.spreadTonic(1, false);
 				addTrapTimer = 0f;
 			}
 		}
 		else if(score >= 1000) {
 			if(level != 3) {
 				changeLevel(3);
-				addItemTimeInterval = 60;
+				addItemTimeInterval = 15;
+				map.spreadTraps(500, true);
+				map.spreadTonic(300, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(1000);
-				map.spreadTonic(300);
+				map.spreadTraps(15, false);
+				map.spreadTonic(5, false);
 				addTrapTimer = 0f;
 			}
 		}
 		else if(score >= 500) {
 			if(level != 2) {
 				changeLevel(2);
-				addItemTimeInterval = 90;
+				addItemTimeInterval = 10;
+				map.spreadTonic(100, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(2000);
-				map.spreadTonic(500);
+				map.spreadTraps(10, false);
+				map.spreadTonic(3, false);
 				addTrapTimer = 0f;
 			}
 		}
@@ -272,10 +277,10 @@ public class PlayState extends GameState {
 			if(level != 1) {
 				startAddTrap = true;
 				changeLevel(1);
-				addItemTimeInterval = 120;
+				addItemTimeInterval = 10;
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(5000);
+				map.spreadTraps(5, false);
 				addTrapTimer = 0f;
 			}
 		}
