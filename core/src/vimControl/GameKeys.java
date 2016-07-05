@@ -25,6 +25,15 @@ public class GameKeys {
 	public final static int f = 102;
 	public final static int F = 70;
 	public final static int NUM_0 = 48;
+	public final static int NUM_1 = 49;
+	public final static int NUM_2 = 50;
+	public final static int NUM_3 = 51;
+	public final static int NUM_4 = 52;
+	public final static int NUM_5 = 53;
+	public final static int NUM_6 = 54;
+	public final static int NUM_7 = 55;
+	public final static int NUM_8 = 56;
+	public final static int NUM_9 = 57;
 	public final static int DOLLAR = 36;
 	public final static int SEMICOLON = 58;
 	public final static int BACKSPACE = 8;

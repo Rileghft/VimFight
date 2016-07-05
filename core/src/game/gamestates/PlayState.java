@@ -227,11 +227,10 @@ public class PlayState extends GameState {
 		if(score >= 3000 ) {
 			if(level != 5) {
 				changeLevel(5);
-				addItemTimeInterval = 10;
+				addItemTimeInterval = 3;
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(20, false);
-				map.spreadTonic(5, false);
+				map.spreadTraps(10, false);
 				addTrapTimer = 0f;
 			}
 		}
@@ -243,7 +242,7 @@ public class PlayState extends GameState {
 				map.spreadTonic(400, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(5, false);
+				map.spreadTraps(10, false);
 				map.spreadTonic(1, false);
 				addTrapTimer = 0f;
 			}
@@ -257,19 +256,19 @@ public class PlayState extends GameState {
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
 				map.spreadTraps(15, false);
-				map.spreadTonic(5, false);
+				map.spreadTonic(2, false);
 				addTrapTimer = 0f;
 			}
 		}
 		else if(score >= 500) {
 			if(level != 2) {
 				changeLevel(2);
-				addItemTimeInterval = 10;
+				addItemTimeInterval = 8;
 				map.spreadTonic(100, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
-				map.spreadTraps(10, false);
-				map.spreadTonic(3, false);
+				map.spreadTraps(15, false);
+				map.spreadTonic(1, false);
 				addTrapTimer = 0f;
 			}
 		}
@@ -410,10 +409,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void handleInput() {
-		//for test changeLevel
-		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-			changeLevel(0);
-		}
 	}
 
 	@Override

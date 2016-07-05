@@ -36,6 +36,7 @@ public class Player extends Actor implements Creature{
 	private boolean isDeleteState = false;
 	private int findCharDirection = 1;
 	private float accumulateTime = 0f;
+	private int repeatTime = 1;
 	private boolean isImmortal;
 	public PlayState playControl;
 	public Hp hp;
@@ -129,83 +130,134 @@ public class Player extends Actor implements Creature{
 				lastPosX = pos.x;
 				lastPosY = pos.y;
 				if(isFindCharState) {
-					if(findCharDirection == 1)
-						map.moveFindChar(pos, keyChar);
-					else map.moveFindPreChar(pos, keyChar);
+					for(int i = 0; i < repeatTime; ++i) {
+						if(findCharDirection == 1)
+							map.moveFindChar(pos, keyChar);
+						else map.moveFindPreChar(pos, keyChar);
+						if(i > 0) {
+							mp.minus(20);
+						}
+					}
+					repeatTime = 1;
 					isFindCharState = false;
 					updateScreen();
+					return;
 				}
 				if(isDeleteState) {
 					if(mp.getCurrentMp() >= 200) {
-						mp.minus(200);
-						map.deleteLineTrap(this);
 						isDeleteState = false;
+						if(mp.getCurrentMp() - repeatTime * 200 < 0) return ;
+						for(int i = 0; i < repeatTime; ++i) {
+							mp.minus(200);
+							map.deleteLineTrap(this);
+							if(i < repeatTime - 1) {
+								map.moveDown(this);
+							}
+						}
+						updateScreen();
+						return ;
+					}
+				}
+				if(repeatTime != 1) {
+					if(mp.getCurrentMp() >= repeatTime * 20)
+						mp.minus(repeatTime * 20);
+					else {
+						repeatTime = 1;
 						return ;
 					}
 				}
 				switch (keyChar) {
 				case GameKeys.j:
-					statistic[0]++;
-					movePlusMP = 1;
-					map.moveDown(this);
-					animation.startDown();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[0]++;
+						movePlusMP = 1;
+						map.moveDown(this);
+						animation.startDown();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.k:
-					statistic[1]++;
-					movePlusMP = 1;
-					map.moveUp(this);
-					animation.startUp();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[1]++;
+						movePlusMP = 1;
+						map.moveUp(this);
+						animation.startUp();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.h:
-					statistic[2]++;
-					movePlusMP = 1;
-					map.moveLeft(this);
-					animation.startLeft();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[2]++;
+						movePlusMP = 1;
+						map.moveLeft(this);
+						animation.startLeft();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.l:
-					statistic[3]++;
-					movePlusMP = 1;
-					map.moveRight(this);
-					animation.startRight();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[3]++;
+						movePlusMP = 1;
+						map.moveRight(this);
+						animation.startRight();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.w:
-					statistic[4]++;
-					movePlusMP = 3;
-					map.moveNextWord(this);
-					animation.startJump();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[4]++;
+						movePlusMP = 5;
+						map.moveNextWord(this);
+						animation.startJump();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.b:
-					statistic[5]++;
-					movePlusMP = 3;
-					map.movePreWord(this);
-					animation.startJump();
+					for(int i = 0; i < repeatTime; ++i) {
+						statistic[5]++;
+						movePlusMP = 5;
+						map.movePreWord(this);
+						animation.startJump();
+					}
+					repeatTime = 1;
 					break;
 				case GameKeys.NUM_0:
 					statistic[6]++;
-					movePlusMP = 3;
+					movePlusMP = 5;
 					map.moveLineBegin(pos);
 					animation.startJump();
 					break;
 				case GameKeys.DOLLAR:
 					statistic[7]++;
-					movePlusMP = 3;
+					movePlusMP = 5;
 					map.moveLineEnd(pos);
 					animation.startJump();
 					break;
 				case GameKeys.f:
 					statistic[8]++;
-					movePlusMP = 10;
+					movePlusMP = 20;
 					isFindCharState = true;
 					findCharDirection = 1;
 					break;
 				case GameKeys.F:
 					statistic[9]++;
-					movePlusMP = 10;
+					movePlusMP = 20;
 					isFindCharState = true;
 					findCharDirection = 0;
 					break;
 				case GameKeys.d:
 					isDeleteState = true;
+					break;
+				case GameKeys.NUM_1:
+				case GameKeys.NUM_2:
+				case GameKeys.NUM_3:
+				case GameKeys.NUM_4:
+				case GameKeys.NUM_5:
+				case GameKeys.NUM_6:
+				case GameKeys.NUM_7:
+				case GameKeys.NUM_8:
+				case GameKeys.NUM_9:
+					repeatTime = (int)keyChar - GameKeys.NUM_0;
 					break;
 				}
 				updateScreen();
