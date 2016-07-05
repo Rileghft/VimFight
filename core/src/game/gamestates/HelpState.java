@@ -18,7 +18,7 @@ public class HelpState extends GameState {
 	private SpriteBatch sb;
 	private final String hint = "Press ESCAPE to Skip";
 	private BitmapFont font;
-	private Texture hint1, hint2, left, right, introduction;
+	private Texture hint1, hint2, hint3, left, right, introduction;
 	private float hintBegLeftX = 105;
 	private float hintBegUpY = 170;
 	private Texture currentHint;
@@ -48,6 +48,7 @@ public class HelpState extends GameState {
 
 		hint1 = new Texture(Gdx.files.internal("images/HowToPlayP1.png"));
 		hint2 = new Texture(Gdx.files.internal("images/HowToPlayP2.png"));
+		hint3 = new Texture(Gdx.files.internal("images/HowToPlayP3.png"));
 		left = new Texture(Gdx.files.internal("images/left.png"));
 		right = new Texture(Gdx.files.internal("images/right.png"));
 		introduction = new Texture(Gdx.files.internal("images/Introduction.png"));
@@ -95,7 +96,7 @@ public class HelpState extends GameState {
 			}
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.L)){
-			if( selected < 2 ){
+			if( selected < 3 ){
 				selected++;
 				selectHint();
 			}
@@ -117,6 +118,11 @@ public class HelpState extends GameState {
 			break;
 		case 2:
 			currentHint = hint2;
+			left_enable = true;
+			right_enable = true;
+			break;
+		case 3:
+			currentHint = hint3;
 			left_enable = true;
 			right_enable = false;
 			break;
