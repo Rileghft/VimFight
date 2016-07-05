@@ -99,6 +99,8 @@ public class PlayState extends GameState {
 	
 	//for brick texture
 	private Texture cellTexture;
+	//for line number
+	private TextureRegion[][] lineNumTexture;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -188,6 +190,11 @@ public class PlayState extends GameState {
 		
 		//for brick texture
 		cellTexture = new Texture(Gdx.files.internal("Textures/yuka08_Brick.png"));
+		
+		//for lineNumber texture
+		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/tilea2.atlas"));
+		TextureRegion temp = new TextureRegion(new Texture(Gdx.files.internal("Textures/tilea2.png")));
+		lineNumTexture = temp.split(32, 32);
 	}
 
 	private void trapsInit(){
@@ -443,10 +450,16 @@ public class PlayState extends GameState {
 		for(int i = 0 ; i < 20 ; i++) {
 			//因為bitmapFont.draw要輸入的position 是左下角的 所以把posY上移
 			//font.draw(sb, text, posX, posY, width, align, wrap) 其中的width是用來做align用的空間
+			/*
 			sr.begin(ShapeType.Filled);
 			sr.setColor(new Color(0.379f,0.715f,0.727f,1));
 			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+65, cellHeight);
-			sr.end();
+			sr.end();*/
+			sb.begin();
+			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 )+32, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 )+64, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.end();
 			sb.begin();
 			lineNumber.setColor(new Color(0.617f,0.09f, 0.0625f,1));
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX +50), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);

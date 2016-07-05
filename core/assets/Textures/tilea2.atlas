@@ -1,0 +1,11 @@
+tilea2.png
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+lava
+  rotate: false
+  xy: 0, 288
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
