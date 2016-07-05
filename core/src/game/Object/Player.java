@@ -146,7 +146,10 @@ public class Player extends Actor implements Creature{
 				if(isDeleteState) {
 					if(mp.getCurrentMp() >= 200) {
 						isDeleteState = false;
-						if(mp.getCurrentMp() - repeatTime * 200 < 0) return ;
+						if(mp.getCurrentMp() - repeatTime * 200 < 0) {
+							repeatTime = 1;
+							return ;
+						}
 						for(int i = 0; i < repeatTime; ++i) {
 							mp.minus(200);
 							map.deleteLineTrap(this);
@@ -155,6 +158,7 @@ public class Player extends Actor implements Creature{
 							}
 						}
 						updateScreen();
+						repeatTime = 1;
 						return ;
 					}
 				}
