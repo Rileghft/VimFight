@@ -96,7 +96,7 @@ public class PlayState extends GameState {
 	private float addTrapTimer = 0f;
 	private int addItemTimeInterval = 180;
 	private int trapAddNum = 0;
-	
+
 	//for brick texture
 	private Texture cellTexture;
 	//for line number
@@ -187,10 +187,10 @@ public class PlayState extends GameState {
 		trapsInit();
 
 		showLevelInit();
-		
+
 		//for brick texture
 		cellTexture = new Texture(Gdx.files.internal("Textures/yuka08_Brick.png"));
-		
+
 		//for lineNumber texture
 		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/tilea2.atlas"));
 		TextureRegion temp = new TextureRegion(new Texture(Gdx.files.internal("Textures/tilea2.png")));
@@ -387,7 +387,7 @@ public class PlayState extends GameState {
 		sr.end();
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
-		
+
 		font.setColor(new Color(0.945f,0.879f, 0.594f,1));
 		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
 			Texture texture = getItemTexture(cell, posX, posY);
