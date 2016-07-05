@@ -35,6 +35,7 @@ import game.component.Score;
 import game.component.Status;
 import game.managers.GameStateManager;
 import game.vim.VimFight;
+import jdk.internal.org.objectweb.asm.tree.LineNumberNode;
 
 public class PlayState extends GameState {
 
@@ -95,6 +96,9 @@ public class PlayState extends GameState {
 	private float addTrapTimer = 0f;
 	private int addItemTimeInterval = 180;
 	private int trapAddNum = 0;
+	
+	//for brick texture
+	private Texture cellTexture;
 
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -181,6 +185,9 @@ public class PlayState extends GameState {
 		trapsInit();
 
 		showLevelInit();
+		
+		//for brick texture
+		cellTexture = new Texture(Gdx.files.internal("Textures/yuka08_Brick.png"));
 	}
 
 	private void trapsInit(){
@@ -360,10 +367,13 @@ public class PlayState extends GameState {
 		//draw a rectangle of cell in the map component
 		float posX = xConverter( mapBegLeftX + x*cellWidth );
 		float posY = yConverter( mapBegUpY + y*cellHeight );
-		sr.begin(ShapeType.Filled);
+		/*sr.begin(ShapeType.Filled);
 		sr.setColor(new Color(0.648f,0.633f,0.711f,1));
 		sr.rect(posX, posY, cellWidth, cellHeight);
-		sr.end();
+		sr.end();*/
+		sb.begin();
+		sb.draw(cellTexture, posX, posY, cellWidth, cellHeight);
+		sb.end();
 		sr.begin(ShapeType.Line);
 		sr.setColor(0,0,0,0);
 
@@ -371,11 +381,14 @@ public class PlayState extends GameState {
 		sr.end();
 		//因為bitmapFont.draw要輸入的position 是左下角的
 		sb.begin();
+		
+		font.setColor(new Color(0.945f,0.879f, 0.594f,1));
 		font.draw(sb, cell.getChar(), posX, posY + cellHeight);
 			Texture texture = getItemTexture(cell, posX, posY);
 			if(texture != null)
 				sb.draw(texture, posX, posY);
 		sb.end();
+		font.setColor(Color.BLACK);
 		}
 
 	private Texture getItemTexture(MapSquare cell, float posX, float posY){
@@ -435,6 +448,7 @@ public class PlayState extends GameState {
 			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+65, cellHeight);
 			sr.end();
 			sb.begin();
+			lineNumber.setColor(new Color(0.617f,0.09f, 0.0625f,1));
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX +50), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
 			}
