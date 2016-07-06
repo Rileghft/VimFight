@@ -253,7 +253,7 @@ public class PlayState extends GameState {
 			if(level != 4) {
 				changeLevel(4);
 				addItemTimeInterval = 5;
-				map.spreadTraps(3000, true);
+				map.spreadTraps(5000, true);
 				map.spreadTonic(400, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
@@ -266,7 +266,7 @@ public class PlayState extends GameState {
 			if(level != 3) {
 				changeLevel(3);
 				addItemTimeInterval = 15;
-				map.spreadTraps(500, true);
+				map.spreadTraps(3000, true);
 				map.spreadTonic(300, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
@@ -279,6 +279,7 @@ public class PlayState extends GameState {
 			if(level != 2) {
 				changeLevel(2);
 				addItemTimeInterval = 8;
+				map.spreadTraps(2000, true);
 				map.spreadTonic(100, true);
 			}
 			if(addTrapTimer >= addItemTimeInterval) {
@@ -291,6 +292,7 @@ public class PlayState extends GameState {
 			if(level != 1) {
 				startAddTrap = true;
 				changeLevel(1);
+				map.spreadTraps(500, true);
 				addItemTimeInterval = 10;
 			}
 			if(addTrapTimer >= addItemTimeInterval) {

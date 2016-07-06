@@ -4,6 +4,7 @@
 package game.Object;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -48,11 +49,9 @@ public class Player extends Actor implements Creature{
 	public int []statistic = new int[10];
 	public Status cmdBar;
 	public VimControl vim;
-	private long lastStaticTime;
+	private float lastStaticTime;
 	private boolean isStill = true;
-	private long stillTimeLimit;
-	private int lastStillX;
-	private int lastStillY;
+	private Sound stillDemage;
 
 	public Player() {
 		hp = new Hp(1000);
@@ -69,7 +68,8 @@ public class Player extends Actor implements Creature{
 		animation = new CharacterAnimation("images/player1.atlas");
 		animation.setSpriteBatch(new SpriteBatch());
 		animation.setOrgPos(105f, 630f);
-		lastStaticTime = System.currentTimeMillis();
+		lastStaticTime = 0f;
+		stillDemage = Gdx.audio.newSound(Gdx.files.internal("sound/stillDemage.mp3"));
 
 		addListener(new InputListener(){
 			@Override
@@ -97,18 +97,16 @@ public class Player extends Actor implements Creature{
 
 	private void proccessCommandMode(char keyChar) {
 		if(keyChar == GameKeys.ENTER) {
+			boolean isJumpState = false;
 			String cmd = cmdBar.getCommand();
 			if(cmd.equals(":q")) {
 				playControl.GameOver();
-				cmdBar.clear();
 			}
 			else if(cmd.equals(":h")) {
 				playControl.help();
-				cmdBar.clear();
 			}
 			else if(cmd.equals(":p")) {
 				playControl.pause();
-				cmdBar.clear();
 			}
 			else if(cmd.matches(":\\d+")) {
 				if(mp.getCurrentMp() >= 300) {
@@ -122,6 +120,11 @@ public class Player extends Actor implements Creature{
 				}
 				else cmdBar.setErr("MP is not enough.");
 			}
+			else if(cmd.matches(":set score=\\d+")) {
+				score.set(Integer.parseInt(cmdBar.getCommand().substring(11)));
+			}
+			if(!isJumpState)
+				cmdBar.clear();
 		}
 		else if(keyChar == GameKeys.ESC) {
 			cmdBar.clear();
@@ -305,8 +308,6 @@ public class Player extends Actor implements Creature{
 				score.plus(movePlusMP);
 				mp.plus(movePlusMP);
 				isStill = false;
-				lastStillX = pos.x;
-				lastStillY = pos.y;
 			}
 			cmdBar.setRow(pos.y);
 			cmdBar.setCol(pos.x);
@@ -342,32 +343,39 @@ public class Player extends Actor implements Creature{
 	public void stillOverTime(int level) {
 			if(!isStill) {
 				isStill = true;
-				lastStaticTime = System.currentTimeMillis();
+				lastStaticTime = 0f;
 			}
-			else if(isStill) {
-				if(System.currentTimeMillis() - lastStaticTime > 5000) {
-					hp.minus(30);
-					lastStaticTime = System.currentTimeMillis();
-				}
+			else {
+				lastStaticTime += Gdx.graphics.getDeltaTime();
 			}
 
 		switch (level) {
 		case 1:
-
+			stillDemage(5f, 30);
 			break;
 		case 2:
-
+			stillDemage(4f, 50);
 			break;
 		case 3:
-
+			stillDemage(3f, 80);
 			break;
 		case 4:
-
+			stillDemage(2f, 100);
 			break;
 		case 5:
-
+			stillDemage(1.5f, 200);
 			break;
 		}
+	}
+
+	private void stillDemage(float timeLimitSec, int demageAmount) {
+			if(lastStaticTime >= timeLimitSec) {
+				hp.minus(demageAmount);
+				lastStaticTime = System.currentTimeMillis();
+				cmdBar.setErr("<KEEP MOVING, OR YOU WILL DIE>");
+				stillDemage.play();
+				lastStaticTime = 0f;
+			}
 	}
 
 	@Override

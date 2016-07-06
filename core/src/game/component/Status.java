@@ -44,7 +44,9 @@ public class Status {
 
 	public void backSpace() {
 		int origin_len = command.length();
-		command.setLength(origin_len - 1);
+		if(command.length() != 0) {
+			command.setLength(origin_len - 1);
+		}
 	}
 
 	public String getCommand() {
