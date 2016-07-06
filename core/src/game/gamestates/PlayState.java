@@ -52,7 +52,7 @@ public class PlayState extends GameState {
 	private float hpUpY = 5;
 	private float mpLeftX = 360;
 	private float mpUpY = 5;
-	private float statusLeftX = 55;
+	private float statusLeftX = 104;
 	private float statusUpY = 650;
 	Player player;
 	private SpriteBatch sb;
@@ -193,7 +193,7 @@ public class PlayState extends GameState {
 
 		//for lineNumber texture
 		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/Levelcard/tilea2.atlas"));
-		TextureRegion temp = new TextureRegion(new Texture(Gdx.files.internal("Textures/tilea2.png")));
+		TextureRegion temp = new TextureRegion(new Texture(Gdx.files.internal("Textures/floor.png")));
 		lineNumTexture = temp.split(32, 32);
 	}
 
@@ -212,11 +212,11 @@ public class PlayState extends GameState {
 			isFirst = false;
 			help();
 		}
+		player.stillOverTime(level);
 		handleInput();
 		addTrapTimer += Gdx.graphics.getDeltaTime();
 		levelControl(player.score.getScoreNum());
 		if(player.isDead()) {
-			stage.unfocus(player);
 			GameOver();
 		}
 		setLineNumBeg(map.screenStartRow);
@@ -232,6 +232,7 @@ public class PlayState extends GameState {
 	public void GameOver() {
 			surviveTime += System.currentTimeMillis() - startTime;
 			System.out.println("Survive Time: " + surviveTime / 1000);
+			stage.unfocus(player);
 			gsm.setState(new GameOverState(gsm, player.statistic, surviveTime / 1000));
 			gsm.setScore(score.getScoreNum());
 			bgm.stopBGM();
@@ -451,12 +452,13 @@ public class PlayState extends GameState {
 			sr.rect(xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), cellWidth+65, cellHeight);
 			sr.end();*/
 			sb.begin();
-			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
-			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 )+32, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
-			sb.draw(lineNumTexture[9][0], xConverter( this.lineNumberLeftX+5 )+64, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.draw(lineNumTexture[0][5], xConverter( this.lineNumberLeftX+5 ), yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.draw(lineNumTexture[0][5], xConverter( this.lineNumberLeftX+5 )+32, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
+			sb.draw(lineNumTexture[0][5], xConverter( this.lineNumberLeftX+5 )+64, yConverter( this.lineNumberUpY + (i-1)*cellHeight +30), 32, 32);
 			sb.end();
 			sb.begin();
-			lineNumber.setColor(new Color(0.617f,0.09f, 0.0625f,1));
+			//lineNumber.setColor(new Color(0.617f,0.09f, 0.0625f,1));
+			lineNumber.setColor(Color.ROYAL);
 			lineNumber.draw(sb, Integer.toString(i+this.lineNumBeg), xConverter( this.lineNumberLeftX +50), yConverter( this.lineNumberUpY + (i-1)*cellHeight +5), 50, Align.right, false);
 			sb.end();
 			}

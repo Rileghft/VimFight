@@ -60,24 +60,25 @@ public class Status {
 		sr.begin(ShapeType.Filled);
 		sr.setColor(new Color(0.270f,0.262f,0.297f,1));
 
-		sr.rect(xConverter(leftX), yConverter(upY+25), 750, 25);
+		sr.rect(xConverter(leftX), yConverter(upY+25), 600, 25);
 		sr.end();
 
 		sb.begin();
 		if(!isError){
 			font.setColor(Color.BLACK);
 			font.draw(sb, getCommand(), xConverter(leftX), yConverter(upY+5));
-			font.draw(sb, getRow()+","+getCol(), xConverter(leftX+600), yConverter(upY+5), 50, Align.right, false);
 		}
 		else{
 			font.setColor(Color.RED);
 			font.draw(sb, this.message, xConverter(leftX), yConverter(upY+5));;
 		}
+		font.draw(sb, getRow()+","+getCol(), xConverter(leftX+500), yConverter(upY+5), 50, Align.right, false);
 		sb.end();
 	}
 
 	public void setErr(String msg){
 		isError = true;
+		command = new StringBuilder();
 		this.message = msg;
 	}
 

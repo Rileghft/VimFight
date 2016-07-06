@@ -353,7 +353,7 @@ public class GameMap {
 	}
 
 
-	public void moveFindChar(Position pos, Character c) {
+	public boolean moveFindChar(Position pos, Character c) {
 		String line = rows.get(pos.y).getLineString();
 		int nextX = -1;
 		if(pos.x != line.length() - 1) {
@@ -361,11 +361,13 @@ public class GameMap {
 		}
 		if(nextX >= 0) {
 			pos.x = nextX;
+			return true;
 		}
+		return false;
 	}
 
 
-	public void moveFindPreChar(Position pos, Character c) {
+	public boolean moveFindPreChar(Position pos, Character c) {
 		String line = rows.get(pos.y).getLineString();
 		int nextX = -1;
 		if(pos.x != 0) {
@@ -373,7 +375,9 @@ public class GameMap {
 		}
 		if(nextX >= 0) {
 			pos.x = nextX;
+			return true;
 		}
+		return false;
 	}
 
 	public boolean moveLine(Creature creature, int lineno) {

@@ -42,12 +42,17 @@ public class Player extends Actor implements Creature{
 	public Hp hp;
 	public Mp mp;
 	public Score score;
-	private int lastPosX;
-	private int lastPosY;
+	private int lastPosX = 0;
+	private int lastPosY = 0;
 	private int movePlusMP;
 	public int []statistic = new int[10];
 	public Status cmdBar;
 	public VimControl vim;
+	private long lastStaticTime;
+	private boolean isStill = true;
+	private long stillTimeLimit;
+	private int lastStillX;
+	private int lastStillY;
 
 	public Player() {
 		hp = new Hp(1000);
@@ -64,6 +69,7 @@ public class Player extends Actor implements Creature{
 		animation = new CharacterAnimation("images/player1.atlas");
 		animation.setSpriteBatch(new SpriteBatch());
 		animation.setOrgPos(105f, 630f);
+		lastStaticTime = System.currentTimeMillis();
 
 		addListener(new InputListener(){
 			@Override
@@ -94,12 +100,15 @@ public class Player extends Actor implements Creature{
 			String cmd = cmdBar.getCommand();
 			if(cmd.equals(":q")) {
 				playControl.GameOver();
+				cmdBar.clear();
 			}
 			else if(cmd.equals(":h")) {
 				playControl.help();
+				cmdBar.clear();
 			}
 			else if(cmd.equals(":p")) {
 				playControl.pause();
+				cmdBar.clear();
 			}
 			else if(cmd.matches(":\\d+")) {
 				if(mp.getCurrentMp() >= 300) {
@@ -107,10 +116,12 @@ public class Player extends Actor implements Creature{
 					if(isJump) {
 						mp.minus(300);
 						score.plus(30);
+						cmdBar.clear();
 					}
+					else cmdBar.setErr("line number doesn't exist.");
 				}
+				else cmdBar.setErr("MP is not enough.");
 			}
-			cmdBar.clear();
 		}
 		else if(keyChar == GameKeys.ESC) {
 			cmdBar.clear();
@@ -130,10 +141,12 @@ public class Player extends Actor implements Creature{
 				lastPosX = pos.x;
 				lastPosY = pos.y;
 				if(isFindCharState) {
+					boolean isFind = false;
 					for(int i = 0; i < repeatTime; ++i) {
 						if(findCharDirection == 1)
-							map.moveFindChar(pos, keyChar);
-						else map.moveFindPreChar(pos, keyChar);
+							isFind = map.moveFindChar(pos, keyChar);
+						else isFind = map.moveFindPreChar(pos, keyChar);
+						if(!isFind) cmdBar.setErr(String.format("Cannot find char '%c'", keyChar));
 						if(i > 0) {
 							mp.minus(20);
 						}
@@ -143,10 +156,12 @@ public class Player extends Actor implements Creature{
 					updateScreen();
 					return;
 				}
-				if(isDeleteState) {
+				if(isDeleteState && keyChar == GameKeys.d) {
 					if(mp.getCurrentMp() >= 200) {
 						isDeleteState = false;
 						if(mp.getCurrentMp() - repeatTime * 200 < 0) {
+							cmdBar.setErr("MP is not enough.");
+							isDeleteState = false;
 							repeatTime = 1;
 							return ;
 						}
@@ -166,9 +181,13 @@ public class Player extends Actor implements Creature{
 					if(mp.getCurrentMp() >= repeatTime * 20)
 						mp.minus(repeatTime * 20);
 					else {
+						cmdBar.setErr("MP is not enough.");
 						repeatTime = 1;
 						return ;
 					}
+				}
+				if(keyChar != GameKeys.d) {
+					isDeleteState = false;
 				}
 				switch (keyChar) {
 				case GameKeys.j:
@@ -179,6 +198,7 @@ public class Player extends Actor implements Creature{
 						animation.startDown();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.k:
 					for(int i = 0; i < repeatTime; ++i) {
@@ -188,6 +208,7 @@ public class Player extends Actor implements Creature{
 						animation.startUp();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.h:
 					for(int i = 0; i < repeatTime; ++i) {
@@ -197,6 +218,7 @@ public class Player extends Actor implements Creature{
 						animation.startLeft();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.l:
 					for(int i = 0; i < repeatTime; ++i) {
@@ -206,6 +228,7 @@ public class Player extends Actor implements Creature{
 						animation.startRight();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.w:
 					for(int i = 0; i < repeatTime; ++i) {
@@ -215,6 +238,7 @@ public class Player extends Actor implements Creature{
 						animation.startJump();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.b:
 					for(int i = 0; i < repeatTime; ++i) {
@@ -224,6 +248,7 @@ public class Player extends Actor implements Creature{
 						animation.startJump();
 					}
 					repeatTime = 1;
+					isStill = false;
 					break;
 				case GameKeys.NUM_0:
 					statistic[6]++;
@@ -236,6 +261,7 @@ public class Player extends Actor implements Creature{
 					movePlusMP = 5;
 					map.moveLineEnd(pos);
 					animation.startJump();
+					isStill = false;
 					break;
 				case GameKeys.f:
 					statistic[8]++;
@@ -278,6 +304,9 @@ public class Player extends Actor implements Creature{
 			if(pos.x != lastPosX || pos.y != lastPosY) {
 				score.plus(movePlusMP);
 				mp.plus(movePlusMP);
+				isStill = false;
+				lastStillX = pos.x;
+				lastStillY = pos.y;
 			}
 			cmdBar.setRow(pos.y);
 			cmdBar.setCol(pos.x);
@@ -307,8 +336,38 @@ public class Player extends Actor implements Creature{
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		//sprite.draw(batch);
 		animation.draw();
+	}
+
+	public void stillOverTime(int level) {
+			if(!isStill) {
+				isStill = true;
+				lastStaticTime = System.currentTimeMillis();
+			}
+			else if(isStill) {
+				if(System.currentTimeMillis() - lastStaticTime > 5000) {
+					hp.minus(30);
+					lastStaticTime = System.currentTimeMillis();
+				}
+			}
+
+		switch (level) {
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
+		case 5:
+
+			break;
+		}
 	}
 
 	@Override
